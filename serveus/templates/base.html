@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title>Malaria Server</title>
+    {% endif %}
+</head>
+
+<body>
+    <div id="navbar">
+        {% block navbar %}
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/map/">View Map</a></li>
+        </ul>
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
