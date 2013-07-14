@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Records</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap -->
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<!-- Responsive -->
+		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+        <style>
+            html,
+            body {
+               margin:0;
+               padding:0;
+               height:100%;
+            }
+            #super {
+               min-height:100%;
+               position:relative;
+            }
+            #body {
+               padding:10px;
+               padding-bottom: 20px;
+            }
+            #footer {
+               position:absolute;
+               bottom:0;
+               width:100%;
+               height: 20px;
+               text-align: center;
+            }
+        </style>
+	</head>
+	<body>
+    <div id="super">
+		<div class="navbar" style="width: 100%;">
+			<div class="navbar-inner">
+				<div>
+				<a class="brand" href="#">Malaria Tracker</a>
+				
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</a>
+					<div class="nav-collapse collapse">
+					<ul class="nav pull-left">
+						<li><a href="/dashboard">Home</a></li>
+						<li class="active"><a href="#">Records</a></li>
+						<li><a href="/map">Malaria Map</a></li>
+					</ul>
+					
+					<ul class="nav pull-right">
+						<li>&nbsp </li>
+						<li><a href="/index">Logout</a></li>
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span3 well" style="background-color: white;" >
+					<div class="form-inline">
+					<input style="width: calc(100% - 89px)" id="appendedInputButton" type="text" placeholder="Patient's Name...">
+					<button class="btn" type="button">Search</button>
+					</div>
+					</form>
+					<br>
+					<div class="input-prepend" style="width: 100%">
+<span class="add-on">with</span>
+					<select style="width: calc(100% - 35px)">
+					<option>Any Malaria Species</option>
+					<option>Falciparum</option>
+					<option>Vivax</option>
+					<option>Malarie</option>
+					</select>
+					</div>
+					<div class="input-prepend" style="width: 100%">
+<span class="add-on">&nbspin&nbsp&nbsp</span>
+					<select style="width: calc(100% - 34px)">
+					<option>The Philippines</option>
+					<option>NCR</option>
+					<option>Region 5</option>
+					<option>Palawan</option>
+					</select>
+					</div>
+					active/inactive
+					as of<br>
+					DATEPICKER to DATEPICKER
+				</div>
+				<div class="span9" style="background-color: white;">
+				    <table class="table table-hover table-bordered">
+					<tr><th class="span2">Date<th class="span2">Location<th class="span4">Name<th class="span4">Diagnosis
+					<tr onclick="window.location='/case'" style="cursor: pointer;"><td>July 10, 2013<td>Calamba, Laguna<td>Raigor Stonehoof<td>Falciparum, Vivax, Malariea, Enfeeble
+                    <tr onclick="window.location='/case'" style="cursor: pointer;"><td>July 10, 2013<td>Calamba, Laguna<td>Raigor Stonehoof<td>Falciparum, Vivax, Malariea, Enfeeble
+                    <tr onclick="window.location='/case'" style="cursor: pointer;"><td>July 10, 2013<td>Calamba, Laguna<td>Raigor Stonehoof<td>Falciparum, Vivax, Malariea, Enfeeble
+                    <tr onclick="window.location='/case'" style="cursor: pointer;"><td>July 10, 2013<td>Calamba, Laguna<td>Raigor Stonehoof<td>Falciparum, Vivax, Malariea, Enfeeble
+                    <tr onclick="window.location='/case'" style="cursor: pointer;"><td>July 10, 2013<td>Calamba, Laguna<td>Raigor Stonehoof<td>Falciparum, Vivax, Malariea, Enfeeble
+					</table>
+				</div>
+			</div>
+		</div>
+        <div id="footer">Made by a Professional</div>
+        </div>
+		<script src="/static/js/jquery.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+	</body>
+</html>

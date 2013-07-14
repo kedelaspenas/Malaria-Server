@@ -20,38 +20,27 @@
 			<div class="navbar-inner">
 				<div>
 				<a class="brand" href="#">Malaria Tracker</a>
-				<ul class="nav pull-left">
-					<li><a href="#myModal" role="button" data-toggle="modal">About</a></li>
-				</ul>
-				<form class="navbar-form pull-right">
-				  <input class="span2" type="text" placeholder="Email Address">
-				  <input class="span2" type="password" placeholder="Password">
-				  <a type="submit" class="btn" href="/dashboard">Sign in</a>
-				</form>
+				
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</a>
+					<div class="nav-collapse collapse">
+					<ul class="nav pull-left">
+						<li><a href="#">Home</a></li>
+						<li><a href="/records">Records</a></li>
+						<li class="active"><a href="/map">Malaria Map</a></li>
+					</ul>
+					
+					<ul class="nav pull-right">
+						<li>&nbsp </li>
+						<li><a href="/index">Logout</a></li>
+					</ul>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-		    <!-- Button to trigger modal -->
-    
-     
-		<!-- Modal -->
-		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-		<h3 id="myModalLabel">Malaria Tracker</h3>
-		</div>
-		<div class="modal-body">
-		<p>Description of the site and project.
-		<br><br>
-		The Team:
-		
-		</p>
-		</div>
-		<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		</div>
-    </div>
 		
 		<div class="container" style="height: 100%; width: 100%; margin: -20px 0 0;">
 			<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com.ph/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=philippines&amp;aq=&amp;sll=14.642882,121.016338&amp;sspn=0.187013,0.338173&amp;ie=UTF8&amp;hq=&amp;hnear=Philippines&amp;ll=12.879721,121.774017&amp;spn=12.065974,21.643066&amp;t=m&amp;z=6&amp;output=embed"></iframe>

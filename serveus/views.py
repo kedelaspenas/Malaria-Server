@@ -5,8 +5,28 @@ from forms import LoginForm
 @app.route('/')
 @app.route('/index')
 def index():
-    user = { 'name': 'NOOB' }
-    return render_template("index.html", title = 'Home', user=user)
+    return render_template("index.html")
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template("dashboard.html")
+
+@app.route('/records')
+def records():
+    return render_template("records.html")
+
+@app.route('/map')
+def map():
+    return render_template("map.html")
+
+@app.route('/case')
+def case():
+    return render_template("case.html")
+
+@app.route('/logout')
+def logout():
+    return redirect("index.html")
+    
     
 @app.route('/login',  methods = ['GET', 'POST'])
 def login():
