@@ -71,7 +71,7 @@
             </div>
             <div class="modal-body"><div class="modal-image"></div></div>
             <div class="modal-footer">
-                <a class="btn btn-info modal-prev"><i class="icon-arrow-left icon-white"></i> Previous</a>
+                <a class="btn btn-info modal-prev pull-left"><i class="icon-arrow-left icon-white"></i> Previous</a>
                 <a class="btn btn-primary modal-next">Next <i class="icon-arrow-right icon-white"></i></a>
                 <!--
                 <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play icon-white"></i> Slideshow</a>
@@ -83,45 +83,32 @@
 		<div class="container-fluid">
 			<div class="row-fluid">
 				<div class="span3 well" style="background-color: white; padding-top: 0" >
-					<h3 style="text-align: center">Ragior Stonehoof</h3>
+					<h4 style="text-align: center">Patient Information</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
-                    <tr><th class="span2">Location<td class="span10">Calamba, Laguna
-                    <tr><th>Age<td>57
+                    <tr><th class="span2">ID<td class="span10">{{case.patient_id}}
+                    <tr><th>Name<td>{{case.name}}
+                    <tr><th>Age<td>{{case.age}}
+                    <tr><th>Address<td>{{case.address}}
                     </table>
-                    <h5 style="text-align: center">Diagnosis</h5>
+                    <h4 style="text-align: center">Diagnosis</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
-                    <tr><th class="span2">Human<td class="span10">Falciparum
-                    <tr><th>Computer<td>Falciparum, Vivax
+                    <tr><th class="span2">Human<td class="span10">{{case.human_diagnosis}}
+                    <tr><th>Computer<td>{{case.computer_diagnosis}}
                     </table>
                     
                     
 				</div>
 				<div class="span9 well" style="background-color: white; padding-top: 0">
-				    <h3>July 10, 2013</h3>
+				    <h3>{{case.date}}</h3>
                     <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
                     <ul class="thumbnails">
-                      <li id="imageholder">
-                        <a title="Image 1" href="/static/images/1.png" class="thumbnail" data-gallery="gallery">
-                          <img src="/static/images/1.png" alt="">
-                        </a>
-                      </li>
-                     <li id="imageholder">
-                        <a title="Image 2" href="/static/images/2.png" class="thumbnail" data-gallery="gallery">
-                          <img src="/static/images/2.png" alt="">
-                        </a>
-                      </li>
-                     <li id="imageholder">
-                        <a title="Image 3" href="/static/images/3.png" class="thumbnail" data-gallery="gallery">
-                          <img src="/static/images/3.png" alt="">
-                        </a>
-                      </li>
-                     <li id="imageholder">
-                        <a title="Image 4" href="/static/images/4.png" class="thumbnail" data-gallery="gallery">
-                          <img src="/static/images/4.png" alt="">
-                        </a>
-                      </li>
-                     
-                      
+                     {% for i in case.images %}
+                         <li id="imageholder">
+                            <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail" data-gallery="gallery">
+                              <img src="/static/images/{{i}}" alt="">
+                            </a>
+                         </li>
+                     {% endfor %}
                     </ul>
                   </div>
 				</div>
