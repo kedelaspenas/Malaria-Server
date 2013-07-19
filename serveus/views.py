@@ -14,7 +14,7 @@ def dashboard():
 @app.route('/records')
 def records():
 
-    # Dummy records object
+    # Dummy object that will we replaced by SQL queried data
     class Record:
         date = "06/07/2013"
         patient_id = 101
@@ -37,6 +37,8 @@ def map():
 
 @app.route('/case')
 def case():
+
+    # Dummy object that will we replaced by SQL queried data
     class Case:
         patient_id = 101
         date = "06/07/2013"
