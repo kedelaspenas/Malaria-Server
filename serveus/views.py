@@ -33,7 +33,8 @@ def records():
 
 @app.route('/map')
 def map():
-    return render_template("map.html")
+    list = ['11.5,120','10.1,119','10.5,122','9,118','11.5,122.5']
+    return render_template("map.html", list = list)
 
 @app.route('/case')
 def case():

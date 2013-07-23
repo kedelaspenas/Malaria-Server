@@ -7,7 +7,7 @@
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<!-- Responsive -->
 		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-        <link href="/static/css/bootstrap-image-gallery.min.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-image-gallery.css" rel="stylesheet">
         <style>
             html,
             body {
@@ -17,7 +17,6 @@
             }
             #super {
                height:100%;
-               position:absolute;
             }
             #body {
                padding:10px;
@@ -30,13 +29,6 @@
                height: 20px;
                text-align: center;
             }
-<<<<<<< HEAD
-            #imageholder{
-                //margin: 0 0 0;
-            }
-=======
-            
->>>>>>> origin/horizontalui
         </style>
 	</head>
 	<body>
@@ -44,11 +36,10 @@
 		<div class="navbar" style="width: 100%;">
 			<div class="navbar-inner">
 				<div>
-				<a class="brand" href="#">Malaria Tracker</a>
 					<ul class="nav pull-left">
-						<li><a href="/dashboard"><i class="icon-globe"></i> Visualization</a></li>
+						<li><a href="/dashboard"><i class="icon-tasks"></i> Summary</a></li>
 						<li><a href="/records"><i class="icon-book"></i> Records</a></li>
-						<li><a href="/map"><i class="icon-tasks"></i> Statistics</a></li>
+						<li><a href="/map"><i class="icon-globe"></i> Visualization</a></li>
 					</ul>
 					
 					<ul class="nav pull-right">
@@ -62,13 +53,13 @@
         <!-- modal-gallery is the modal dialog used for the image gallery -->
         <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
             <div class="modal-header">
+                <input type="checkbox" id="currentlyViewed_chkbox_printing" onchange="document.getElementById('chkbox_'+window.currentImageIndex).checked = this.checked;"> select for printing
                 <a class="close" data-dismiss="modal">&times;</a>
-                <h3 class="modal-title"></h3>
             </div>
-            <div class="modal-body"><div class="modal-image"></div></div>
+            <div class="modal-body"><div class="modal-image" id="modal-image_currentlyViewed"></div></div>
             <div class="modal-footer">
-                <a class="btn btn-info modal-prev pull-left"><i class="icon-arrow-left icon-white"></i> Previous</a>
-                <a class="btn btn-primary modal-next">Next <i class="icon-arrow-right icon-white"></i></a>
+                <a class="btn btn-info modal-prev pull-left" style="display: inline-block" onclick="checkGalleryImage(-1)"><i class="icon-arrow-left icon-white"></i> Previous</a>
+                <a class="btn btn-primary modal-next" style="display: inline-block" onclick="checkGalleryImage(1)">Next <i class="icon-arrow-right icon-white"></i></a>
                 <!--
                 <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play icon-white"></i> Slideshow</a>
                 <a class="btn modal-download" target="_blank"><i class="icon-download"></i> Download</a>
@@ -78,7 +69,7 @@
         
 		<div class="container-fluid" style="background-color: white; position: relative; height: calc(100% - 80px)">
 			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
-				<div class="span8 well" style="background-color: white; padding-top: 0" >
+				<div class="span9 well" style="background-color: white; padding-top: 0" >
 					<h4 style="text-align: center">Patient Information</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
                     <tr><th class="span2">ID<td class="span10">{{case.patient_id}}
@@ -95,17 +86,35 @@
                     <p style="text-align: center"><a href="/dashboard" >View on Map</a><p>
                     
 				</div>
-				<div class="span4 well" style="background-color: white; text-align: center; overflow: auto; position: relative; height: calc(100% - 5px)">
+				<div class="span3 well" style="background-color: white; text-align: center; overflow: auto; position: relative; height: calc(100% - 5px); padding-top: 0px">
                     <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
+                    <table>
+                    
                     <ul class="thumbnails">
                      {% for i in case.images %}
-                         <li id="imageholder">
-                            <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail" data-gallery="gallery">
+                     <tr>
+                         <td>
+                            <input type="checkbox" name="{{i}}" id="chkbox_{{loop.index0}}">
+                         </td>
+                         <td>
+                            <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
                               <img src="/static/images/{{i}}" alt="">
                             </a>
-                         </li>
+                         </td>
+                         {% if loop.index0 == (loop.length-1) %}
+                              <script>
+                                    window.currentGalleryLength = {{ loop.length }}
+                                    function checkGalleryImage(increment) {
+                                        var i = (window.currentImageIndex+increment+window.currentGalleryLength)%window.currentGalleryLength;
+                                        checkGalleryImage.chkbox_print.checked = document.getElementById("chkbox_"+i).checked;
+                                        window.currentImageIndex = i;
+                                    }
+                                    checkGalleryImage.chkbox_print = document.getElementById("currentlyViewed_chkbox_printing");
+                              </script>
+                         {% endif %}
                      {% endfor %}
                     </ul>
+                    </table>
                   </div>
 				</div>
 			</div>
@@ -117,6 +126,15 @@
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/load-image.js"></script>
-        <script src="/static/js/bootstrap-image-gallery.min.js"></script>
+        <script src="/static/js/bootstrap-image-gallery.js"></script>
+        <script>
+            function var_dump(x) {
+                var s = "";
+                for (var i in x) {
+                    s += i+" = "+x[i]+"\n";
+                 }
+                 alert(s);
+            }
+        </script>
 	</body>
 </html>
