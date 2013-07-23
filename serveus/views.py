@@ -18,7 +18,7 @@ def records():
     class Record:
         date = "06/07/2013"
         patient_id = 101
-        location = "Bicol Region"
+        location = "ARMM (Autonomous Region in Muslim Mindanao)"
         diagnosis = "Vivax"
         '''
         def __init__(self, date, patient_id, location, diagnosis):

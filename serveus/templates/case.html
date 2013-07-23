@@ -16,8 +16,8 @@
                height:100%;
             }
             #super {
-               min-height:100%;
-               position:relative;
+               height:100%;
+               position:absolute;
             }
             #body {
                padding:10px;
@@ -30,9 +30,13 @@
                height: 20px;
                text-align: center;
             }
+<<<<<<< HEAD
             #imageholder{
                 //margin: 0 0 0;
             }
+=======
+            
+>>>>>>> origin/horizontalui
         </style>
 	</head>
 	<body>
@@ -41,24 +45,16 @@
 			<div class="navbar-inner">
 				<div>
 				<a class="brand" href="#">Malaria Tracker</a>
-				
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				</a>
-					<div class="nav-collapse collapse">
 					<ul class="nav pull-left">
-						<li><a href="/dashboard"><i class="icon-home"></i> Home</a></li>
+						<li><a href="/dashboard"><i class="icon-globe"></i> Visualization</a></li>
 						<li><a href="/records"><i class="icon-book"></i> Records</a></li>
-						<li><a href="/map"><i class="icon-globe"></i> Malaria Map</a></li>
+						<li><a href="/map"><i class="icon-tasks"></i> Statistics</a></li>
 					</ul>
 					
 					<ul class="nav pull-right">
 						<li>&nbsp </li>
-						<li><a href="/index">Logout</a></li>
+						<li><a href="/index">Logout <i class="icon-off"></i></a></li>
 					</ul>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -80,26 +76,26 @@
             </div>
         </div>
         
-		<div class="container-fluid">
-			<div class="row-fluid">
-				<div class="span3 well" style="background-color: white; padding-top: 0" >
+		<div class="container-fluid" style="background-color: white; position: relative; height: calc(100% - 80px)">
+			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
+				<div class="span8 well" style="background-color: white; padding-top: 0" >
 					<h4 style="text-align: center">Patient Information</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
                     <tr><th class="span2">ID<td class="span10">{{case.patient_id}}
                     <tr><th>Name<td>{{case.name}}
                     <tr><th>Age<td>{{case.age}}
                     <tr><th>Address<td>{{case.address}}
+                    <tr><th>Date Recorded<td>{{case.date}}
                     </table>
                     <h4 style="text-align: center">Diagnosis</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
                     <tr><th class="span2">Human<td class="span10">{{case.human_diagnosis}}
                     <tr><th>Computer<td>{{case.computer_diagnosis}}
                     </table>
-                    
+                    <p style="text-align: center"><a href="/dashboard" >View on Map</a><p>
                     
 				</div>
-				<div class="span9 well" style="background-color: white; padding-top: 0">
-				    <h3>{{case.date}}</h3>
+				<div class="span4 well" style="background-color: white; text-align: center; overflow: auto; position: relative; height: calc(100% - 5px)">
                     <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
                     <ul class="thumbnails">
                      {% for i in case.images %}
@@ -114,7 +110,9 @@
 				</div>
 			</div>
 		</div>
+        <!--
         <div id="footer">Made by a Professional</div>
+        -->
     <div>
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>

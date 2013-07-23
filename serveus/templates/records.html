@@ -64,10 +64,6 @@
             .search-query:focus + button {
             z-index: 3;
             }
-            .clickablerow 
-            {
-                cursor: pointer;
-            }
         </style>
 	</head>
 	<body>
@@ -94,14 +90,14 @@
 					<!-- <div class="nav-collapse collapse"> -->
                     <div>
 					<ul class="nav pull-left">
-						<li><a href="/dashboard"><i class="icon-home"></i> Home</a></li>
+						<li><a href="/dashboard"><i class="icon-globe"></i> Visualization</a></li>
 						<li class="active"><a href="#"><i class="icon-book"></i> Records</a></li>
-						<li><a href="/map"><i class="icon-globe"></i> Malaria Map</a></li>
+						<li><a href="/map"><i class="icon-tasks"></i> Statistics</a></li>
 					</ul>
 					
 					<ul class="nav pull-right">
 						<li>&nbsp </li>
-						<li><a href="/index">Logout</a></li>
+						<li><a href="/index">Logout <i class="icon-off"></i></a></li>
 					</ul>
 					</div>
 				</div>
@@ -127,19 +123,35 @@
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)">
-					<option>Any Malaria</option>
+					<option>Any Malaria Species</option>
 					<option>Falciparum</option>
 					<option>Vivax</option>
-					<option>Malarie</option>
+                    <option>Ovale</option>
+					<option>Malariae</option>
+                    <option>Knowlesi</option>
 					</select>
 					</div>
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">in&nbsp&nbsp&nbsp</span>
 					<select style="width: calc(100% - 34px)">
 					<option>The Philippines</option>
-					<option>NCR</option>
-					<option>Region 5</option>
-					<option>Palawan</option>
+					<option>NCR (National Capital Region)</option>
+					<option>CAR (Cordillera Administrative Region)</option>
+					<option>Region I (Ilocos Region)</option>
+                    <option>Region II (Cagayan Valley)</option>
+                    <option>Region III (Central Luzon)</option>
+                    <option>Region IV-A (CALABARZON)</option>
+                    <option>Region IV-B (MIMAROPA)</option>
+                    <option>Region V (Bicol Region)</option>
+                    <option>Region VI (Western Visayas)</option>
+                    <option>Region VII (Central Visayas)</option>
+                    <option>Region VIII (Eastern Visayas)</option>
+                    <option>Region IX (Zamboanga Peninsula)</option>
+                    <option>Region X (Northern Mindanao)</option>
+                    <option>Region XI (Davao Region)</option>
+                    <option>Region XII (Soccsksargen)</option>
+                    <option>Region XIII (Caraga)</option>
+                    <option>ARMM (Autonomous Region in Muslim Mindanao)</option>
 					</select>
 					</div>
                     <br>
@@ -156,9 +168,9 @@
 				</div>
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-hover table-bordered">
-					<tr><th class="span2">Date<th class="span2">Location<th class="span4">Name<th class="span4">Diagnosis
+					<tr><th class="span1">Date<th class="span4">Location<th class="span2">Patient ID<th class="span4">Diagnosis<th class="span1">
                     {% for i in list %}
-                    <tr onclick="window.location='/case'" class="clickablerow"><td>{{i.date}}<td>{{i.location}}<td>{{i.patient_id}}<td>{{i.diagnosis}}
+                    <tr><td>{{i.date}}<td>{{i.location}}<td>{{i.patient_id}}<td>{{i.diagnosis}}<td><a href="/case" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
 					</table>
 				</div>
