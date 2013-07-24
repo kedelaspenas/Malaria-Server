@@ -53,7 +53,7 @@
         <!-- modal-gallery is the modal dialog used for the image gallery -->
         <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
             <div class="modal-header">
-                <input type="checkbox" id="currentlyViewed_chkbox_printing" onchange="document.getElementById('chkbox_'+window.currentImageIndex).checked = this.checked;"> select for printing
+                <input type="checkbox" id="currentlyViewed_chkbox_printing" onchange="document.getElementById('chkbox_'+window.currentImageIndex).checked = this.checked;toggleSelectAll(window.currentImageIndex)"> select for printing
                 <a class="close" data-dismiss="modal">&times;</a>
             </div>
             <div class="modal-body"><div class="modal-image" id="modal-image_currentlyViewed"></div></div>
@@ -69,38 +69,52 @@
         
 		<div class="container-fluid" style="background-color: white; position: relative; height: calc(100% - 80px)">
 			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
-				<div class="span9 well" style="background-color: white; padding-top: 0" >
-					<h4 style="text-align: center">Patient Information</h4>
+				<div class="span9 well" style="background-color: white; padding-top: 0;" >
+					<h4 class="pull-left">Patient Information</h4>
+                    <h4 class="pull-right">{{case.date}}</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
                     <tr><th class="span2">ID<td class="span10">{{case.patient_id}}
                     <tr><th>Name<td>{{case.name}}
                     <tr><th>Age<td>{{case.age}}
                     <tr><th>Address<td>{{case.address}}
-                    <tr><th>Date Recorded<td>{{case.date}}
-                    </table>
-                    <h4 style="text-align: center">Diagnosis</h4>
-                    <table class="table table-condensed table-bordered" style="width: 100%">
-                    <tr><th class="span2">Human<td class="span10">{{case.human_diagnosis}}
-                    <tr><th>Computer<td>{{case.computer_diagnosis}}
+                    <tr><th>Diagnosis<td>{{case.human_diagnosis}}
                     </table>
                     <p style="text-align: center"><a href="/dashboard" >View on Map</a><p>
                     
 				</div>
-				<div class="span3 well" style="background-color: white; text-align: center; overflow: auto; position: relative; height: calc(100% - 5px); padding-top: 0px">
-                    <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">
-                    <table>
-                    
+				<div class="span3 well" style="background-color: white; overflow-y: auto; overflow-x:hidden; position: relative; height: calc(100% - 5px); padding: 0.5%; padding-top: 0;">
+                    <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
+                    <tr>
+                    <td class="span8"><h5 class="pull-left">Check for printing</h5>
+                    <td class="span3"><h5 class="pull-right">Select all</h5> 
+                    <td class="span1"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()">
+                    <script>
+                     function toggleAll()
+                     {
+                        for (var i=0; i<window.currentGalleryLength; i++)
+                        {
+                            document.getElementById("chkbox_"+i).checked = document.getElementById("selectAll").checked;
+                        }
+                     }
+                     function toggleSelectAll(x)
+                     {
+                        if(document.getElementById("chkbox_"+x).checked == false)
+                        {
+                            document.getElementById("selectAll").checked = false;
+                        }
+                     }
+                    </script>
+                    </table>
+                    <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery" style="padding: 0">
                     <ul class="thumbnails">
+                   
                      {% for i in case.images %}
-                     <tr>
-                         <td>
-                            <input type="checkbox" name="{{i}}" id="chkbox_{{loop.index0}}">
-                         </td>
-                         <td>
-                            <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
+                    <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
+                            <input class=" pull-left" type="checkbox" name="{{i}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
+                            <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
                               <img src="/static/images/{{i}}" alt="">
                             </a>
-                         </td>
+
                          {% if loop.index0 == (loop.length-1) %}
                               <script>
                                     window.currentGalleryLength = {{ loop.length }}
@@ -113,8 +127,9 @@
                               </script>
                          {% endif %}
                      {% endfor %}
+                     </li>
                     </ul>
-                    </table>
+
                   </div>
 				</div>
 			</div>
