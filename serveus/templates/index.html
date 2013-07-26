@@ -16,10 +16,19 @@
 			<div class="navbar-inner">
 				<div>
 				<a class="brand" href="#">Malaria Tracker</a>
-				<form class="navbar-form pull-right">
+			<!--	<form class="navbar-form pull-right">
 				  <input class="span2" type="text" placeholder="Email Address">
 				  <input class="span2" type="password" placeholder="Password">
-				  <a type="submit" class="btn" href="/dashboard">Sign in</a>
+				  <a type="submit" class="btn" href="/dashboard">Sign in</a> -->
+                     <form action="/login" method="post" name="login" class="navbar-form pull-right"> 
+                    {{form.hidden_tag()}}
+             
+                        Username: {{form.username(size=50)}}
+                        Password: {{form.password(size=50)}}
+                        
+                        
+                   
+                    <input type="submit" value="Sign In">
 				</form>
 				</div>
 			</div>
