@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, request
 from flask.ext.login import login_user, current_user
 from flask.ext.wtf import Required
 from serveus import app
@@ -48,12 +48,16 @@ def records():
     return render_template("records.html", list = list)
 
 @app.route('/map')
-def map():
+def defaultMap():
+    return map(10.422988,120.629883, 7)
+
+@app.route('/map/<float:lat>/<float:lng>/<int:zoom>')
+def map(lat, lng, zoom):
     list1 = ['11.5,120','10.1,119']
     list2 = ['10.5,122']
     list3 = ['9,118']
     list4 = ['11.5,122.5']
-    return render_template("map.html", list1 = list1, list2 = list2, list3 = list3, list4 = list4)
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4)
 
 @app.route('/case',  methods = ['GET', 'POST'])
 def case():
@@ -67,6 +71,8 @@ def case():
         address = "41 Real Street, Some Subdivision, Bicol Region"
         human_diagnosis = "Vivax"
         computer_diagnosis = "Falciparum, Vivax"
+        lat = 11.5
+        lng = 122.5
         images = ["1.png", "2.png", "3.png", "4.png"]
     
     case = Case()
@@ -77,7 +83,6 @@ def case():
             for i in range (0, len(case.images)):
                 if str('checkbox_' + str(i)) in request.form:
                     reportString += str(case.images[i]) + ' '
-        
         
         return reportString
     return render_template("case.html", case = case)

@@ -16,9 +16,9 @@
             var list3 = [{% for i in list3 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
             var list4 = [{% for i in list4 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
             function initialize() {
-              var myLatlng = new google.maps.LatLng(10.422988,120.629883);
+              var myLatlng = new google.maps.LatLng({{lat}},{{lng}});
               var mapOptions = {
-                zoom: 7,
+                zoom: {{zoom}},
                 center: myLatlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
               }
