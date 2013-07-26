@@ -33,8 +33,11 @@ def records():
 
 @app.route('/map')
 def map():
-    list = ['11.5,120','10.1,119','10.5,122','9,118','11.5,122.5']
-    return render_template("map.html", list = list)
+    list1 = ['11.5,120','10.1,119']
+    list2 = ['10.5,122']
+    list3 = ['9,118']
+    list4 = ['11.5,122.5']
+    return render_template("map.html", list1 = list1, list2 = list2, list3 = list3, list4 = list4)
 
 @app.route('/case',  methods = ['GET', 'POST'])
 def case():
@@ -53,7 +56,14 @@ def case():
     case = Case()
     
     if request.method == 'POST':
-        return str(case.patient_id) + '\n' + case.date + '\n' + case.name + '\n' + str(case.age) + '\n' + case.address + '\n' + case.human_diagnosis
+        reportString = 'Patient ID: ' + str(case.patient_id) + '<br>' + 'Date: ' + case.date + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
+        if request.form:
+            for i in range (0, len(case.images)):
+                if str('checkbox_' + str(i)) in request.form:
+                    reportString += str(case.images[i]) + ' '
+        
+        
+        return reportString
     return render_template("case.html", case = case)
 
 @app.route('/logout')
@@ -80,4 +90,4 @@ def test():
         else:
             return 'off'
         
-    return '<html><head><title></title></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form> </body></html> '
+    return '<html><head><title></title></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form> </body></html> ' + str(range(0,10))

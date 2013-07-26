@@ -112,7 +112,7 @@
                    
                      {% for i in case.images %}
                     <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
-                            <input class=" pull-left" type="checkbox" name="{{i}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
+                            <input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
                             <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
                               <img src="/static/images/{{i}}" alt="">
                             </a>

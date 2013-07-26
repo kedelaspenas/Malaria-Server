@@ -167,7 +167,7 @@
 				</div>
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-hover table-bordered table-condensed">
-					<tr><th class="span1">Date<th class="span5">Location<th class="span1">Patient ID<th class="span4">Diagnosis<th class="span1">
+					<tr><th class="span1">Date<th class="span4">Location<th class="span2">Patient ID<th class="span4">Diagnosis<th class="span1">
                     {% for i in list %}
                     <tr><td>{{i.date}}<td>{{i.location}}<td>{{i.patient_id}}<td>{{i.diagnosis}}<td><a href="/case" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
