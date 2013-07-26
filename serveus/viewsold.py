@@ -7,6 +7,7 @@ from flask.ext.login import UserMixin
 from yourapplication import db
 from yourapplication import User
 
+
 class UserClass(UserMixin):
     def __init__(self, username, password, id):
         self.username = username
@@ -16,7 +17,6 @@ class UserClass(UserMixin):
     def __repr__(self):
         return self.username
         
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -30,11 +30,12 @@ def dashboard():
 @app.route('/records')
 def records():
 
-    # Dummy object that will we replaced by SQL queried data
+    # Dummy object that will we replaced by SQL queried 
+    
     class Record:
         date = "06/07/2013"
         patient_id = 101
-        location = "ARMM (Autonomous Region in Muslim Mindanao)"
+        location = "Bicol Region"
         diagnosis = "Vivax"
         '''
         def __init__(self, date, patient_id, location, diagnosis):
@@ -49,13 +50,9 @@ def records():
 
 @app.route('/map')
 def map():
-    list1 = ['11.5,120','10.1,119']
-    list2 = ['10.5,122']
-    list3 = ['9,118']
-    list4 = ['11.5,122.5']
-    return render_template("map.html", list1 = list1, list2 = list2, list3 = list3, list4 = list4)
+    return render_template("map.html")
 
-@app.route('/case',  methods = ['GET', 'POST'])
+@app.route('/case')
 def case():
 
     # Dummy object that will we replaced by SQL queried data
@@ -68,25 +65,14 @@ def case():
         human_diagnosis = "Vivax"
         computer_diagnosis = "Falciparum, Vivax"
         images = ["1.png", "2.png", "3.png", "4.png"]
-    
-    case = Case()
-    
-    if request.method == 'POST':
-        reportString = 'Patient ID: ' + str(case.patient_id) + '<br>' + 'Date: ' + case.date + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
-        if request.form:
-            for i in range (0, len(case.images)):
-                if str('checkbox_' + str(i)) in request.form:
-                    reportString += str(case.images[i]) + ' '
-        
-        
-        return reportString
-    return render_template("case.html", case = case)
+
+    return render_template("case.html", case = Case())
 
 @app.route('/logout')
 def logout():
     return redirect("index.html")
-    
-    
+
+
 @app.route('/login',  methods = ['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -120,15 +106,5 @@ def login():
     else:
         error = True
         
-    return redirect("/index")
-
-# test view for experimentation    
-@app.route('/test',  methods = ['GET', 'POST'])
-def test():
-    if request.method == 'POST':
-        if request.form and 'checker1' in request.form and 'checker2' in request.form:
-            return request.form['checker1'] + ' ' + request.form['checker2']
-        else:
-            return 'off'
-        
-    return '<html><head><title></title></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form> </body></html> ' + str(range(0,10))
+    return 'ghjgj'
+    #render_template('login.html.old', title = 'Sign In', form = form, error = error)
