@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, request
 from serveus import app
 from forms import LoginForm
 
@@ -36,7 +36,7 @@ def map():
     list = ['11.5,120','10.1,119','10.5,122','9,118','11.5,122.5']
     return render_template("map.html", list = list)
 
-@app.route('/case')
+@app.route('/case',  methods = ['GET', 'POST'])
 def case():
 
     # Dummy object that will we replaced by SQL queried data
@@ -49,8 +49,12 @@ def case():
         human_diagnosis = "Vivax"
         computer_diagnosis = "Falciparum, Vivax"
         images = ["1.png", "2.png", "3.png", "4.png"]
-
-    return render_template("case.html", case = Case())
+    
+    case = Case()
+    
+    if request.method == 'POST':
+        return str(case.patient_id) + '\n' + case.date + '\n' + case.name + '\n' + str(case.age) + '\n' + case.address + '\n' + case.human_diagnosis
+    return render_template("case.html", case = case)
 
 @app.route('/logout')
 def logout():
@@ -66,3 +70,14 @@ def login():
         
     error = False
     return render_template('login.html', title = 'Sign In', form = form, error = error)
+
+# test view for experimentation    
+@app.route('/test',  methods = ['GET', 'POST'])
+def test():
+    if request.method == 'POST':
+        if request.form and 'checker1' in request.form and 'checker2' in request.form:
+            return request.form['checker1'] + ' ' + request.form['checker2']
+        else:
+            return 'off'
+        
+    return '<html><head><title></title></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form> </body></html> '

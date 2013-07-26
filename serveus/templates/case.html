@@ -16,7 +16,7 @@
                height:100%;
             }
             #super {
-               height:100%;
+               height: calc(100% - 20px);
             }
             #body {
                padding:10px;
@@ -32,7 +32,7 @@
         </style>
 	</head>
 	<body>
-    <div id="super">
+    <form id="super" action="" method="post">
 		<div class="navbar" style="width: 100%;">
 			<div class="navbar-inner">
 				<div>
@@ -79,8 +79,10 @@
                     <tr><th>Address<td>{{case.address}}
                     <tr><th>Diagnosis<td>{{case.human_diagnosis}}
                     </table>
-                    <p style="text-align: center"><a href="/dashboard" >View on Map</a><p>
-                    
+                    <div class="pull-right">
+                    <a class="btn btn-medium" href="/map">View on Map</a>
+                    <input class="btn btn-medium" type="submit" value="Print" style="height: 30px">
+                    </div>
 				</div>
 				<div class="span3 well" style="background-color: white; overflow-y: auto; overflow-x:hidden; position: relative; height: calc(100% - 5px); padding: 0.5%; padding-top: 0;">
                     <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
@@ -137,7 +139,7 @@
         <!--
         <div id="footer">Made by a Professional</div>
         -->
-    <div>
+    </form>
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/load-image.js"></script>
@@ -151,5 +153,6 @@
                  alert(s);
             }
         </script>
+    
 	</body>
 </html>
