@@ -2,9 +2,8 @@ from flask import Flask
 import os
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import UserMixin
+from serveus import app
 
-
-app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
 print 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
 ''''sqlite:///C:/Users/Rodolfo/Desktop/cs198pythontest.db'''

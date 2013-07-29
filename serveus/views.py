@@ -1,13 +1,12 @@
-from flask import render_template, flash, redirect, request
-from flask.ext.login import login_user, current_user
-from flask import render_template, flash, redirect
-from flask.ext.login import login_user, current_user, LoginManager
+import os
+from flask import render_template, flash, redirect, request, url_for
+from flask.ext.login import login_user, current_user, LoginManager 
 from flask.ext.wtf import Required
 from serveus import app
 from forms import LoginForm
-from flask.ext.login import UserMixin
-from yourapplication import db
-from yourapplication import User
+from werkzeug import secure_filename
+
+from yourapplication import db, User
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -123,3 +122,45 @@ def test():
             return 'off'
         
     return '<html><head><title></title></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form> </body></html> ' + str(range(0,10))
+
+
+# API
+
+UPLOAD_FOLDER = os.getcwd().replace('\\','/') + '/files/'
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/api/send/', methods=['POST'])
+def upload_file():
+	if request.method == 'POST':
+		file = request.files['file']
+		if file:
+			filename = secure_filename(file.filename)
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			return 'win'
+		else:
+			return 'fail'
+
+@app.route('/api/text/', methods=['POST'])
+def upload_file2():
+	if request.method == 'POST':
+		print request.form['message']
+		return 'got the message: %s' % request.form['message']
+
+@app.route('/api/key/', methods=['POST'])
+def update_key():
+	# if identifier is correct
+	if request.method == 'POST':
+		return os.urandom(256)
+
+@app.route('/api/db/', methods=['POST'])
+def update_db():
+	# if sent date < modified date
+	# return 'no change'
+	return redirect(url_for('static', filename='db.db'))
+
+@app.route('/api/apk/', methods=['POST'])
+def update_apk():
+	# if sent version < current version
+	# return 'no change'
+	return redirect(url_for('static', filename='apk.apk'))
