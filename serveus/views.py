@@ -66,6 +66,7 @@ def case():
     class Case:
         patient_id = 101
         date = "06/07/2013"
+        time = "12:10 pm"
         name = "Raigor Stonehoof"
         age = 49
         address = "41 Real Street, Some Subdivision, Bicol Region"
