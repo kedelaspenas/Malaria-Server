@@ -1,10 +1,13 @@
 from flask import Flask
+import os
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import UserMixin
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/Rodolfo/Desktop/cs198pythontest.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
+print 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
+''''sqlite:///C:/Users/Rodolfo/Desktop/cs198pythontest.db'''
 db = SQLAlchemy(app)
 
 class UserType(db.Model):
