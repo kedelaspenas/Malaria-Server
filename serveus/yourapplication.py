@@ -33,3 +33,21 @@ class User(db.Model,UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.username
+class Case(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date())
+    age = db.Column(db.Integer)
+    address = db.Column(db.String(120))
+    human_diagnosis = db.Column(db.String(80))
+    lat =db.Column(db.Float)
+    lng = db.Column(db.Float)
+    def __init__(self, date, age, address, human_diagnosis, lat, lng):
+        self.date = date
+        self.age = age
+        self.address = address
+        self.human_diagnosis = human_diagnosis
+        self.lat = lat
+        self.lng = lng
+
+    def __repr__(self):
+        return '<User %r>' % self.id
