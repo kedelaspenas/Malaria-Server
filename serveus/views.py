@@ -1,5 +1,7 @@
 from flask import render_template, flash, redirect, request
 from flask.ext.login import login_user, current_user
+from flask import render_template, flash, redirect
+from flask.ext.login import login_user, current_user, LoginManager
 from flask.ext.wtf import Required
 from serveus import app
 from forms import LoginForm
@@ -7,15 +9,8 @@ from flask.ext.login import UserMixin
 from yourapplication import db
 from yourapplication import User
 
-class UserClass(UserMixin):
-    def __init__(self, username, password, id):
-        self.username = username
-        self.password = password
-        self.id = id
-    
-    def __repr__(self):
-        return self.username
-        
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 @app.route('/')
 @app.route('/index')
@@ -25,7 +20,7 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", user= current_user )
 
 @app.route('/records')
 def records():
@@ -66,8 +61,8 @@ def case():
     class Case:
         patient_id = 101
         date = "06/07/2013"
-        time = "12:10 pm"
         name = "Raigor Stonehoof"
+        time = "12:10 pm"
         age = 49
         address = "41 Real Street, Some Subdivision, Bicol Region"
         human_diagnosis = "Vivax"
@@ -92,37 +87,27 @@ def case():
 def logout():
     return redirect("index.html")
     
+@login_manager.user_loader
+def load_user(userid):
+    return User.query.get(userid)
     
 @app.route('/login',  methods = ['GET', 'POST'])
 def login():
     form = LoginForm()
     error = False
-    userlist = [('kirong','1234'),('noel','123')]
-    userlist2 = User.query.all()
     if form.validate_on_submit():
         #flash('Login Data: Username: ' + form.username.data + ' Password: ' + form.password.data)
         #return redirect('/index')
         
         username = form.username.data
         password = form.password.data
-        x = username, password
-        
-        if User.query.filter_by(username=username,password=password).first():
-            return redirect("/dashboard")
-        else:
-            return redirect("/index")
-        '''for i in User.query.all():
-            y = i.username, i.password
-            if(x==y):
-                return redirect("/dashboard")
-            return redirect("/index")
-            '''
-        '''if x in userlist:
-            user = UserClass(username, password, 1)
+
+        user = User.query.filter_by(username=username,password=password).first()
+        if user:
             login_user(user)
             return redirect("/dashboard")
         else:
-            return redirect("/index")'''
+            return redirect("/index")
     else:
         error = True
         
