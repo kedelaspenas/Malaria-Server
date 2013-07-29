@@ -1,7 +1,7 @@
 import os
 import datetime
 from flask import render_template, flash, redirect, request, url_for
-from flask.ext.login import login_user, current_user, LoginManager 
+from flask.ext.login import login_user, current_user, LoginManager, logout_user, login_required
 from flask.ext.wtf import Required
 from serveus import app
 from forms import LoginForm
@@ -19,11 +19,13 @@ def index():
     return render_template("index.html",form=form)
 
 @app.route('/dashboard/')
+@login_required
 def dashboard():
 	cases = Case.query.all()
 	return render_template("dashboard.html", user = current_user, cases=cases, date=datetime.datetime.now().strftime('%B %d, %Y'))
 
 @app.route('/records/')
+@login_required
 def records():
     list = Case.query.all()
     return render_template("records.html", list = list, user = current_user)
@@ -56,7 +58,8 @@ def case(id):
 
 @app.route('/logout/')
 def logout():
-    return redirect("index.html")
+    logout_user()
+    return redirect("index")
     
 @login_manager.user_loader
 def load_user(userid):
