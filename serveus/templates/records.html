@@ -103,7 +103,7 @@
 			</div>
 		</div>
 		<div class="container-fluid">
-			<div class="row-fluid">
+				<div class="row-fluid">
 				<div class="span3 " style="background-color: white; " >
                     <!--
                     <div class="input-append" style="width: calc(100% - 55px)">
@@ -112,6 +112,7 @@
                     </div>
                     -->
                     <!-- https://bootsnipp.com/snipps/stylish-search-form -->
+					<!--
                     <form id="custom-search-form" class="form-search form-horizontal" style="width: 100%;">
                     <div class="input-append" style="width: 100%;">
                     <input type="text" class="search-query" style="width: calc(100% - 8px);" placeholder="Patient Name...">
@@ -119,6 +120,8 @@
                     </div>
                     </form>
                     <br>
+					-->
+					<h4>Search filters:</h4>
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)">
@@ -169,7 +172,7 @@
 				    <table class="table table-hover table-bordered table-condensed">
 					<tr><th class="span1">Date<th class="span4">Location<th class="span2">Patient ID<th class="span4">Diagnosis<th class="span1">
                     {% for i in list %}
-                    <tr><td>{{i.date}}<td>{{i.location}}<td>{{i.patient_id}}<td>{{i.diagnosis}}<td><a href="/case" class="btn" style="width: calc(100% - 25px)">View</a>
+					<tr><td>{{i.date}}<td>{{i.address}}<td>{{i.id}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
 					</table>
 				</div>

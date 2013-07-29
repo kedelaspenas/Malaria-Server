@@ -64,11 +64,12 @@
 					<h4 class="pull-left">Patient Information</h4>
                     <h4 class="pull-right">{{case.date}} &nbsp {{case.time}}</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
-                    <tr><th class="span2">ID<td class="span10">{{case.patient_id}}
-                    <tr><th>Name<td>{{case.name}}
+                    <tr><th class="span2">ID<td class="span10">{{case.id}}
                     <tr><th>Age<td>{{case.age}}
                     <tr><th>Address<td>{{case.address}}
                     <tr><th>Diagnosis<td>{{case.human_diagnosis}}
+                    <tr><th>Latitude<td>{{case.lat}}
+                    <tr><th>Longitude<td>{{case.lng}}
                     </table>
                     <div class="pull-right">
                     <a class="btn btn-medium" href="/map/{{case.lat}}/{{case.lng}}/14">View on Map</a>
