@@ -20,7 +20,7 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template("dashboard.html", user= current_user )
+    return render_template("dashboard.html", user = current_user )
 
 @app.route('/records')
 def records():
@@ -40,7 +40,7 @@ def records():
         '''
     list = [Record(), Record(), Record(), Record(), Record()]
         
-    return render_template("records.html", list = list)
+    return render_template("records.html", list = list, user = current_user)
 
 @app.route('/map')
 def defaultMap():
@@ -52,7 +52,7 @@ def map(lat, lng, zoom):
     list2 = ['10.5,122']
     list3 = ['9,118']
     list4 = ['11.5,122.5']
-    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4)
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, user = current_user)
 
 @app.route('/case',  methods = ['GET', 'POST'])
 def case():
@@ -81,7 +81,7 @@ def case():
                     reportString += str(case.images[i]) + ' '
         
         return reportString
-    return render_template("case.html", case = case)
+    return render_template("case.html", case = case, user = current_user)
 
 @app.route('/logout')
 def logout():
