@@ -36,11 +36,13 @@ def defaultMap():
 
 @app.route('/map/<float:lat>/<float:lng>/<int:zoom>/')
 def map(lat, lng, zoom):
+    # Falciparum, vivax, malariae, ovale, no malaria
     list1 = ['11.5,120','10.1,119']
     list2 = ['10.5,122']
     list3 = ['9,118']
     list4 = ['11.5,122.5']
-    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, user = current_user)
+    list5 = ['10.4,119','9.5,118']
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):

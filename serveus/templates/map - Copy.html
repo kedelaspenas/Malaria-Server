@@ -11,31 +11,15 @@
         -->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
+            var list1 = [{% for i in list1 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
+            var list2 = [{% for i in list2 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
+            var list3 = [{% for i in list3 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
+            var list4 = [{% for i in list4 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
+            var list5 = [{% for i in list5 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}]
+            
             var noMalariaPin = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "01DF01", new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
             var malariaPin = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FE7569", new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            function MarkerList(name, list, markerImage) {
-                this.name = name;
-                this.list = list;
-                this.markerImage = markerImage;
-                this.show = true;
-                this.setVisible = function(b) {
-                    this.show = b;
-                    for (var i=0; i<this.list.length; i++){this.list[i].setVisible(this.show)}
-                }
-                this.toggleVisible = function() {
-                    this.setVisible(!this.show);
-                }
-            }
-            var markers = [
-                new MarkerList("Falciparum", [{% for i in list1 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Vivax", [{% for i in list2 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Malariae", [{% for i in list3 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Ovale", [{% for i in list4 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("No Malaria", [{% for i in list5 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
-            ]
-            
             
             function initialize() {
               var myLatlng = new google.maps.LatLng({{lat}},{{lng}});
@@ -53,9 +37,11 @@
                     map: map
                   });
               }
-              for (var j=0;j<markers.length;j++) {
-                    for (var i=0, a=markers[j]; i<a.list.length; i++){a.list[i] = addMarker(a.list[i], a.markerImage)}
-              }
+              for (var i=0; i<list1.length; i++){list1[i] = addMarker(list1[i], malariaPin)}
+              for (var i=0; i<list2.length; i++){list2[i] = addMarker(list2[i], malariaPin)}
+              for (var i=0; i<list3.length; i++){list3[i] = addMarker(list3[i], malariaPin)}
+              for (var i=0; i<list4.length; i++){list4[i] = addMarker(list4[i], malariaPin)}
+              for (var i=0; i<list5.length; i++){list5[i] = addMarker(list5[i], noMalariaPin)}
               
               var filter = document.getElementById('filter')
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
@@ -64,17 +50,32 @@
             var show1 = true, show2 = true, show3 = true, show4 = true, show5 = true
             function triggerMarker(x)
               {
-                var markerclass = markers[x-1];
-                if (markerclass) {
-                    markerclass.toggleVisible();
+                if(x==1) {
+                    show1 = !show1;
+                    for (var i=0; i<list1.length; i++){list1[i].setVisible(show1)}
                 }
-                
+                else if(x==2) {
+                    show2 = !show2;
+                    for (var i=0; i<list2.length; i++){list2[i].setVisible(show2)}
+                }
+                else if(x==3) {
+                    show3 = !show3;
+                    for (var i=0; i<list3.length; i++){list3[i].setVisible(show3)}
+                }
+                else if(x==4) {
+                    show4 = !show4;
+                    for (var i=0; i<list4.length; i++){list4[i].setVisible(show4)}
+                }
+                else if(x==5) {
+                    show5 = !show5;
+                    for (var i=0; i<list5.length; i++){list5[i].setVisible(show5)}
+                }
                 var total = 0;
-                for (var i=0;i<markers.length;i++) {
-                    if (markers[i].show) {
-                        total += markers[i].list.length;
-                    }
-                }
+                if (show1) total += list1.length;
+                if (show2) total += list2.length;
+                if (show3) total += list3.length;
+                if (show4) total += list4.length;
+                if (show5) total += list5.length;
                 document.getElementById("marker_total").innerHTML = total;
               }
         </script>
@@ -140,32 +141,16 @@
         <div id="map-canvas" class="google-maps" style="height: 100%; width: 100%; margin: -20px 0 0;"></div>
 
         <div id="filter">
-        <span id="filter_container">
-        </span>
-        Total: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px">0</div>
+        <input id="checkbox" type="checkbox" onclick="triggerMarker(1);" checked> Falciparum<br>
+        <input id="checkbox" type="checkbox" onclick="triggerMarker(2);" checked> Vivax<br>
+        <input id="checkbox" type="checkbox" onclick="triggerMarker(3);" checked> Malariae<br>
+        <input id="checkbox" type="checkbox" onclick="triggerMarker(4);" checked> Ovale<br>
+        <input id="checkbox" type="checkbox" onclick="triggerMarker(5);" checked> No Malaria<br>
+        Total: <div class="pull-right" id="marker_total" name="total">21</div>
         </div>
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script>
-            var markerFilters = document.getElementById("filter_container");
-            for (var i=0;i<markers.length;i++) {
-                var chkbox = document.createElement("input");
-                chkbox.id = "checkbox";
-                chkbox.type = "checkbox";
-                chkbox.index = i+1;
-                chkbox.onclick = function(e) {
-                    triggerMarker(this.index);
-                }
-                chkbox.checked = true;
-                chkbox.innerHTML = " "+markers[i].name;
-                markerFilters.appendChild(chkbox);
-                
-                var chkname = document.createElement("span");
-                chkname.innerHTML = " "+markers[i].name;
-                markerFilters.appendChild(chkname);
-                
-                markerFilters.appendChild(document.createElement("br"));
-            }
             triggerMarker();
         </script>
 	</body>
