@@ -42,7 +42,7 @@ class Case(db.Model):
     human_diagnosis = db.Column(db.String(80))
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
-
+    maltype_id = db.Column(db.Integer, db.ForeignKey('maltype.id'))
     def __init__(self, date, age, address, human_diagnosis, lat, lng):
         self.date = date
         self.age = age
@@ -53,3 +53,12 @@ class Case(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.id
+class MalType(db.Model):
+    __tablename__ = 'maltype'
+    id = db.Column(db.Integer, primary_key= True)
+    type = db.Column(db.String(80))
+    level = db.Column(db.Integer)
+    cases = db.relationship('Case',backref='maltype',lazy='dynamic')
+    def __init__(self,type, level):
+        self.type = type
+        self.level = level
