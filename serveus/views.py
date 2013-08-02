@@ -28,16 +28,27 @@ def dashboard():
 @app.route('/records/',  methods = ['GET', 'POST'])
 @login_required
 def records():
-    if request.method == 'POST':
-        if request.form:
-            print request.form[malaria_selection]
-            print request.form[region_selection]
-            print request.form[date_start]
-            print request.form[date_end]
-            
-    list = Case.query.all()
-    print date.today()
-    return render_template("records.html", list = list, user = current_user)
+    malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','Knowlesi','No Malaria']
+    regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
+    if request.method == 'POST' and request.form:
+        print request.form['malaria_selection']
+        print request.form['region_selection']
+        print request.form['date_start']
+        print request.form['date_end']
+        malariaSelected = malariaList.index(request.form['malaria_selection'])
+        regionSelected = regionList.index(request.form['region_selection'])
+        date_start = request.form['date_start']
+        date_end = request.form['date_end']
+        # here
+        caseList = Case.query.all()
+    else:
+        malariaSelected = 0
+        regionSelected = 0
+        date_start = "The Beginning"
+        date_end = "This Day"
+        caseList = Case.query.all()
+        
+    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaSelected = malariaSelected, regionSelected = regionSelected, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/map/')
 def defaultMap():

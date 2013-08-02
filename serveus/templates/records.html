@@ -125,46 +125,28 @@
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)" name="malaria_selection">
-					<option>Any Malaria Species</option>
-					<option>Falciparum</option>
-					<option>Vivax</option>
-                    <option>Ovale</option>
-					<option>Malariae</option>
-                    <option>Knowlesi</option>
+                    {% for i in malariaList %}
+                        <option {% if loop.index0 == malariaSelected %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
 					</select>
 					</div>
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">in&nbsp&nbsp&nbsp</span>
 					<select style="width: calc(100% - 34px)" name="region_selection">
-					<option>The Philippines</option>
-					<option>NCR (National Capital Region)</option>
-					<option>CAR (Cordillera Administrative Region)</option>
-					<option>Region I (Ilocos Region)</option>
-                    <option>Region II (Cagayan Valley)</option>
-                    <option>Region III (Central Luzon)</option>
-                    <option>Region IV-A (CALABARZON)</option>
-                    <option>Region IV-B (MIMAROPA)</option>
-                    <option>Region V (Bicol Region)</option>
-                    <option>Region VI (Western Visayas)</option>
-                    <option>Region VII (Central Visayas)</option>
-                    <option>Region VIII (Eastern Visayas)</option>
-                    <option>Region IX (Zamboanga Peninsula)</option>
-                    <option>Region X (Northern Mindanao)</option>
-                    <option>Region XI (Davao Region)</option>
-                    <option>Region XII (Soccsksargen)</option>
-                    <option>Region XIII (Caraga)</option>
-                    <option>ARMM (Autonomous Region in Muslim Mindanao)</option>
+					{% for i in regionList %}
+                        <option {% if loop.index0 == regionSelected %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
 					</select>
 					</div>
                     <br>
                     <div class="input-prepend" style="width: 100%">
 <span class="add-on">from</span>
-                    <input type="text" style="width: calc(100% - 52px)" value="The Beginning" id="dpd1" name="date_start">
+                    <input type="text" style="width: calc(100% - 52px)" value="{{date_start}}" id="dpd1" name="date_start">
                     </div> 
                     <br>
                     <div class="input-prepend" style="width: 100%">
                     <span class="add-on">to&nbsp&nbsp&nbsp&nbsp</span>
-                    <input type="text" style="width: calc(100% - 52px)" value="This Day" id="dpd2" name="date_end">
+                    <input type="text" style="width: calc(100% - 52px)" value="{{date_end}}" id="dpd2" name="date_end">
                     </div> 
                     <br>
                     <input class="btn btn-medium pull-right" type="submit" value="Filter Records" style="height: 30px">
