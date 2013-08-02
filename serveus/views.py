@@ -6,6 +6,7 @@ from flask.ext.wtf import Required
 from serveus import app
 from forms import LoginForm
 from werkzeug import secure_filename
+from datetime import date
 
 from yourapplication import db, User, UserType, Case
 
@@ -24,10 +25,18 @@ def dashboard():
 	cases = Case.query.all()
 	return render_template("dashboard.html", user = current_user, cases=cases, date=datetime.datetime.now().strftime('%B %d, %Y'))
 
-@app.route('/records/')
+@app.route('/records/',  methods = ['GET', 'POST'])
 @login_required
 def records():
+    if request.method == 'POST':
+        if request.form:
+            print request.form[malaria_selection]
+            print request.form[region_selection]
+            print request.form[date_start]
+            print request.form[date_end]
+            
     list = Case.query.all()
+    print date.today()
     return render_template("records.html", list = list, user = current_user)
 
 @app.route('/map/')

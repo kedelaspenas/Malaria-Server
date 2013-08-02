@@ -104,7 +104,7 @@
 		</div>
 		<div class="container-fluid">
 				<div class="row-fluid">
-				<div class="span3 " style="background-color: white; " >
+				<form action="/records/" method="post" name="filter" class="span3 " style="background-color: white; ">
                     <!--
                     <div class="input-append" style="width: calc(100% - 55px)">
                     <input style="width: calc(100% - 29px)" type="text" placeholder="Patient's Name...">
@@ -124,7 +124,7 @@
 					<h4>Search filters:</h4>
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">with</span>
-					<select style="width: calc(100% - 35px)">
+					<select style="width: calc(100% - 35px)" name="malaria_selection">
 					<option>Any Malaria Species</option>
 					<option>Falciparum</option>
 					<option>Vivax</option>
@@ -135,7 +135,7 @@
 					</div>
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">in&nbsp&nbsp&nbsp</span>
-					<select style="width: calc(100% - 34px)">
+					<select style="width: calc(100% - 34px)" name="region_selection">
 					<option>The Philippines</option>
 					<option>NCR (National Capital Region)</option>
 					<option>CAR (Cordillera Administrative Region)</option>
@@ -159,15 +159,16 @@
                     <br>
                     <div class="input-prepend" style="width: 100%">
 <span class="add-on">from</span>
-                    <input type="text" style="width: calc(100% - 52px)" value="The Beginning" id="dpd1">
+                    <input type="text" style="width: calc(100% - 52px)" value="The Beginning" id="dpd1" name="date_start">
                     </div> 
                     <br>
                     <div class="input-prepend" style="width: 100%">
                     <span class="add-on">to&nbsp&nbsp&nbsp&nbsp</span>
-                    <input type="text" style="width: calc(100% - 52px)" value="This Day" id="dpd2">
+                    <input type="text" style="width: calc(100% - 52px)" value="This Day" id="dpd2" name="date_end">
                     </div> 
                     <br>
-				</div>
+                    <input class="btn btn-medium pull-right" type="submit" value="Filter Records" style="height: 30px">
+				</form>
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-hover table-bordered table-condensed">
 					<tr><th class="span1">Date<th class="span4">Location<th class="span2">Patient ID<th class="span4">Diagnosis<th class="span1">

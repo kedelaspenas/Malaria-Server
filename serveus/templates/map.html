@@ -54,7 +54,7 @@
                   });
               }
               for (var j=0;j<markers.length;j++) {
-                    for (var i=0, a=markers[j]; i<a.list.length; i++){a.list[i] = addMarker(a.list[i], a.markerImage)}
+                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage)}
               }
               
               var filter = document.getElementById('filter')
@@ -144,8 +144,6 @@
         </span>
         Total: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px">0</div>
         </div>
-		<script src="/static/js/jquery.js"></script>
-		<script src="/static/js/bootstrap.min.js"></script>
         <script>
             var markerFilters = document.getElementById("filter_container");
             for (var i=0;i<markers.length;i++) {
@@ -157,7 +155,6 @@
                     triggerMarker(this.index);
                 }
                 chkbox.checked = true;
-                chkbox.innerHTML = " "+markers[i].name;
                 markerFilters.appendChild(chkbox);
                 
                 var chkname = document.createElement("span");
@@ -168,5 +165,8 @@
             }
             triggerMarker();
         </script>
+		<script src="/static/js/jquery.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+        
 	</body>
 </html>
