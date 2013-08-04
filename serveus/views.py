@@ -40,7 +40,26 @@ def records():
         date_start = request.form['date_start']
         date_end = request.form['date_end']
         # here
-        caseList = Case.query.all()
+        caseList=''
+        if date_start != 'The Beginning' :
+            a=request.form['date_start']
+            b=a.split('/')
+            dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+            a=request.form['date_end']
+            b=a.split('/')
+            dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+        else :
+            dt=datetime.date(1000,1,1)
+            dte=datetime.date(9000,12,31)
+      #  print b
+        if regionSelected ==0 and malariaSelected == 0:
+            caseList= Case.query.all()
+        elif regionSelected == 0:
+            caseList = Case.query.filter(Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte)
+        elif malariaSelected == 0:
+            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']))
+        else :
+            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']),Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte)
     else:
         malariaSelected = 0
         regionSelected = 0
