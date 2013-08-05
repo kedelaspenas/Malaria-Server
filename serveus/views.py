@@ -53,19 +53,19 @@ def records():
             dte=datetime.date(9000,12,31)
       #  print b
         if regionSelected ==0 and malariaSelected == 0:
-            caseList= Case.query.all()
+            caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(Case.date)
         elif regionSelected == 0:
-            caseList = Case.query.filter(Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte)
+            caseList = Case.query.filter(Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte).order_by(Case.date)
         elif malariaSelected == 0:
-            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']))
+            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']),Case.date>=dt,Case.date<=dte).order_by(Case.date)
         else :
-            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']),Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte)
+            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']),Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte).order_by(Case.date)
     else:
         malariaSelected = 0
         regionSelected = 0
         date_start = "The Beginning"
         date_end = "This Day"
-        caseList = Case.query.all()
+        caseList = Case.query.order_by(Case.date)
         
     return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaSelected = malariaSelected, regionSelected = regionSelected, date_start = date_start, date_end = date_end, user = current_user)
 
