@@ -6,7 +6,7 @@ from serveus import app
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
 print 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
-''''sqlite:///C:/Users/Rodolfo/Desktop/cs198pythontest.db'''
+
 db = SQLAlchemy(app)
 
 class UserType(db.Model):

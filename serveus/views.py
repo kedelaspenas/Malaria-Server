@@ -25,49 +25,61 @@ def dashboard():
 	cases = Case.query.all()
 	return render_template("dashboard.html", user = current_user, cases=cases, date=datetime.datetime.now().strftime('%B %d, %Y'))
 
-@app.route('/records/',  methods = ['GET', 'POST'])
+@app.route('/records/',  methods = ['GET'])
 @login_required
 def records():
+    print request.args.get('malaria_selection')
+    print request.args.get('region_selection')
+    print request.args.get('date_start')
+    print request.args.get('date_end')
+    if request.args:
+        print 'YEY'
+    else:
+        print 'Wala'
     malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','Knowlesi','No Malaria']
     regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
-    if request.method == 'POST' and request.form:
-        print request.form['malaria_selection']
-        print request.form['region_selection']
-        print request.form['date_start']
-        print request.form['date_end']
-        malariaSelected = malariaList.index(request.form['malaria_selection'])
-        regionSelected = regionList.index(request.form['region_selection'])
-        date_start = request.form['date_start']
-        date_end = request.form['date_end']
+    if request.args:
+        #print request.form['malaria_selection']
+        #print request.form['region_selection']
+        #print request.form['date_start']
+        #print request.form['date_end']
+        malariaSelected = request.args.get('malaria_selection')
+        regionSelected = request.args.get('region_selection')
+        malariaIndex = malariaList.index(malariaSelected)
+        regionIndex = regionList.index(regionSelected)
+        
+        date_start = request.args.get('date_start')
+        date_end = request.args.get('date_end')
         # here
         caseList=''
         if date_start != 'The Beginning' :
-            a=request.form['date_start']
+            a=request.args.get('date_start')
             b=a.split('/')
             dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
-            a=request.form['date_end']
+            a=request.args.get('date_end')
             b=a.split('/')
             dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
         else :
             dt=datetime.date(1000,1,1)
             dte=datetime.date(9000,12,31)
       #  print b
-        if regionSelected ==0 and malariaSelected == 0:
+        if regionIndex ==0 and malariaIndex == 0:
             caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        elif regionSelected == 0:
-            caseList = Case.query.filter(Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        elif malariaSelected == 0:
-            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']),Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        else :
-            caseList = Case.query.filter(Case.address.contains(request.form['region_selection']),Case.human_diagnosis == request.form['malaria_selection'],Case.date>=dt,Case.date<=dte).order_by(Case.date)
+        elif regionIndex == 0:
+            caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(Case.date)
+        elif malariaIndex == 0:
+            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.date>=dt,Case.date<=dte).order_by(Case.date)
+        else:
+            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(Case.date)
     else:
-        malariaSelected = 0
-        regionSelected = 0
+        malariaIndex = 0
+        regionIndex = 0
         date_start = "The Beginning"
         date_end = "This Day"
-        caseList = Case.query.order_by(Case.date)
-        
-    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaSelected = malariaSelected, regionSelected = regionSelected, date_start = date_start, date_end = date_end, user = current_user)
+        caseList = Case.query.order_by(Case.date.desc())
+    
+    print 'NOOB'
+    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/map/')
 def defaultMap():
