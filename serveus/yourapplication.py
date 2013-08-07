@@ -43,6 +43,7 @@ class Case(db.Model):
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     maltype_id = db.Column(db.Integer, db.ForeignKey('maltype.id'))
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
     def __init__(self, date, age, address, human_diagnosis, lat, lng):
         self.date = date
         self.age = age
@@ -62,3 +63,12 @@ class MalType(db.Model):
     def __init__(self,type, level):
         self.type = type
         self.level = level
+class Image(db.Model):
+    __tablename__ = 'image'
+    id = db.Column(db.Integer, primary_key= True)
+    images= db.relationship('Case',backref='image',lazy ='dynamic')
+    im = db.Column(db.BLOB)
+class asd(db.Model):
+    __tablename__ = 'asd'
+    id = db.Column(db.Integer, primary_key= True)
+    
