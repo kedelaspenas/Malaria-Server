@@ -68,7 +68,3 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key= True)
     images= db.relationship('Case',backref='image',lazy ='dynamic')
     im = db.Column(db.BLOB)
-class asd(db.Model):
-    __tablename__ = 'asd'
-    id = db.Column(db.Integer, primary_key= True)
-    
