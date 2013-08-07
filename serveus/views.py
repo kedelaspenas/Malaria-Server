@@ -25,7 +25,7 @@ def dashboard():
 	cases = Case.query.all()
 	return render_template("dashboard.html", user = current_user, cases=cases, date=datetime.datetime.now().strftime('%B %d, %Y'))
 
-@app.route('/records/',  methods = ['GET'])
+@app.route('/records/')
 @login_required
 def records():
     print request.args.get('malaria_selection')

@@ -190,9 +190,10 @@
 				    <table class="table table-hover table-bordered table-condensed">
 					<tr>
                     <th class="span1" onclick="sort('date');submit_filters()">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
-                    <th class="span4" onclick="sort('location');submit_filters()">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
+                    <th class="span5" onclick="sort('location');submit_filters()">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
                     <th class="span2">Patient ID
-                    <th class="span4" onclick="sort('diagnosis');submit_filters()">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div><th class="span1">
+                    <th class="span5" onclick="sort('diagnosis');submit_filters()">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
+                    <th class="span1">
                     {% for i in list %}
 					<tr><td>{{i.date}}<td>{{i.address}}<td>{{i.id}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
@@ -200,7 +201,7 @@
 				</div>
 			</div>
 		</div>
-        <div id="footer">Made by a Professional</div>
+        <div id="footer">CVMIG Group 23 2013-2014</div>
         </div>
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
