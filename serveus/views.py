@@ -32,6 +32,7 @@ def records():
     print request.args.get('region_selection')
     print request.args.get('date_start')
     print request.args.get('date_end')
+    print request.args.get('sort_by')
     if request.args:
         print 'YEY'
     else:
@@ -50,6 +51,7 @@ def records():
         
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
+        sort_by = request.args.get('sort_by')
         # here
         caseList=''
         if date_start != 'The Beginning' :
@@ -76,10 +78,12 @@ def records():
         regionIndex = 0
         date_start = "The Beginning"
         date_end = "This Day"
+        sort_by = "date_desc"
         caseList = Case.query.order_by(Case.date.desc())
-    
+        
+        
     print 'NOOB'
-    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, user = current_user)
+    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, user = current_user)
 
 @app.route('/map/')
 def defaultMap():
