@@ -66,6 +66,7 @@
             }
         </style>
 	</head>
+    
 	<body>
     <div id="super">
 		<div class="navbar" style="width: 100%;">
@@ -90,7 +91,7 @@
                     <div>
 					<ul class="nav pull-left">
 						<li><a href="/dashboard"><i class="icon-tasks"></i> Summary</a></li>
-						<li class="active"><a href="#"><i class="icon-book"></i> Records</a></li>
+						<li class="active"><a href="/records/"><i class="icon-book"></i> Records</a></li>
 						<li><a href="/map"><i class="icon-globe"></i> Visualization</a></li>
 					</ul>
 					
@@ -104,7 +105,7 @@
 		</div>
 		<div class="container-fluid">
 				<div class="row-fluid">
-				<form action="/records/" method="post" name="filter" class="span3 " style="background-color: white; ">
+				<form action="/records/" method="get" name="filter" class="span3 container" style="background-color: white; ">
                     <!--
                     <div class="input-append" style="width: calc(100% - 55px)">
                     <input style="width: calc(100% - 29px)" type="text" placeholder="Patient's Name...">
@@ -126,7 +127,7 @@
 <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)" name="malaria_selection">
                     {% for i in malariaList %}
-                        <option {% if loop.index0 == malariaSelected %}selected{% endif %}>{{ i }}</option>
+                        <option {% if loop.index0 == malariaIndex %}selected{% endif %}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -134,7 +135,7 @@
 <span class="add-on">in&nbsp&nbsp&nbsp</span>
 					<select style="width: calc(100% - 34px)" name="region_selection">
 					{% for i in regionList %}
-                        <option {% if loop.index0 == regionSelected %}selected{% endif %}>{{ i }}</option>
+                        <option {% if loop.index0 == regionIndex %}selected{% endif %}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -148,12 +149,50 @@
                     <span class="add-on">to&nbsp&nbsp&nbsp&nbsp</span>
                     <input type="text" style="width: calc(100% - 52px)" value="{{date_end}}" id="dpd2" name="date_end">
                     </div> 
+                    <!-- HIDDEN FILTERS -->
+                    <input type="text" id="sorter" name="sort_by" value="{{ sort_by }}" style="display: None"> 
+                    <script>
+                    function sort(column)
+                    {
+                        if (document.getElementById('sorter').value == column + "_desc") {
+                                document.getElementById('sorter').value = column + "_asc"
+                        }
+                        else {
+                            document.getElementById('sorter').value = column + "_desc"
+                        }
+                        toggle_chevron(column)
+                    }
+                    function toggle_chevron(column)
+                    {
+                        if (document.getElementById(column + '_chevron').className == "icon-chevron-down")
+                        {
+                            document.getElementById(column + '_chevron').setAttribute("class", "icon-chevron-up")
+                        }
+                        else
+                        {
+                            document.getElementById(column + '_chevron').setAttribute("class", "icon-chevron-down")
+                        }
+                    }
+                    function submit_filters()
+                    {
+                        document.getElementById('submit_button').click()
+                    }
+                    </script>
+                    <!-- HIDDEN FILTERS -->
                     <br>
-                    <input class="btn btn-medium pull-right" type="submit" value="Filter Records" style="height: 30px">
+                    <!-- <input class="btn btn-medium" type="reset" value="Clear Filters" style="height: 30px"> -->
+                    <div style="text-align: right">
+                    <a class="btn" href="/records/" >Reset Filters</a>
+                    <input class="btn btn-medium" type="submit" id="submit_button" value="Filter Records" style="height: 30px; margin-left: 0.5%">
+                    </div>
 				</form>
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-hover table-bordered table-condensed">
-					<tr><th class="span1">Date<th class="span4">Location<th class="span2">Patient ID<th class="span4">Diagnosis<th class="span1">
+					<tr>
+                    <th class="span1" onclick="sort('date');submit_filters()">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
+                    <th class="span4" onclick="sort('location');submit_filters()">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
+                    <th class="span2">Patient ID
+                    <th class="span4" onclick="sort('diagnosis');submit_filters()">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div><th class="span1">
                     {% for i in list %}
 					<tr><td>{{i.date}}<td>{{i.address}}<td>{{i.id}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
@@ -167,15 +206,21 @@
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/eyecon-datepicker.js"></script>
         <script>
-            var nowTemp = new Date();
-            var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-             
+            $(document).ready ( function(){
+                var sort_by = "{{ sort_by }}".split("_")
+                if (sort_by[1] == "asc")
+                    document.getElementById(sort_by[0] + '_chevron').setAttribute("class", "icon-chevron-up")
+                else
+                    document.getElementById(sort_by[0] + '_chevron').setAttribute("class", "icon-chevron-down")
+            });
+            var clicked = false;
             var checkin = $('#dpd1').datepicker({
             onRender: function(date) {
             return date.valueOf();
             }
             }).on('changeDate', function(ev) {
             // alert(ev.date.toString());
+            clicked = true;
             if (true) {
             var newDate = new Date(ev.date)
             newDate.setDate(newDate.getDate());
@@ -186,7 +231,10 @@
             }).data('datepicker');
             var checkout = $('#dpd2').datepicker({
             onRender: function(date) {
-            return date.valueOf() <= checkin.date.valueOf() - 1 ? 'disabled' : '';
+            if (clicked)
+                return date.valueOf() <= checkin.date.valueOf() - 1 ? 'disabled' : '';
+            else
+                return date.valueOf()
             }
             }).on('changeDate', function(ev) {
             checkout.hide();
