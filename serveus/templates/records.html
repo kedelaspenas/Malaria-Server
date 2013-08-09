@@ -150,31 +150,18 @@
                     <input type="text" style="width: calc(100% - 52px)" value="{{date_end}}" id="dpd2" name="date_end">
                     </div> 
                     <!-- HIDDEN FILTERS -->
-                    <input type="text" id="sorter" name="sort_by" value="{{ sort_by }}" style="display: None"> 
+                    <input type="text" id="sort_by" name="sort_by" value="{{ sort_by }}" style="display: None"> 
+                    <input type="text" id="order" name="order" value="{{ order }}" style="display: None"> 
                     <script>
                     function sort(column)
                     {
-                        if (document.getElementById('sorter').value == column + "_desc") {
-                                document.getElementById('sorter').value = column + "_asc"
+                        if (document.getElementById('order').value == "desc" && document.getElementById('sort_by').value == column) {
+                            document.getElementById('order').value = "asc"
                         }
                         else {
-                            document.getElementById('sorter').value = column + "_desc"
+                            document.getElementById('order').value = "desc"
                         }
-                        toggle_chevron(column)
-                    }
-                    function toggle_chevron(column)
-                    {
-                        if (document.getElementById(column + '_chevron').className == "icon-chevron-down")
-                        {
-                            document.getElementById(column + '_chevron').setAttribute("class", "icon-chevron-up")
-                        }
-                        else
-                        {
-                            document.getElementById(column + '_chevron').setAttribute("class", "icon-chevron-down")
-                        }
-                    }
-                    function submit_filters()
-                    {
+                        document.getElementById('sort_by').value = column
                         document.getElementById('submit_button').click()
                     }
                     </script>
@@ -189,13 +176,13 @@
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-hover table-bordered table-condensed">
 					<tr>
-                    <th class="span1" onclick="sort('date');submit_filters()">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
-                    <th class="span5" onclick="sort('location');submit_filters()">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
-                    <th class="span2">Patient ID
-                    <th class="span5" onclick="sort('diagnosis');submit_filters()">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
+                    <th class="span1" onclick="sort('date');">#
+                    <th class="span1" onclick="sort('date');">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
+                    <th class="span5" onclick="sort('location');">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
+                    <th class="span4" onclick="sort('diagnosis');">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
                     <th class="span1">
                     {% for i in list %}
-					<tr><td>{{i.date}}<td>{{i.address}}<td>{{i.id}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
+					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.address}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
 					</table>
 				</div>
@@ -208,11 +195,10 @@
         <script src="/static/js/eyecon-datepicker.js"></script>
         <script>
             $(document).ready ( function(){
-                var sort_by = "{{ sort_by }}".split("_")
-                if (sort_by[1] == "asc")
-                    document.getElementById(sort_by[0] + '_chevron').setAttribute("class", "icon-chevron-up")
+                if ("{{ order }}" == "asc")
+                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "icon-chevron-up")
                 else
-                    document.getElementById(sort_by[0] + '_chevron').setAttribute("class", "icon-chevron-down")
+                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "icon-chevron-down")
             });
             var clicked = false;
             var checkin = $('#dpd1').datepicker({
