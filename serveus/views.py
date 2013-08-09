@@ -28,15 +28,18 @@ def dashboard():
 @app.route('/records/')
 @login_required
 def records():
+    # Malaria Case Filters
     print request.args.get('malaria_selection')
     print request.args.get('region_selection')
     print request.args.get('date_start')
     print request.args.get('date_end')
-    print request.args.get('sort_by')
+    # Table sorter
+    print request.args.get('sort_by') # date, location, diagnosis
+    print request.args.get('order') # asc, desc
     if request.args:
-        print 'YEY'
+        print 'Arguments present'
     else:
-        print 'Wala'
+        print 'No arguments given'
     malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','Knowlesi','No Malaria']
     regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
     if request.args:
@@ -52,6 +55,7 @@ def records():
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
         sort_by = request.args.get('sort_by')
+        order = request.args.get('order')
         # here
         caseList=''
         if date_start != 'The Beginning' :
@@ -78,17 +82,38 @@ def records():
         regionIndex = 0
         date_start = "The Beginning"
         date_end = "This Day"
-        sort_by = "date_desc"
+        sort_by = "date"
+        order = "desc"
         caseList = Case.query.order_by(Case.date.desc())
         
         
     print 'NOOB'
-    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, user = current_user)
-
+    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
+'''
 @app.route('/map/')
 def defaultMap():
     return map(10.422988,120.629883, 7)
+'''    
 
+@app.route('/map/')
+def maps():
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+    zoom = request.args.get('zoom')
+    print str(lat)
+    print str(lng)
+    print str(zoom)
+    if not (lat and lng and zoom):
+        return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7')
+    # Falciparum, vivax, malariae, ovale, no malaria
+    list1 = ['11.5,120','10.1,119']
+    list2 = ['10.5,122']
+    list3 = ['9,118']
+    list4 = ['11.5,122.5']
+    list5 = ['10.4,119','9.5,118']
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, user = current_user)
+
+    
 @app.route('/map/<float:lat>/<float:lng>/<int:zoom>/')
 def map(lat, lng, zoom):
     # Falciparum, vivax, malariae, ovale, no malaria

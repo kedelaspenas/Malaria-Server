@@ -64,14 +64,14 @@
 					<h4 class="pull-left">Patient Information</h4>
                     <h4 class="pull-right">{{case.date}} &nbsp {{case.time}}</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
-                    <tr><th class="span2">ID<td class="span10">{{case.id}}
+                    <tr><th class="span2">Case No.<td class="span10">{{case.id}}
                     <tr><th>Age<td>{{case.age}}
                     <tr><th>Address<td>{{case.address}}
                     <tr><th>Diagnosis<td>{{case.human_diagnosis}}
                     <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
                     </table>
                     <div class="pull-right">
-                    <a class="btn btn-medium" href="/map/{{case.lat}}/{{case.lng}}/13">View on Map</a>
+                    <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13">View on Map</a>
                     <input class="btn btn-medium" type="submit" value="Print" style="height: 30px">
                     </div>
 				</div>
