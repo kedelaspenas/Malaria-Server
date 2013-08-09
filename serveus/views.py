@@ -9,7 +9,7 @@ from werkzeug import secure_filename
 from datetime import date
 from misc import Pagination
 
-from yourapplication import db, User, UserType, Case
+from models import db, User, UserType, Case
 
 login_manager = LoginManager()
 login_manager.init_app(app)

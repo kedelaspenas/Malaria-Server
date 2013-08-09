@@ -5,4 +5,4 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-from serveus import views, models
+from serveus import views, models, admin
