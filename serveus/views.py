@@ -74,15 +74,29 @@ def records2():
         else :
             dt=datetime.date(1000,1,1)
             dte=datetime.date(9000,12,31)
-      #  print b
-        if regionIndex ==0 and malariaIndex == 0:
-            caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        elif regionIndex == 0:
-            caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        elif malariaIndex == 0:
-            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.date>=dt,Case.date<=dte).order_by(Case.date)
+        #print sort_by
+        #print order
+        sortby=''
+        if sort_by== 'date':
+            sortby='date'
+        elif sort_by== 'location':
+            sortby='address'
+        elif sort_by== 'diagnosis':
+            sortby='human_diagnosis'
         else:
-            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(Case.date)
+            sortby='id'
+        param= "\"case\"."+sortby+" "+order
+        print param
+        if regionIndex == 0 and malariaIndex == 0:
+                caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
+                #print param
+          
+        elif regionIndex == 0:
+                caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)       
+        elif malariaIndex == 0:      
+                caseList = Case.query.filter(Case.address.contains(regionSelected),Case.date>=dt,Case.date<=dte).order_by(param)
+        else:
+            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)
     else:
         # Default values
         malariaIndex = 0
