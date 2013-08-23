@@ -183,18 +183,22 @@ def maps():
     lat = request.args.get('lat')
     lng = request.args.get('lng')
     zoom = request.args.get('zoom')
+    date_start = request.args.get('date_start')
+    date_end = request.args.get('date_end')
     print str(lat)
     print str(lng)
     print str(zoom)
-    if not (lat and lng and zoom):
-        return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7')
+    print str(date_start)
+    print str(date_end)
+    if not (lat and lng and zoom and date_start and date_end):
+        return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
     # Falciparum, vivax, malariae, ovale, no malaria
     list1 = ['11.5,120','10.1,119']
     list2 = ['10.5,122']
     list3 = ['9,118']
     list4 = ['11.5,122.5']
     list5 = ['10.4,119','9.5,118']
-    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, user = current_user)
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):
@@ -250,7 +254,21 @@ def test():
         else:
             return 'off'
         
-    return '<html><head><title></title></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form> </body></html> ' + str(range(0,10))
+    return '''<html><head><title></title><link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen"><link href="/static/css/eyecon-datepicker.css" rel="stylesheet"></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form><input type="text" id="dp1"><input type="text" id="dp2"> </body><script src="/static/js/jquery.js"></script><script src="/static/js/bootstrap.min.js"></script><script src="/static/js/eyecon-datepicker.js"></script><script>
+    var checkin = $('#dp1').datepicker({
+    onRender: function(date) {
+            return date.valueOf();
+            },
+    autoclose: true,
+    todayHighlight: true,
+    });
+    alert(checkin.date)
+    $('#dp2').datepicker({
+    startDate: checkin.date.valueOf(),
+    autoclose: true,
+    todayHighlight: true
+    });
+    </script></html>''' + str(range(0,10))
 
 
 # API

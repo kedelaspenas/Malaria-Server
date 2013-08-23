@@ -151,10 +151,17 @@
 		
 		place: function(){
 			var offset = this.component ? this.component.offset() : this.element.offset();
-			this.picker.css({
-				top: offset.top + this.height,
-				left: offset.left
-			});
+
+            //Correct overflow right
+            var diff = (this.picker.outerWidth()+offset.left)-$(window).width();
+            if (diff>0) {
+                offset.left -= diff + 10;
+            }
+
+            this.picker.css({
+                top: offset.top + this.height,
+                left: offset.left
+            });
 		},
 		
 		update: function(newDate){

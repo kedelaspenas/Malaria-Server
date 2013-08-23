@@ -19,6 +19,7 @@
   }*/
 
 }
+/*
 .datepicker:before {
   content: '';
   display: inline-block;
@@ -40,6 +41,7 @@
   top: -6px;
   left: 7px;
 }
+*/
 .datepicker > div {
   display: none;
 }

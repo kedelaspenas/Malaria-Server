@@ -5,6 +5,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
+        <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
 		<!-- Responsive -->
         <!--
 		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
@@ -87,7 +89,7 @@
         #filter { 
         background-color: transparent; 
         right: 20px;
-        width: 96px;
+        width: 100px;
         background: white; 
         border: 1px solid;
         border-color: #999999;
@@ -143,6 +145,21 @@
         <span id="filter_container">
         </span>
         Total: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px">0</div>
+        <hr style="margin: 0 0 0">
+        <form action="/map/" method="get" style="padding: 0; margin: 0;">
+        From:<br>
+        <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{date_start}}" id="dpd1" name="date_start">
+        <br>
+        To:<br>
+        <input type="text" style="width: calc(100% - 15px); margin-bottom: 3px" value="{{date_end}}" id="dpd2" name="date_end">
+        <div style="text-align: right; padding: 0; margin: 0">
+        <a class="btn" href="/map/" style="padding: 4px; font-size: 14px; margin-bottom: 0">Reset</a>
+        <input class="btn btn-medium" type="submit" id="submit_button" value="Filter" style="height: 29px; margin-left: 10%; padding: 4px; font-size: 15px; margin-bottom: 0; font-family: Helvetica, Arial, sans-serif;">
+        </div>
+        <input type="text" id="lng" name="lng" value="{{ lng }}" style="display: None">
+        <input type="text" id="lat" name="lat" value="{{ lat }}" style="display: None">
+        <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
+        </form>
         </div>
         <script>
             var markerFilters = document.getElementById("filter_container");
@@ -167,6 +184,34 @@
         </script>
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
-        
+        <script src="/static/js/eyecon-datepicker.js"></script>
+        <script>
+            var clicked = false;
+            var checkin = $('#dpd1').datepicker({
+            onRender: function(date) {
+            return date.valueOf();
+            }
+            }).on('changeDate', function(ev) {
+            // alert(ev.date.toString());
+            clicked = true;
+            if (true) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate());
+            checkout.setValue(newDate);
+            }
+            checkin.hide();
+            $('#dpd2')[0].focus();
+            }).data('datepicker');
+            var checkout = $('#dpd2').datepicker({
+            onRender: function(date) {
+            if (clicked)
+                return date.valueOf() <= checkin.date.valueOf() - 1 ? 'disabled' : '';
+            else
+                return date.valueOf()
+            }
+            }).on('changeDate', function(ev) {
+            checkout.hide();
+            }).data('datepicker');
+        </script>
 	</body>
 </html>
