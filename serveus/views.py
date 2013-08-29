@@ -192,12 +192,32 @@ def maps():
     print str(date_end)
     if not (lat and lng and zoom and date_start and date_end):
         return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
+    cl1 = Case.query.filter(Case.human_diagnosis == "Falciparum")
+    cl2= []
+    for i in cl1:
+        cl2.append(str(i.lat)+','+str(i.lng))
     # Falciparum, vivax, malariae, ovale, no malaria
-    list1 = ['11.5,120','10.1,119']
-    list2 = ['10.5,122']
-    list3 = ['9,118']
-    list4 = ['11.5,122.5']
-    list5 = ['10.4,119','9.5,118']
+    list1 = cl2
+    cl2= []
+    cl1 = Case.query.filter(Case.human_diagnosis == "Vivax")
+    for i in cl1:
+        cl2.append(str(i.lat)+','+str(i.lng))
+    list2 = cl2
+    cl2= []
+    cl1 = Case.query.filter(Case.human_diagnosis == "Malariae")
+    for i in cl1:
+        cl2.append(str(i.lat)+','+str(i.lng))
+    list3 = cl2
+    cl2= []
+    cl1 = Case.query.filter(Case.human_diagnosis == "Ovale")
+    for i in cl1:
+        cl2.append(str(i.lat)+','+str(i.lng))
+    list4 = cl2
+    cl2= []
+    cl1 = Case.query.filter(Case.human_diagnosis == "No Malaria")
+    for i in cl1:
+        cl2.append(str(i.lat)+','+str(i.lng))
+    list5 = cl2
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
