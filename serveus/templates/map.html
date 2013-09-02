@@ -152,14 +152,9 @@
         <br>
         To:<br>
         <input type="text" style="width: calc(100% - 15px); margin-bottom: 3px" value="{{date_end}}" id="dpd2" name="date_end">
-        <div style="text-align: right; padding: 0; margin: 0">
-        <table style="width: 100%">
-        <tr>
-        <td>
-        <input class="btn btn-medium" type="reset" value="Reset" onclick="window.location='/map/';"  style="width: 100%"/>
-        <td>
-        <input class="btn btn-medium" type="submit" id="submit_button" value="Filter" style="width: 100%"/>
-        </table>
+        <div style="padding: 0; margin: 0">
+        <input class="btn btn-medium" type="reset" value="Reset" onclick="window.location='/map/';"  style="display: inline-block; width: 48%"/>
+        <input class="btn btn-medium" type="submit" id="submit_button" value="Filter" style="display: inline-block; width: 48%"/>
         </div>
         <input type="text" id="lng" name="lng" value="{{ lng }}" style="display: None">
         <input type="text" id="lat" name="lat" value="{{ lat }}" style="display: None">
