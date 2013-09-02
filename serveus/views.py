@@ -122,70 +122,6 @@ def records2():
     
     return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
 
-'''   
-@app.route('/records/')
-@login_required
-def records():
-    # Malaria Case Filters
-    print request.args.get('malaria_selection')
-    print request.args.get('region_selection')
-    print request.args.get('date_start')
-    print request.args.get('date_end')
-    # Table sorter
-    print request.args.get('sort_by') # date, location, diagnosis
-    print request.args.get('order') # asc, desc
-    if request.args:
-        print 'Arguments present'
-    else:
-        print 'No arguments given'
-    malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','Knowlesi','No Malaria']
-    regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
-    if request.args:
-        #print request.form['malaria_selection']
-        #print request.form['region_selection']
-        #print request.form['date_start']
-        #print request.form['date_end']
-        malariaSelected = request.args.get('malaria_selection')
-        regionSelected = request.args.get('region_selection')
-        malariaIndex = malariaList.index(malariaSelected)
-        regionIndex = regionList.index(regionSelected)
-        
-        date_start = request.args.get('date_start')
-        date_end = request.args.get('date_end')
-        sort_by = request.args.get('sort_by')
-        order = request.args.get('order')
-        # here
-        caseList=''
-        if date_start != 'The Beginning' :
-            a=request.args.get('date_start')
-            b=a.split('/')
-            dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
-            a=request.args.get('date_end')
-            b=a.split('/')
-            dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
-        else :
-            dt=datetime.date(1000,1,1)
-            dte=datetime.date(9000,12,31)
-      #  print b
-        if regionIndex ==0 and malariaIndex == 0:
-            caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        elif regionIndex == 0:
-            caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        elif malariaIndex == 0:
-            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.date>=dt,Case.date<=dte).order_by(Case.date)
-        else:
-            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(Case.date)
-    else:
-        malariaIndex = 0
-        regionIndex = 0
-        date_start = "The Beginning"
-        date_end = "This Day"
-        sort_by = "date"
-        order = "desc"
-        caseList = Case.query.order_by(Case.date.desc())
-        
-    return render_template("records.html", list = caseList, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
-'''
 @app.route('/map/')
 def maps():
     lat = request.args.get('lat')
@@ -200,29 +136,39 @@ def maps():
     print str(date_end)
     if not (lat and lng and zoom and date_start and date_end):
         return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
-    cl1 = Case.query.filter(Case.human_diagnosis == "Falciparum")
+    dt=datetime.date.today()-datetime.timedelta(days=30)
+    dte=datetime.date.today()
+    if date_start != 'Last 30 Days' :
+            a=request.args.get('date_start')
+            b=a.split('/')
+            dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+    if date_end != 'Today' :
+            a=request.args.get('date_end')
+            b=a.split('/')
+            dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+    cl1 = Case.query.filter(Case.human_diagnosis == "Falciparum",Case.date>=dt,Case.date<=dte)
     cl2= []
     for i in cl1:
         cl2.append(str(i.lat)+','+str(i.lng))
     # Falciparum, vivax, malariae, ovale, no malaria
     list1 = cl2
     cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "Vivax")
+    cl1 = Case.query.filter(Case.human_diagnosis == "Vivax",Case.date>=dt,Case.date<=dte)
     for i in cl1:
         cl2.append(str(i.lat)+','+str(i.lng))
     list2 = cl2
     cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "Malariae")
+    cl1 = Case.query.filter(Case.human_diagnosis == "Malariae",Case.date>=dt,Case.date<=dte)
     for i in cl1:
         cl2.append(str(i.lat)+','+str(i.lng))
     list3 = cl2
     cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "Ovale")
+    cl1 = Case.query.filter(Case.human_diagnosis == "Ovale",Case.date>=dt,Case.date<=dte)
     for i in cl1:
         cl2.append(str(i.lat)+','+str(i.lng))
     list4 = cl2
     cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "No Malaria")
+    cl1 = Case.query.filter(Case.human_diagnosis == "No Malaria",Case.date>=dt,Case.date<=dte)
     for i in cl1:
         cl2.append(str(i.lat)+','+str(i.lng))
     list5 = cl2
