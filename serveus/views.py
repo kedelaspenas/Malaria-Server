@@ -316,7 +316,7 @@ def upload_file():
             species = mapping['species'].replace('Plasmodium ', '').capitalize()
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-            case = Case(date=dt,age=20,address="Address",human_diagnosis=species,lat=latitude,lng=longitude)
+            case = Case(date=dt,age=20,address="NCR (National Capital Region)",human_diagnosis=species,lat=latitude,lng=longitude)
             db.session.add(case)
             db.session.commit() #TODO: commit optimization
 
@@ -326,7 +326,7 @@ def upload_file():
                 db.session.add(img)
                 db.session.commit()
 
-            return 'Success!'
+            return 'Case recorded.'
 
 
     return '''

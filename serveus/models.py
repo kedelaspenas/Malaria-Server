@@ -38,8 +38,7 @@ class User(db.Model, UserMixin):
 
 class Case(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date())
-	#TODO: add time
+    date = db.Column(db.DateTime())
     age = db.Column(db.Integer)
     address = db.Column(db.String(120))
     human_diagnosis = db.Column(db.String(80))
