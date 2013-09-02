@@ -71,7 +71,7 @@
                     <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
                     </table>
                     <div class="pull-right">
-                    <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13">View on Map</a>
+                    <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
                     <input class="btn btn-medium" type="submit" value="Print" style="height: 30px">
                     </div>
 				</div>
@@ -100,12 +100,12 @@
                     </table>
                     <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery" style="padding: 0">
                     <ul class="thumbnails">
-                     {% for i in case.images %}
+                     {% for i in images %}
                     <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
                         <div class="container span12">
                             <input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
-                            <a title="{{i}}" href="/static/images/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
-                              <img src="/static/images/{{i}}" alt="">
+                            <a title="{{i}}" href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
+                              <img src="/{{i}}" alt="">
                             </a>
                         </div>
                          {% if loop.index0 == (loop.length-1) %}
