@@ -20,11 +20,14 @@ class UserType(db.Model):
     name = db.Column(db.String(80), unique=True)
     users = db.relationship('User', backref='usertype', lazy='dynamic')
     
-    def __init__(self, name):
+    def __init__(self, name=""):
         self.name = name
     
     def __repr__(self):
         return '<UserType %r>' % self.name
+        
+    def __str__(self):
+        return self.name
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,7 +42,7 @@ class User(db.Model, UserMixin):
         return hashlib.sha1(value).hexdigest()
         return value
 
-    def __init__(self, username, password):
+    def __init__(self, username="", password=""):
         self.username = username
         self.password = password
 
@@ -57,7 +60,7 @@ class Case(db.Model):
     maltype_id = db.Column(db.Integer, db.ForeignKey('maltype.id'))
     images = db.relationship('Image', backref='case', lazy='dynamic')
 
-    def __init__(self, date, age, address, human_diagnosis, lat, lng):
+    def __init__(self, date="", age="", address="", human_diagnosis="", lat="", lng=""):
         self.date = date
         self.age = age
         self.address = address
@@ -76,12 +79,15 @@ class MalType(db.Model):
     stage = db.Column(db.Integer)
     cases = db.relationship('Case', backref='maltype', lazy='dynamic')
 
-    def __init__(self, type, stage):
+    def __init__(self, type="", stage=""):
         self.type = type
         self.stage = stage
 	
 	def __repr__(self):
 		return '<MalType %r>' % self.type
+        
+    def __str__(self):
+        return 'Stage ' + str(self.stage) + ' ' + self.type
 
 class Image(db.Model):
     __tablename__ = 'image'

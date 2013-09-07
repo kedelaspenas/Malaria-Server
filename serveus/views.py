@@ -11,7 +11,7 @@ from flask import render_template, flash, redirect, request, url_for, make_respo
 from flask.ext.login import login_user, current_user, LoginManager, logout_user, login_required
 from flask.ext.wtf import Required
 from serveus import app
-from forms import LoginForm
+from forms import LoginForm, RecoveryForm
 from werkzeug import secure_filename
 from datetime import date
 from Crypto.PublicKey import RSA
@@ -23,21 +23,25 @@ from models import db, User, UserType, Case, Key, Image, Database
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
+regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
+
 @app.route('/')
 @app.route('/index/')
 def index():
-    form=LoginForm()
-    return render_template("index.html",form=form)
+    login_form = LoginForm()
+    recovery_form = RecoveryForm()
+    return render_template("index.html",login_form = login_form, recovery_form = recovery_form)
 
 @app.route('/dashboard/')
 @login_required
 def dashboard():
     cases = Case.query.all()
-    return render_template("dashboard.html", user = current_user, cases=cases, date=datetime.datetime.now().strftime('%B %d, %Y'))
+    return render_template("dashboard.html", user = current_user, cases=cases, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'))
 
 @app.route('/records/')
 @login_required
-def records2():
+def records():
     print request.args.get('page')
     if not request.args.get('page'):
         page = 1
@@ -55,8 +59,7 @@ def records2():
         print 'Arguments present'
     else:
         print 'No arguments given'
-    malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
-    regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
+    
     if request.args:
         #print request.form['malaria_selection']
         #print request.form['region_selection']
@@ -201,7 +204,29 @@ def logout():
 @login_manager.user_loader
 def load_user(userid):
     return User.query.get(userid)
-    
+
+@app.route('/recovery/',  methods = ['GET', 'POST'])
+def recovery():
+    form = LoginForm()
+    error = False
+    if form.validate_on_submit():
+        #flash('Login Data: Username: ' + form.username.data + ' Password: ' + form.password.data)
+        #return redirect('/index')
+        
+        username = form.username.data
+        password = form.password.data
+
+        user = User.query.filter_by(username=username,password=password).first()
+        if user:
+            login_user(user)
+            return redirect("/dashboard")
+        else:
+            return redirect("/index")
+    else:
+        error = True
+        
+    return redirect("/index")
+   
 @app.route('/login/',  methods = ['GET', 'POST'])
 def login():
     form = LoginForm()
