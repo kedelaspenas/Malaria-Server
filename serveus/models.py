@@ -1,4 +1,7 @@
 import os
+import datetime
+import hashlib
+from sqlalchemy.orm import validates
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import UserMixin
@@ -27,7 +30,14 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(120), unique=True)
-    usertype_id= db.Column(db.Integer, db.ForeignKey('usertype.id'))
+    usertype_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
+    
+    # TODO: elegant handling
+    @validates('password')
+    def update_password(self, key, value):
+        Database.query.first().modified = datetime.datetime.now()
+        return hashlib.sha1(value).hexdigest()
+        return value
 
     def __init__(self, username, password):
         self.username = username
@@ -56,7 +66,7 @@ class Case(db.Model):
         self.lng = lng
 
     def __repr__(self):
-        return '<User %r>' % self.id
+        return '<Case %r>' % self.id
 
 class MalType(db.Model):
     __tablename__ = 'maltype'
@@ -85,6 +95,27 @@ class Image(db.Model):
 			self.im = f.read()
 		self.case = case
 
+    def __repr__(self):
+		return '<Image %r>' % self.id
+
+class Database(db.Model):
+	__tablename__ = 'database'
+
+	id = db.Column(db.Integer, primary_key=True)
+	modified = db.Column(db.DateTime())
+
+	def __init__(self):
+		self.modified = datetime.datetime.now()
+	
+	@staticmethod
+	def need_update(app_db_date):
+		# TODO: input sanitation
+		year, month, day, hours, minutes, seconds = map(int, app_db_date.split('-'))
+		return Database.query.first().modified > datetime.datetime(year, month, day, hours, minutes, seconds)
+
+	def __repr__(self):
+		return '<Database %r>' % self.id
+
 # TODO: temporary table; remove when keys are synced with accounts
 class Key(db.Model):
 	__tablename__ = 'key'
@@ -96,3 +127,6 @@ class Key(db.Model):
 	def __init__(self, private_key, public_key):
 		self.private_key = private_key
 		self.public_key = public_key
+	
+	def __repr__(self):
+		return str(self.public_key)
