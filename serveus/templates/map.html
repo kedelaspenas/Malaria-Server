@@ -3,14 +3,8 @@
 	<head>
 		<title>Visualization</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- Bootstrap -->
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        
         <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
-		<!-- Responsive -->
-        <!--
-		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-        -->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
             var noMalariaPin = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "01DF01", new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
@@ -110,14 +104,6 @@
 		<div class="navbar" style="width: 100%;">
 			<div class="navbar-inner">
 				<div>
-				<!--
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				</a>
-					<div class="nav-collapse collapse">
-                    -->
                     <div>
 					<ul class="nav pull-left">
 						<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
@@ -135,11 +121,6 @@
 			</div>
 		</div>
         
-		<!--
-		<div class="container" style="height: 100%; width: 100%; margin: -20px 0 0;">
-			<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com.ph/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=philippines&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=57.815136,114.169922&amp;ie=UTF8&amp;hq=&amp;hnear=Philippines&amp;t=m&amp;ll=10.422988,120.629883&amp;spn=8.291273,11.260986&amp;z=7&amp;output=embed"></iframe>
-		</div>
-        -->
         <div id="map-canvas" class="google-maps" style="height: 100%; width: 100%; margin: -20px 0 0;"></div>
 
         <div id="filter" class="container" >
@@ -193,7 +174,6 @@
             return date.valueOf();
             }
             }).on('changeDate', function(ev) {
-            // alert(ev.date.toString());
             clicked = true;
             if (true) {
             var newDate = new Date(ev.date)
