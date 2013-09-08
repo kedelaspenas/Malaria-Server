@@ -263,8 +263,8 @@ def login():
         #return redirect('/index')
         
         username = form.username.data
-        # TODO: client-side SHA1
-        password = hashlib.sha1(form.password.data).hexdigest()
+        password = form.password.data
+        #password = hashlib.sha1(form.password.data).hexdigest()
 
         user = User.query.filter_by(username=username,password=password).first()
         if user:
