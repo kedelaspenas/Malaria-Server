@@ -66,28 +66,11 @@
             }
         </style>
 	</head>
-    
 	<body>
     <div id="super">
 		<div class="navbar" style="width: 100%;">
 			<div class="navbar-inner">
 				<div>
-				<!--
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				</a>
-                -->
-                <!--
-                <ul class="nav pull-left" data-toggle="collapse">
-						<li><a href="/dashboard"><i class="icon-home"></i> </a></li>
-						<li class="active"><a href="#"><i class="icon-book"></i> </a></li>
-						<li><a href="/map"><i class="icon-globe"></i></a></li>
-				</ul>
-                -->
-                
-					<!-- <div class="nav-collapse collapse"> -->
                     <div>
 					<ul class="nav pull-left">
 						<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
@@ -105,27 +88,11 @@
 			</div>
 		</div>
 		<div class="container-fluid">
-				<div class="row-fluid">
+            <div class="row-fluid">
 				<form action="/records/" method="get" name="filter" class="span3 container" style="background-color: white; ">
-                    <!--
-                    <div class="input-append" style="width: calc(100% - 55px)">
-                    <input style="width: calc(100% - 29px)" type="text" placeholder="Patient's Name...">
-                    <button class="btn" type="button">Search</button>
-                    </div>
-                    -->
-                    <!-- https://bootsnipp.com/snipps/stylish-search-form -->
-					<!--
-                    <form id="custom-search-form" class="form-search form-horizontal" style="width: 100%;">
-                    <div class="input-append" style="width: 100%;">
-                    <input type="text" class="search-query" style="width: calc(100% - 8px);" placeholder="Patient Name...">
-                    <button type="submit" class="btn"><i class="icon-search"></i></button>
-                    </div>
-                    </form>
-                    <br>
-					-->
 					<h4>Show Malaria Cases:</h4>
 					<div class="input-prepend" style="width: 100%">
-<span class="add-on">with</span>
+                    <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)" name="malaria_selection">
                     {% for i in malariaList %}
                         <option {% if loop.index0 == malariaIndex %}selected{% endif %}>{{ i }}</option>
@@ -133,7 +100,7 @@
 					</select>
 					</div>
 					<div class="input-prepend" style="width: 100%">
-<span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
+                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select style="width: calc(100% - 34px)" name="region_selection">
 					{% for i in regionList %}
                         <option {% if loop.index0 == regionIndex %}selected{% endif %}>{{ i }}</option>
@@ -142,7 +109,7 @@
 					</div>
                     <br>
                     <div class="input-prepend" style="width: 100%">
-<span class="add-on">from</span>
+                    <span class="add-on">from</span>
                     <input type="text" style="width: calc(100% - 52px)" value="{{date_start}}" id="dpd1" name="date_start">
                     </div> 
                     <br>
