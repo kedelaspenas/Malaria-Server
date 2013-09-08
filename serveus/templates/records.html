@@ -93,6 +93,7 @@
 						<li><a href="/dashboard"><i class="icon-tasks"></i> Summary</a></li>
 						<li class="active"><a href="/records/"><i class="icon-book"></i> Records</a></li>
 						<li><a href="/map"><i class="icon-globe"></i> Visualization</a></li>
+                        <li><a href="#" id="help" data-toggle="popover"><i class="icon-question-sign"></i> Help</a></li>
 					</ul>
 					
 					<ul class="nav pull-right">
@@ -122,7 +123,7 @@
                     </form>
                     <br>
 					-->
-					<h4>Search Malaria Cases:</h4>
+					<h4>Show Malaria Cases:</h4>
 					<div class="input-prepend" style="width: 100%">
 <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)" name="malaria_selection">
@@ -175,17 +176,19 @@
                     <br>
                     <!-- <input class="btn btn-medium" type="reset" value="Clear Filters" style="height: 30px"> -->
                     <div style="text-align: right">
-                    <a class="btn" href="/records/" >Reset Filters</a>
-                    <input class="btn btn-medium" type="submit" id="submit_button" value="Filter Records" style="height: 30px; margin-left: 0.5%">
+                    <div class="btn-group">
+                        <a class="btn" href="/records/" >Reset Filters</a>
+                        <input class="btn btn-medium" type="submit" id="submit_button" value="Filter Records" style="height: 30px;">
+                    </div>
                     </div>
 				</form>
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-bordered table-condensed">
 					<tr>
                     <th class="span1" onclick="sort('case');"># <div class="pull-right"><i class="icon-minus" id="case_chevron"></i></div>
-                    <th class="span1" onclick="sort('date');" style="min-width: 80px">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
+                    <th class="span2" onclick="sort('date');" style="min-width: 80px">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
                     <th class="span5" onclick="sort('location');">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
-                    <th class="span4" onclick="sort('diagnosis');">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
+                    <th class="span3" onclick="sort('diagnosis');">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
 					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.address}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
@@ -244,6 +247,15 @@
             }).on('changeDate', function(ev) {
             checkout.hide();
             }).data('datepicker');
+        </script>
+         <script>
+            $('#help').popover({
+                title: 'Records Page',
+                placement: 'bottom',
+                html: true,
+                trigger: 'hover',
+                content: 'This page displays the latest malaria cases on the table. <i class="icon-arrow-right"></i><hr>Details of induvidual cases can be seen by clicking the respective "View" button.<hr><i class="icon-arrow-left"></i> Filters are available to narrow down the results.'
+            });
         </script>
 	</body>
 </html>

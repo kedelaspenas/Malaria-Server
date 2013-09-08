@@ -31,6 +31,7 @@
 						<li><a href="/dashboard"><i class="icon-tasks"></i> Summary</a></li>
 						<li><a href="/records"><i class="icon-book"></i> Records</a></li>
 						<li><a href="/map"><i class="icon-globe"></i> Visualization</a></li>
+                        <li><a href="#" id="help" data-toggle="popover"><i class="icon-question-sign"></i> Help</a></li>
 					</ul>
 					
 					<ul class="nav pull-right">
@@ -141,6 +142,14 @@
                  alert(s);
             }
         </script>
-    
+        <script>
+            $('#help').popover({
+                title: 'Individual Case Page',
+                placement: 'bottom',
+                html: true,
+                trigger: 'hover',
+                content: 'This page shows the details of a speciefic case. <hr> The "View on Map" button brings you to the map and zooms in on the location of this case. <hr>The "Print" button prints the details of this case along with the selected images.'
+            });
+        </script>
 	</body>
 </html>

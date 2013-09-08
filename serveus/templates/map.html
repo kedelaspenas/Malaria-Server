@@ -123,6 +123,7 @@
 						<li><a href="/dashboard"><i class="icon-tasks"></i> Summary</a></li>
 						<li><a href="/records"><i class="icon-book"></i> Records</a></li>
 						<li class="active"><a href="/map"><i class="icon-globe"></i> Visualization</a></li>
+                        <li><a href="#" id="help" data-toggle="popover"><i class="icon-question-sign"></i> Help</a></li>
 					</ul>
 					
 					<ul class="nav pull-right">
@@ -141,7 +142,7 @@
         -->
         <div id="map-canvas" class="google-maps" style="height: 100%; width: 100%; margin: -20px 0 0;"></div>
 
-        <div id="filter">
+        <div id="filter" class="container" >
         <span id="filter_container">
         </span>
         Total: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px">0</div>
@@ -152,7 +153,7 @@
         <br>
         To:<br>
         <input type="text" style="width: calc(100% - 15px); margin-bottom: 3px" value="{{date_end}}" id="dpd2" name="date_end">
-        <div style="padding: 0; margin: 0">
+        <div class="" style="padding: 0; margin: 0">
         <input class="btn btn-medium" type="reset" value="Reset" onclick="window.location='/map/';"  style="display: inline-block; width: 48%"/>
         <input class="btn btn-medium" type="submit" id="submit_button" value="Filter" style="display: inline-block; width: 48%"/>
         </div>
@@ -212,6 +213,15 @@
             }).on('changeDate', function(ev) {
             checkout.hide();
             }).data('datepicker');
+        </script>
+        <script>
+            $('#help').popover({
+                title: 'Visualization Page',
+                placement: 'bottom',
+                html: true,
+                trigger: 'hover',
+                content: 'This page shows the disctribution of malaria cases all over the country. <hr> Use the filters to narrow down the results. <i class="icon-arrow-right"></i> <hr> <span style="font-weight: bold">Legend: </span><br><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7CFE7569"/> Malaria infected. <br> <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7C01DF01" /> No malaria.'
+            });
         </script>
 	</body>
 </html>

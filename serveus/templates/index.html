@@ -27,15 +27,25 @@
 		
 		<div class="container-fluid">
         <div class="row-fluid">
-            <div class="well span3">
-                 <form action="/login/" method="post" name="login" class=""> 
-                        {{form.hidden_tag()}}
+            <div class="well span3" style="padding-bottom: 0%">
+                <form action="/login/" method="post" name="login" class=""> 
+                        {{login_form.hidden_tag()}}
                  
-                            {{form.username(size=40, placeholder="Username", class="span12")}} <br>
-                            {{form.password(size=40, placeholder="Password", class="span12")}} <br>
-                            
-                        <input class="btn pull-right" type="submit" value="Sign In" style="height: 30px">
-                 </form>
+                            {{login_form.username(size=40, placeholder="Username", class="span12")}} <br>
+                            {{login_form.password(size=40, placeholder="Password", class="span12")}} <br>
+
+                <a href="#" data-toggle="collapse" data-target="#recovery" style="color: grey">Forgot your password?</a>    
+                <input class="btn pull-right" type="submit" value="Sign In" style="height: 30px">
+                </form>
+            
+            <div id="recovery" class="collapse" style="max-height: 90px;">
+                <hr>
+                <form action="/recovery/" method="post" name="recovery" class=""> 
+                    {{recovery_form.hidden_tag()}}
+                    {{recovery_form.username(size=35, placeholder="Enter your username", class="span9", style="display: inline-block")}}
+                    <input class="btn pull-right span3" type="submit" value="Submit" style="height: 30px; display: inline-block">
+                </form>
+            </div>
             </div>
             <div class="well span9">
             <p style="font-size: 16px">This website is part of the malaria surveillance project pioneered by the Computer Vision and Machine Intelligence Group (CVMIG) University of the Philippines Diliman, Philippine Genral Hospital and the National Institute of Physics.
