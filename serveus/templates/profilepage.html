@@ -10,6 +10,16 @@
 		<style>
 
 		</style>
+
+		<script src="/static/js/sha1.js"></script>
+		<script>
+			function hash() {
+				var hash = CryptoJS.SHA1($('#oldpassword').val());
+				$('#oldpassword').val(hash);
+				hash = CryptoJS.SHA1($('#newpassword').val());
+				$('#newpassword').val(hash);
+			}
+		</script>
 	</head>
 	<body>
     <div class="navbar" style="width: 100%;">
@@ -30,7 +40,7 @@
 	</div>
     <div class="well container">
 			<h4>{{user.username}}</h4>
-                <form action= "/profilepage/" name="cp" method="post">
+                <form action= "/profilepage/" name="cp" method="post" onsubmit="hash();">
                 {{ changepass_form.hidden_tag() }}
                 {{changepass_form.oldpassword(size=40, placeholder="Old Password", class="span12", type="password")}} <br>
                 {{changepass_form.newpassword(size=40, placeholder="New Password", class="span12", type="password")}} <br>

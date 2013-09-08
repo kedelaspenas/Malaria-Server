@@ -53,10 +53,10 @@ for user_type in user_types:
 log('dummy data')
 
 # Users
-db.session.add(User('Rodolfo','genius123'))
-db.session.add(User('Noel','qwert'))
-db.session.add(User('Juancho','12345'))
-db.session.add(User('Doctor Carl','lol'))
+db.session.add(User('Rodolfo', User.hash_password('genius123')))
+db.session.add(User('Noel', User.hash_password('qwert')))
+db.session.add(User('Juancho', User.hash_password('12345')))
+db.session.add(User('Doctor Carl', User.hash_password('lol')))
 
 # Cases
 db.session.add(Case(datetime.date(2005,8,26),20,'NCR (National Capital Region) Manila City','Vivax',14.58,121))

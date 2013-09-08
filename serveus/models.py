@@ -39,7 +39,7 @@ class User(db.Model, UserMixin):
     @validates('password')
     def update_password(self, key, value):
         Database.query.first().modified = datetime.datetime.now()
-        return hashlib.sha1(value).hexdigest()
+        return value
 
     @staticmethod
     def hash_password(password):
