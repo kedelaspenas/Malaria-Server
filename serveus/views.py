@@ -309,7 +309,7 @@ def test():
 # API
 
 UPLOAD_FOLDER = os.path.join(os.getcwd().replace('\\','/'), 'upload/')
-REMOVE_TEMP = True
+REMOVE_TEMP = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/api/send/', methods=['GET','POST'])
@@ -334,10 +334,12 @@ def upload_file():
 
             # get encrypted AES key (128-bit SHA-1 of plaintext password) from XML file and decrypt using RSA private key
             with open(os.path.join(folder, 'accountData.xml'), 'r') as f:
-                enc_aes_key = f.read()
-            a = enc_aes_key.index('<pass>')
-            b = enc_aes_key.index('</pass>')
-            enc_aes_key = base64.b64decode(enc_aes_key[a+6:b])
+                g = f.read()
+
+            root = ET.fromstring(g)
+            username = root.find('user').text
+            enc_aes_key = root.find('pass').text.replace('\n','')
+            enc_aes_key = base64.b64decode(enc_aes_key)
             private_key = RSA.importKey(Key.query.first().private_key)
             aes_key = private_key.decrypt(enc_aes_key)
 
@@ -376,16 +378,22 @@ def upload_file():
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
             case = Case(date=dt,age=age,address=address,human_diagnosis=species,lat=latitude,lng=longitude)
-            db.session.add(case)
-            db.session.commit() #TODO: commit optimization
 
-            # store images in database
-            for img_file in glob.glob(os.path.join(folder, "*.jpg")):
-                img = Image(img_file, case)
-                db.session.add(img)
-                db.session.commit()
+            user = User.query.filter(User.username == username).first()
+            hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
+            if hex_aes_key == user.password[:32]:
+                db.session.add(case)
+                db.session.commit() #TODO: commit optimization
 
-            return 'Case recorded.'
+                # store images in database
+                for img_file in glob.glob(os.path.join(folder, "*.jpg")):
+                    img = Image(img_file, case)
+                    db.session.add(img)
+                    db.session.commit()
+
+                return 'OK'
+            else:
+                return 'RETYPE 1'
 
 
     return '''
