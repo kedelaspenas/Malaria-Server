@@ -44,13 +44,14 @@ def profilepage():
         old_pass = changepass_form.oldpassword.data
         new_pass = changepass_form.newpassword.data
         print old_pass + new_pass
+        #if old_pass == current_user.password
         return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
         
-    if request.args:
-        print current_user.username
-        print changepass_form.oldpassword
-        if current_user.password == changepass_form.oldpassword :
-            print 'asdadafdsfs'
+    #if request.args:
+    #    print current_user.username
+    #    print changepass_form.oldpassword
+    #    if current_user.password == changepass_form.oldpassword :
+    #        print 'asdadafdsfs'
     return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
 
 @app.route('/dashboard/')
