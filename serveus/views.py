@@ -7,7 +7,8 @@ import time
 import glob
 import sqlite3
 import xml.etree.ElementTree as ET
-from flask import render_template, flash, redirect, request, url_for, make_response
+from functools import wraps
+from flask import render_template, flash, redirect, request, url_for, make_response, abort
 from flask.ext.login import login_user, current_user, LoginManager, logout_user, login_required
 from flask.ext.wtf import Required
 from serveus import app
@@ -24,16 +25,21 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
+admin = UserType.query.filter(UserType.name == 'Administrator').first()
+doctor = UserType.query.filter(UserType.name == 'Doctor').first()
+microscopist = UserType.query.filter(UserType.name == 'Microscopist').first()
 
-def allowed(types=None):
-    if not types:
-        types = []
-    def f(fn):
-        if current_user.user_type in types:
-            return fn(*args, **kwargs)
-        else:
-            abort(401)
-    return f
+"""Allows only UserTypes in list parameter."""
+def allowed(types=[]):
+    def decorator(function):
+        @wraps(function)
+        def returned(*args, **kwargs):
+            if current_user.usertype in types:
+                return function(*args, **kwargs)
+            else:
+                abort(401)
+        return returned
+    return decorator
 
 @app.route('/')
 @app.route('/index/')
@@ -84,13 +90,15 @@ def dashboard():
         a= [i for i in a] 
         casenum.append(len(a))
     cases=zip(regionList,casenum)
+    print 'cases:', len(cases), cases
     for i in malariaList[1:]:
         a=Case.query.filter(Case.human_diagnosis == i)
         a= [i for i in a] 
         print len(a)
         casenum2.append(len(a))
     cases2=zip(malariaList[1:],casenum2)
-    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum)
+    total = len(Case.query.all())
+    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum, total=total)
 
 @app.route('/records/')
 @login_required
@@ -306,6 +314,7 @@ def login():
 
 """Returns a CSV file of the cases stored."""
 @app.route('/csv/', methods = ['GET'])
+@allowed([admin, doctor])
 def csv():
     x = ['date,age,address,human diagnosis,latitude,longitude,malaria type,region']
     for case in Case.query.all():
