@@ -158,7 +158,7 @@
                     <th class="span3" onclick="sort('diagnosis');">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
-					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.address}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
+					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.region}}, {{i.address}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
                     {% if not caseList %}
                     <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results</a>
