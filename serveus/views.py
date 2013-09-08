@@ -43,8 +43,14 @@ def profilepage():
         #validate if changepass_form.validate_on_submit()
         old_pass = changepass_form.oldpassword.data
         new_pass = changepass_form.newpassword.data
-        print old_pass + new_pass
-        #if old_pass == current_user.password
+        if User.hash_password(old_pass) == current_user.password:
+          #  print current_user.password
+          #  print User.hash_password(new_pass)
+            current_user.password = new_pass
+         #   print current_user.password
+          #  print new_pass
+         #   print User.hash_password('genius123')
+            db.session.commit()
         return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
         
     #if request.args:
