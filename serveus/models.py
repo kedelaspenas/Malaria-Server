@@ -40,7 +40,10 @@ class User(db.Model, UserMixin):
     def update_password(self, key, value):
         Database.query.first().modified = datetime.datetime.now()
         return hashlib.sha1(value).hexdigest()
-        return value
+
+    @staticmethod
+    def hash_password(password):
+        return hashlib.sha1(password).hexdigest()
 
     def __init__(self, username="", password=""):
         self.username = username

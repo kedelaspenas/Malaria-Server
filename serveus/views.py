@@ -437,12 +437,14 @@ def update_db():
         else:
             return 'OK'
 
+    """
     temp = []
     for entry in User.query.all():
         username = entry.username
-        password = hashlib.sha1(entry.password).hexdigest()
+        password = entry.password
         temp.append(username + ',' + password)
     return '\n'.join(temp)
+    """
 
 @app.route('/api/apk/', methods=['GET','POST'])
 def update_apk():
