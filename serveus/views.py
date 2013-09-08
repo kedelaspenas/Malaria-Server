@@ -11,7 +11,7 @@ from flask import render_template, flash, redirect, request, url_for, make_respo
 from flask.ext.login import login_user, current_user, LoginManager, logout_user, login_required
 from flask.ext.wtf import Required
 from serveus import app
-from forms import LoginForm, RecoveryForm
+from forms import LoginForm, RecoveryForm, ChangePassForm
 from werkzeug import secure_filename
 from datetime import date
 from Crypto.PublicKey import RSA
@@ -32,6 +32,26 @@ def index():
     login_form = LoginForm()
     recovery_form = RecoveryForm()
     return render_template("index.html",login_form = login_form, recovery_form = recovery_form)
+    
+
+@app.route('/profilepage/', methods = ['GET', 'POST'])
+@login_required
+def profilepage():
+    changepass_form = ChangePassForm()
+    
+    if changepass_form.validate_on_submit():
+        #validate if changepass_form.validate_on_submit()
+        old_pass = changepass_form.oldpassword.data
+        new_pass = changepass_form.newpassword.data
+        print old_pass + new_pass
+        return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
+        
+    if request.args:
+        print current_user.username
+        print changepass_form.oldpassword
+        if current_user.password == changepass_form.oldpassword :
+            print 'asdadafdsfs'
+    return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
 
 @app.route('/dashboard/')
 @login_required
