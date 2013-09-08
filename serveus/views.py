@@ -25,6 +25,16 @@ login_manager.init_app(app)
 
 malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
 
+def allowed(types=None):
+    if not types:
+        types = []
+    def f(fn):
+        if current_user.user_type in types:
+            return fn(*args, **kwargs)
+        else:
+            abort(401)
+    return f
+
 @app.route('/')
 @app.route('/index/')
 def index():
@@ -228,6 +238,7 @@ def case(id):
     images = []
     for img in case.images:
         images.append('pic/' + str(img.id))
+    images = sorted(images)
     #case.images = images
     if request.method == 'POST':
         reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
@@ -280,7 +291,6 @@ def login():
         
         username = form.username.data
         password = form.password.data
-        #password = hashlib.sha1(form.password.data).hexdigest()
 
         user = User.query.filter_by(username=username,password=password).first()
         if user:
@@ -294,31 +304,18 @@ def login():
         error = True
     return redirect("/index")
 
-# test view for experimentation    
-@app.route('/test/',  methods = ['GET', 'POST'])
-def test():
-    if request.method == 'POST':
-        if request.form and 'checker1' in request.form and 'checker2' in request.form:
-            return request.form['checker1'] + ' ' + request.form['checker2']
-        else:
-            return 'off'
-        
-    return '''<html><head><title></title><link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen"><link href="/static/css/eyecon-datepicker.css" rel="stylesheet"></head><body><form action="" method="post"><input type="checkbox" name="checker1"><input type="checkbox" name="checker2"><input type="submit" value="Submit"></form><input type="text" id="dp1"><input type="text" id="dp2"> </body><script src="/static/js/jquery.js"></script><script src="/static/js/bootstrap.min.js"></script><script src="/static/js/eyecon-datepicker.js"></script><script>
-    var checkin = $('#dp1').datepicker({
-    onRender: function(date) {
-            return date.valueOf();
-            },
-    autoclose: true,
-    todayHighlight: true,
-    });
-    alert(checkin.date)
-    $('#dp2').datepicker({
-    startDate: checkin.date.valueOf(),
-    autoclose: true,
-    todayHighlight: true
-    });
-    </script></html>''' + str(range(0,10))
-
+"""Returns a CSV file of the cases stored."""
+@app.route('/csv/', methods = ['GET'])
+def csv():
+    x = ['date,age,address,human diagnosis,latitude,longitude,malaria type,region']
+    for case in Case.query.all():
+        y = [case.date, case.age, case.address, case.human_diagnosis, case.lat, case.lng, case.maltype, case.region]
+        y = map(str, y)
+        x.append(','.join(y))
+    csv = '\n'.join(x)
+    response = make_response(csv)
+    response.headers["Content-Disposition"] = "attachment; filename=malaria.csv"
+    return response
 
 # API
 
@@ -326,6 +323,7 @@ UPLOAD_FOLDER = os.path.join(os.getcwd().replace('\\','/'), 'upload/')
 REMOVE_TEMP = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+"""Decrypts the encrypted archive, stores the data if authenticated, and returns OK if successful."""
 @app.route('/api/send/', methods=['GET','POST'])
 def upload_file():
     if request.method == 'POST':
@@ -389,7 +387,7 @@ def upload_file():
             species = mapping['species'].replace('Plasmodium ', '').capitalize()
             age = mapping['age']
             address = mapping['address']
-            region = mapping['region']
+            region = Region.query.filter(Region.name == mapping['region']).first()
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
             case = Case(date=dt,age=age,address=address,region=region,human_diagnosis=species,lat=latitude,lng=longitude)
@@ -398,7 +396,7 @@ def upload_file():
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
             if hex_aes_key == user.password[:32]:
                 db.session.add(case)
-                db.session.commit() #TODO: commit optimization
+                db.session.commit()
 
                 # store images in database
                 for img_file in glob.glob(os.path.join(folder, "*.jpg")):
@@ -421,24 +419,16 @@ def upload_file():
     </form>
     '''
 
-@app.route('/api/text/', methods=['POST'])
-def upload_file2():
-    if request.method == 'POST':
-        print request.form['message']
-        return 'got the message: %s' % request.form['message']
-
+"""Returns the RSA public key."""
 @app.route('/api/key/', methods=['GET'])
 def update_key():
-    # TODO: change to dynamic POST (reliant on account credentials)
     key = Key.query.first()
     public_key = key.public_key
     return public_key
 
+"""Returns a Base-64 string of the credentials database, or "OK" otherwise."""
 @app.route('/api/db/', methods=['GET','POST'])
 def update_db():
-    # if sent date < modified date
-    # return 'no change'
-    #return redirect(url_for('static', filename='db.db'))
     if request.method == 'GET':
         return '''
         <!doctype html>
@@ -450,8 +440,8 @@ def update_db():
         </form>
         '''
     elif request.method == 'POST':
-        # TODO: input sanitation
         date_string = request.form['message']
+        # if sent date < modified date
         if Database.need_update(date_string):
             conn = sqlite3.connect('updated.db')
             c = conn.cursor()
@@ -464,7 +454,6 @@ def update_db():
             conn.close()
             with open('updated.db', 'r') as f:
                 g = f.read()
-            # TODO: database lock
             return base64.b64encode(g)
         else:
             return 'OK'
@@ -478,12 +467,17 @@ def update_db():
     return '\n'.join(temp)
     """
 
+"""Returns the APK if the version string sent differs from the current, or "OK" otherwise."""
 @app.route('/api/apk/', methods=['GET','POST'])
 def update_apk():
-    # if sent version < current version
-    # return 'no change'
-    return redirect(url_for('static', filename='apk.apk'))
+    if request.method == 'POST':
+        # assume server always has latest version
+        if request.form['message'] != '1.0':
+            return redirect(url_for('static', filename='Malaria-debug-unaligned.apk'))
+        else:
+            return 'OK'
 
+"""Returns the JPG requested."""
 @app.route('/pic/<int:picture_id>/', methods=['GET'])
 def fetch_image(picture_id):
     x = Image.query.get(picture_id)

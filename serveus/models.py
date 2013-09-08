@@ -9,8 +9,6 @@ from flask.ext.login import UserMixin
 from serveus import app
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
-print 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
-
 db = SQLAlchemy(app)
 
 class UserType(db.Model):
@@ -35,7 +33,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(120), unique=True)
     usertype_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
     
-    # TODO: elegant handling
     @validates('password')
     def update_password(self, key, value):
         Database.query.first().modified = datetime.datetime.now()
@@ -138,7 +135,6 @@ class Database(db.Model):
 	
 	@staticmethod
 	def need_update(app_db_date):
-		# TODO: input sanitation
 		year, month, day, hours, minutes, seconds = map(int, app_db_date.split('-'))
 		return Database.query.first().modified > datetime.datetime(year, month, day, hours, minutes, seconds)
 
