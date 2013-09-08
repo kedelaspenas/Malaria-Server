@@ -7,3 +7,7 @@ class LoginForm(Form):
     
 class RecoveryForm(Form):
     username = TextField('username', validators = [Required()])
+    
+class ChangePassForm(Form):
+    oldpassword = TextField('password', validators = [Required()])
+    newpassword = TextField('password')
