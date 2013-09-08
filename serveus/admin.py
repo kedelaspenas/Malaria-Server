@@ -10,11 +10,13 @@ from models import db, User, UserType, Case, MalType
 
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
-        return current_user.is_authenticated()
+        admin = UserType.query.filter(UserType.name == 'Administrator').first()
+        return current_user.is_authenticated() and current_user.usertype == admin
 
 class MyModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated()
+        admin = UserType.query.filter(UserType.name == 'Administrator').first()
+        return current_user.is_authenticated() and current_user.usertype == admin
         
 admin = Admin(app, index_view=MyAdminIndexView())
 
