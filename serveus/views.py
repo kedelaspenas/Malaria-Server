@@ -29,11 +29,8 @@ regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera
 @app.route('/')
 @app.route('/index/')
 def index():
-    login_form = LoginForm()
-    recovery_form = RecoveryForm()
-    return render_template("index.html",login_form = login_form, recovery_form = recovery_form)
+    return render_template("index.html",login_form = LoginForm(), recovery_form = RecoveryForm())
     
-
 @app.route('/profilepage/', methods = ['GET', 'POST'])
 @login_required
 def profilepage():
@@ -43,6 +40,7 @@ def profilepage():
         #validate if changepass_form.validate_on_submit()
         old_pass = changepass_form.oldpassword.data
         new_pass = changepass_form.newpassword.data
+        changepass_form.oldpassword.data = changepass_form.newpassword.data = ""
         if old_pass == current_user.password:
           #  print current_user.password
           #  print User.hash_password(new_pass)
@@ -51,14 +49,18 @@ def profilepage():
           #  print new_pass
          #   print User.hash_password('genius123')
             db.session.commit()
-        return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
+            message = 'Password successfuly changed.'
+            return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
+            
+        error = 'Old password mismatch.'
+        return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
         
     #if request.args:
     #    print current_user.username
     #    print changepass_form.oldpassword
     #    if current_user.password == changepass_form.oldpassword :
     #        print 'asdadafdsfs'
-    return render_template("profilepage.html", user = current_user, changepass_form= changepass_form)
+    return render_template("profilepage.html", user = current_user, changepass_form = changepass_form)
 
 @app.route('/dashboard/')
 @login_required
@@ -271,10 +273,11 @@ def login():
             login_user(user)
             return redirect("/dashboard")
         else:
-            return redirect("/index")
+            error = True
+            error_message = "Invalid username or password!"
+            return render_template("index.html",login_form = LoginForm(), recovery_form = RecoveryForm(), error_message = error_message)
     else:
         error = True
-        
     return redirect("/index")
 
 # test view for experimentation    

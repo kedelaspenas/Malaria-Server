@@ -38,17 +38,33 @@
             </div>
         </div>
 	</div>
-    <div class="well container">
-			<h4>{{user.username}}</h4>
+    
+    <div class="well container span4">
+			<h4>Change Password</h4>
+            {% if message %}
+            <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+            </div>
+            {% endif %}
+            {% if error %}
+            <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ error }}
+            </div>
+            {% endif %}
                 <form action= "/profilepage/" name="cp" method="post" onsubmit="hash();">
                 {{ changepass_form.hidden_tag() }}
-                {{changepass_form.oldpassword(size=40, placeholder="Old Password", class="span12", type="password")}} <br>
-                {{changepass_form.newpassword(size=40, placeholder="New Password", class="span12", type="password")}} <br>
+                {{changepass_form.oldpassword(size=40, placeholder="Old Password", class="span4", type="password")}} <br>
+                {{changepass_form.newpassword(size=40, placeholder="New Password", class="span4", type="password")}} <br>
               <!--  old password: <input type="password" name="oldpwd">
                 new password: <input type="password" name="newpwd">-->
-                <input class="btn pull-right" type="submit" value="change password" style="height: 30px">
+                
+                <input class="btn pull-right" type="submit" value="Submit" style="height: 30px">
                 </form>
+        
     </div>
+    
     <script src="/static/js/jquery.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 	</body>
