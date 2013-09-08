@@ -48,15 +48,40 @@ for user_type in user_types:
 	db.session.add(temp)
 	log(temp)
 
+# Region
+db.session.add(Region('NCR (National Capital Region)'))
+db.session.add(Region('CAR (Cordillera Administrative Region)'))
+db.session.add(Region('Region I (Ilocos Region)'))
+db.session.add(Region('Region II (Cagayan Valley)'))
+db.session.add(Region('Region III (Central Luzon)'))
+db.session.add(Region('Region IV-A (CALABARZON)'))
+db.session.add(Region('Region IV-B (MIMAROPA)'))
+db.session.add(Region('Region V (Bicol Region)'))
+db.session.add(Region('Region VI (Western Visayas)'))
+db.session.add(Region('Region VII (Central Visayas)'))
+db.session.add(Region('Region VIII (Eastern Visayas)'))
+db.session.add(Region('Region IX (Zamboanga Peninsula)'))
+db.session.add(Region('Region X (Northern Mindanao)'))
+db.session.add(Region('Region XI (Davao Region)'))
+db.session.add(Region('Region XII (Soccsksargen)'))
+db.session.add(Region('Region XIII (Caraga)'))
+db.session.add(Region('ARMM (Autonomous Region in Muslim Mindanao)'))
+
+
 # DUMMY DATA
 
 log('dummy data')
 
 # Users
-db.session.add(User('Rodolfo', User.hash_password('genius123')))
-db.session.add(User('Noel', User.hash_password('qwert')))
-db.session.add(User('Juancho', User.hash_password('12345')))
-db.session.add(User('Doctor Carl', User.hash_password('lol')))
+x = []
+x.append(User('Rodolfo', User.hash_password('genius123')))
+x[-1].usertype_id = 1
+x.append(User('Noel', User.hash_password('qwert')))
+x[-1].usertype_id = 2
+x.append(User('Juancho', User.hash_password('12345')))
+x[-1].usertype_id = 3
+for i in x:
+    db.session.add(i)
 
 # Cases
 db.session.add(Case(datetime.date(2005,8,26),20,'NCR (National Capital Region) Manila City','Vivax',14.58,121))

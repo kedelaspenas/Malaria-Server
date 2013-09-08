@@ -74,10 +74,22 @@ class Case(db.Model):
     def __repr__(self):
         return '<Case %r>' % self.id
 
+class Region(db.Model):
+    __tablename__ = 'region'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+
+    def __init__(self, name=""):
+        self.name = name
+
+    def __repr__(self):
+        return '<Region %r>' % self.name
+
 class MalType(db.Model):
     __tablename__ = 'maltype'
 
-    id = db.Column(db.Integer, primary_key= True)
+    id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(80))
     stage = db.Column(db.Integer)
     cases = db.relationship('Case', backref='maltype', lazy='dynamic')
