@@ -18,13 +18,12 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from misc import Pagination
 
-from models import db, User, UserType, Case, Key, Image, Database
+from models import db, User, UserType, Case, Key, Image, Database, Region
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
-regionList = ['The Philippines','NCR (National Capital Region)','CAR (Cordillera Administrative Region)','Region I (Ilocos Region)','Region II (Cagayan Valley)','Region III (Central Luzon)','Region IV-A (CALABARZON)','Region IV-B (MIMAROPA)','Region V (Bicol Region)','Region VI (Western Visayas)','Region VII (Central Visayas)','Region VIII (Eastern Visayas)','Region IX (Zamboanga Peninsula)','Region X (Northern Mindanao)','Region XI (Davao Region)','Region XII (Soccsksargen)','Region XIII (Caraga)','ARMM (Autonomous Region in Muslim Mindanao)']
 
 @app.route('/')
 @app.route('/index/')
@@ -66,7 +65,7 @@ def profilepage():
 @login_required
 def dashboard():
     cases = Case.query.all()
-    return render_template("dashboard.html", user = current_user, cases=cases, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'))
+    return render_template("dashboard.html", user = current_user, cases=cases, malariaList = malariaList[1:], regionList=['The Philippines'] + Region.query.all(), date=datetime.datetime.now().strftime('%B %d, %Y'))
 
 @app.route('/records/')
 @login_required
@@ -97,7 +96,7 @@ def records():
         malariaSelected = request.args.get('malaria_selection')
         regionSelected = request.args.get('region_selection')
         malariaIndex = malariaList.index(malariaSelected)
-        regionIndex = regionList.index(regionSelected)
+        regionIndex = Region.query.all().index(regionSelected)
         
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
@@ -153,7 +152,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
+    return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList=Region.query.all(), malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
 
 @app.route('/map/')
 def maps():
@@ -375,9 +374,10 @@ def upload_file():
             species = mapping['species'].replace('Plasmodium ', '').capitalize()
             age = mapping['age']
             address = mapping['address']
+            region = mapping['region']
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-            case = Case(date=dt,age=age,address=address,human_diagnosis=species,lat=latitude,lng=longitude)
+            case = Case(date=dt,age=age,address=address,region=region,human_diagnosis=species,lat=latitude,lng=longitude)
 
             user = User.query.filter(User.username == username).first()
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)

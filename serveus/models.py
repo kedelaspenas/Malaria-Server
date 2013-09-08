@@ -53,6 +53,8 @@ class User(db.Model, UserMixin):
         return '<User %r>' % self.username
 
 class Case(db.Model):
+    __tablename__ = 'case'
+
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime())
     age = db.Column(db.Integer)
@@ -61,12 +63,14 @@ class Case(db.Model):
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     maltype_id = db.Column(db.Integer, db.ForeignKey('maltype.id'))
+    region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
     images = db.relationship('Image', backref='case', lazy='dynamic')
 
-    def __init__(self, date="", age="", address="", human_diagnosis="", lat="", lng=""):
+    def __init__(self, date="", age="", address="", region="", human_diagnosis="", lat="", lng=""):
         self.date = date
         self.age = age
         self.address = address
+        self.region = region
         self.human_diagnosis = human_diagnosis
         self.lat = lat
         self.lng = lng
@@ -79,12 +83,16 @@ class Region(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
+    case = db.relationship('Case', backref='region', lazy='dynamic')
 
     def __init__(self, name=""):
         self.name = name
 
     def __repr__(self):
         return '<Region %r>' % self.name
+
+    def __str__(self):
+        return self.name
 
 class MalType(db.Model):
     __tablename__ = 'maltype'
@@ -137,7 +145,6 @@ class Database(db.Model):
 	def __repr__(self):
 		return '<Database %r>' % self.id
 
-# TODO: temporary table; remove when keys are synced with accounts
 class Key(db.Model):
 	__tablename__ = 'key'
 
