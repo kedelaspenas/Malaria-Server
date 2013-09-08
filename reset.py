@@ -66,6 +66,8 @@ db.session.add(Region('Region XII (Soccsksargen)'))
 db.session.add(Region('Region XIII (Caraga)'))
 db.session.add(Region('ARMM (Autonomous Region in Muslim Mindanao)'))
 
+db.session.commit()
+
 
 # DUMMY DATA
 
