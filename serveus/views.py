@@ -71,23 +71,28 @@ def profilepage():
 def dashboard():
     casenum=[]
     casenum2=[]
+    percent1=[]
+    percent2=[]
     regionList= Region.query.all()
-
+    total = len(Case.query.all())
     for i in regionList:
         print i
         a=Case.query.filter(Case.region==i)
         a= [i for i in a] 
         casenum.append(len(a))
-    cases=zip(regionList,casenum)
+        temp= str((float(len(a))/float(total))*100) + '%'
+        percent1.append(temp[:5])
+    cases=zip(regionList,casenum,percent1)
     print 'cases:', len(cases), cases
     for i in malariaList[1:]:
         a=Case.query.filter(Case.human_diagnosis == i)
         a= [i for i in a] 
         print len(a)
         casenum2.append(len(a))
-    cases2=zip(malariaList[1:],casenum2)
-    total = len(Case.query.all())
-    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum, total=total)
+        temp= str((float(len(a))/float(total))*100) + '%'
+        percent2.append(temp[:5])
+    cases2=zip(malariaList[1:],casenum2,percent2)
+    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum, total=total, percent1=percent1, percent2=percent2)
 
 @app.route('/records/')
 @login_required

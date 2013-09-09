@@ -72,7 +72,7 @@
             <br><br>
             <table class="table table-condensed">
             <tr><th>Region<th>Cases<th>Percent
-            {% for i in cases %}<tr><td>{{ i[0] }}<td>{{ i[1] }}<td>{% endfor %}
+            {% for i in cases %}<tr><td>{{ i[0] }}<td>{{ i[1] }}<td>{{ i[2] }}{% endfor %}
             <tr><th>Total<td><td>
             </table>
 			</div>
@@ -82,7 +82,7 @@
                 <br><br>
                 <table class="table table-condensed">
                 <tr><th>Species<th>Cases<th>Percent
-                {% for i in cases2 %}<tr><td>{{ i[0] }}<td>{{ i[1] }}<td>{% endfor %}
+                {% for i in cases2 %}<tr><td>{{ i[0] }}<td>{{ i[1] }}<td>{{ i[2] }}{% endfor %}
                 <tr><th>Total Infections<td><td>
                 <tr><th>Total Cases<td><td>
                 </table>
