@@ -175,7 +175,10 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList=Region.query.all(), malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
+    regionList = Region.query.all()
+    regionList = ['The Philippines'] + [i for i in regionList]
+    
+    return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
 
     
 @app.route('/map/')
