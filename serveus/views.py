@@ -331,6 +331,7 @@ def csv():
 UPLOAD_FOLDER = os.path.join(os.getcwd().replace('\\','/'), 'upload/')
 REMOVE_TEMP = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+upload_cache = {}
 
 """Decrypts the encrypted archive, stores the data if authenticated, and returns OK if successful."""
 @app.route('/api/send/', methods=['GET','POST'])
@@ -415,7 +416,9 @@ def upload_file():
 
                 return 'OK'
             else:
-                return 'RETYPE 1'
+                # {'username': (tries, case, folder)
+                upload_cache[user] = (0, case, folder)
+                return 'RETYPE 0'
 
 
     return '''
@@ -427,6 +430,40 @@ def upload_file():
          <input type=submit value=Upload>
     </form>
     '''
+
+"""Handles retyping of passwords from app."""
+@app.route('/api/retype/', methods=['GET','POST'])
+def retype():
+    if request.method == 'POST':
+        username, aes_key = request.form['message'].split('\n')
+        hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
+
+        user = User.query.filter(User.username == username).first()
+        if hex_aes_key == user.password[:32]:
+            entry = upload_cache[username]
+            if not entry:
+                return 'RETYPE 5'
+            tries = entry[0]
+            case = entry[1]
+            folder = entry[2]
+
+            db.session.add(case)
+            db.session.commit()
+
+            # store images in database
+            for img_file in glob.glob(os.path.join(folder, "*.jpg")):
+                img = Image(img_file, case)
+                db.session.add(img)
+                db.session.commit()
+
+            return 'OK'
+        else:
+            if tries != 4:
+                entry[username] = (tries + 1, case, folder)
+            else:
+                entry.pop(username)
+            return "RETYPE %s" % tries
+
 
 """Returns the RSA public key."""
 @app.route('/api/key/', methods=['GET'])
