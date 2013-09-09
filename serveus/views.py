@@ -254,17 +254,20 @@ def case(id):
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
-        if request.form:
-            c = canvas.Canvas('malaria.pdf', pagesize=letter)
-            width, height = letter
-            reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>'
-        
-            x = reportString.split('<br>')
-            for i, s in enumerate(x):
-                c.drawString(100, 750 - i * 15, s)
-            c.showPage()
+        c = canvas.Canvas('malaria.pdf', pagesize=letter)
+        width, height = letter
+        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>'
+    
+        x = reportString.split('<br>')
+        for i, s in enumerate(x):
+            c.drawString(100, 750 - i * 15, s)
+        c.drawString(459, 750, '1')
+        c.showPage()
 
-            counter = 0
+        counter = 0
+        page = 2
+        print 'images:', images
+        if request.form:
             for i in range (0, len(images)):
                 if str('checkbox_' + str(i)) in request.form:
                     id = str(images[i]).split('/')[1]
@@ -272,20 +275,22 @@ def case(id):
                     with open('image%s.jpg' % id,'w') as f:
                         f.write(x)
                     im = PIL.open('image%s.jpg' % id)
-                    #im2 = im.resize((612, 816), PIL.NEAREST)
-                    im2 = im.resize((200, 200), PIL.NEAREST)
+                    im2 = im.resize((200, 200), PIL.NEAREST).rotate(-90)
                     im2.save('image%s.jpg' % id)
                     c.drawImage('image%s.jpg' % id, 100, 500 - counter * 300)
                     counter += 1
+                    if counter == 1:
+                        c.drawString(459, 750, str(page))
                 if counter == 2:
                     counter = 0
+                    page += 1
                     c.showPage()
-            c.save()
-            with open('malaria.pdf','r') as f:
-                pdf = f.read()
-            response = make_response(pdf)
-            response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
-            return response
+        c.save()
+        with open('malaria.pdf','r') as f:
+            pdf = f.read()
+        response = make_response(pdf)
+        response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
+        return response
     return render_template("case.html", case = case, user = current_user, images=images)
 
 @app.route('/logout/')
