@@ -8,11 +8,13 @@ from flask.ext.login import current_user
 from models import db, User, UserType, Case, MalType
 from views import dashboard
 
-# Custom admin index
+# Custom admin links on navbar
 
 class AuthenticatedMenuLink(MenuLink):
     def is_accessible(self):
         return current_user.is_authenticated()
+
+# Custom admin pages
         
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
@@ -35,7 +37,6 @@ class UserView(MyModelView):
     can_create = True
     column_list = ('username', 'usertype')
     column_excluded_list = ('password')
-    #column_searchable_list = ('username')
     
     def scaffold_form(self):
         form_class = super(UserView, self).scaffold_form()

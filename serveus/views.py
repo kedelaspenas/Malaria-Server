@@ -61,7 +61,7 @@ def index():
 @login_required
 def profilepage():
     changepass_form = ChangePassForm()
-    
+    # Get old password, compare with form and change password
     if changepass_form.validate_on_submit():
         old_pass = changepass_form.oldpassword.data
         new_pass = changepass_form.newpassword.data
@@ -71,7 +71,7 @@ def profilepage():
             db.session.commit()
             message = 'Password successfuly changed.'
             return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
-            
+        # Error message if old password mismatches    
         error = 'Old password mismatch.'
         return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
 
@@ -80,6 +80,7 @@ def profilepage():
 @app.route('/dashboard/')
 @login_required
 def dashboard():
+    # Tabular summaries of malaria distribution
     casenum=[]
     casenum2=[]
     percent1=[]
@@ -160,12 +161,11 @@ def records():
             sortby='id'
         param= "\"case\"."+sortby+" "+order
         print param
-        if regionIndex == 0 and malariaIndex == 0:
+        if regionIndex == 0 and malariaIndex == 0: # Display all
             caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
-          
-        elif regionIndex == 0:
+        elif regionIndex == 0: # Whole Philippines
             caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)       
-        elif malariaIndex == 0:      
+        elif malariaIndex == 0: # Any malaria
             caseList = Case.query.filter(Case.region == Region.query.filter(Region.name == regionSelected).first(),Case.date>=dt,Case.date<=dte).order_by(param)
         else:
             caseList = Case.query.filter(Case.region == Region.query.filter(Region.name == regionSelected).first(),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)
@@ -193,14 +193,16 @@ def records():
 @app.route('/map/')
 @login_required
 def maps():
+    # Filter arguments
     lat = request.args.get('lat')
     lng = request.args.get('lng')
     zoom = request.args.get('zoom')
     date_start = request.args.get('date_start')
     date_end = request.args.get('date_end')
-
+    # Check if filters exist
     if not (lat and lng and zoom and date_start and date_end):
         return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
+    # Build marker list for map
     dt=datetime.date.today()-datetime.timedelta(days=30)
     dte=datetime.date.today() + datetime.timedelta(days=1)
     if date_start != 'Last 30 Days' :
@@ -241,12 +243,13 @@ def maps():
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):
+    # Get case and corresponding images
     case = Case.query.get(id)
     images = []
     for img in case.images:
         images.append('pic/' + str(img.id))
     images = sorted(images)
-
+    # Print out of case
     if request.method == 'POST':
         if request.form:
             c = canvas.Canvas('malaria.pdf', pagesize=letter)
