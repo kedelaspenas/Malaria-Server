@@ -52,29 +52,18 @@ def profilepage():
     changepass_form = ChangePassForm()
     
     if changepass_form.validate_on_submit():
-        #validate if changepass_form.validate_on_submit()
         old_pass = changepass_form.oldpassword.data
         new_pass = changepass_form.newpassword.data
         changepass_form.oldpassword.data = changepass_form.newpassword.data = ""
         if old_pass == current_user.password:
-          #  print current_user.password
-          #  print User.hash_password(new_pass)
             current_user.password = new_pass
-         #   print current_user.password
-          #  print new_pass
-         #   print User.hash_password('genius123')
             db.session.commit()
             message = 'Password successfuly changed.'
             return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
             
         error = 'Old password mismatch.'
         return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
-        
-    #if request.args:
-    #    print current_user.username
-    #    print changepass_form.oldpassword
-    #    if current_user.password == changepass_form.oldpassword :
-    #        print 'asdadafdsfs'
+
     return render_template("profilepage.html", user = current_user, changepass_form = changepass_form)
 
 @app.route('/dashboard/')
@@ -83,7 +72,7 @@ def dashboard():
     casenum=[]
     casenum2=[]
     regionList= Region.query.all()
-   # print Case.query.filter(Case.address.contains(regionList[0]))
+
     for i in regionList:
         print i
         a=Case.query.filter(Case.region==i)
@@ -122,10 +111,6 @@ def records():
         print 'No arguments given'
     
     if request.args:
-        #print request.form['malaria_selection']
-        #print request.form['region_selection']
-        #print request.form['date_start']
-        #print request.form['date_end']
         malariaSelected = request.args.get('malaria_selection')
         regionSelected = request.args.get('region_selection')
         malariaIndex = malariaList.index(malariaSelected)
@@ -135,7 +120,7 @@ def records():
         date_end = request.args.get('date_end')
         sort_by = request.args.get('sort_by')
         order = request.args.get('order')
-        # here
+        
         caseList=''
         if date_start != 'The Beginning' :
             a=request.args.get('date_start')
@@ -147,8 +132,7 @@ def records():
         else :
             dt=datetime.date(1000,1,1)
             dte=datetime.date(9000,12,31)
-        #print sort_by
-        #print order
+            
         sortby=''
         if sort_by== 'date':
             sortby='date'
@@ -162,7 +146,6 @@ def records():
         print param
         if regionIndex == 0 and malariaIndex == 0:
                 caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
-                #print param
           
         elif regionIndex == 0:
                 caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)       
@@ -187,18 +170,16 @@ def records():
     
     return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList=Region.query.all(), malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
 
+    
 @app.route('/map/')
+@login_required
 def maps():
     lat = request.args.get('lat')
     lng = request.args.get('lng')
     zoom = request.args.get('zoom')
     date_start = request.args.get('date_start')
     date_end = request.args.get('date_end')
-    print str(lat)
-    print str(lng)
-    print str(zoom)
-    print str(date_start)
-    print str(date_end)
+
     if not (lat and lng and zoom and date_start and date_end):
         return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
     dt=datetime.date.today()-datetime.timedelta(days=30)
@@ -242,12 +223,10 @@ def maps():
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):
     case = Case.query.get(id)
-    #case.images = [str(i % 4 + 1) + '.png' for i in xrange(50)]
     images = []
     for img in case.images:
         images.append('pic/' + str(img.id))
     images = sorted(images)
-    #case.images = images
     if request.method == 'POST':
         reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
         if request.form:
@@ -272,9 +251,6 @@ def recovery():
     form = LoginForm()
     error = False
     if form.validate_on_submit():
-        #flash('Login Data: Username: ' + form.username.data + ' Password: ' + form.password.data)
-        #return redirect('/index')
-        
         username = form.username.data
         password = form.password.data
 
@@ -294,9 +270,6 @@ def login():
     form = LoginForm()
     error = False
     if form.validate_on_submit():
-        #flash('Login Data: Username: ' + form.username.data + ' Password: ' + form.password.data)
-        #return redirect('/index')
-        
         username = form.username.data
         password = form.password.data
 
