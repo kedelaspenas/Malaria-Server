@@ -91,8 +91,10 @@ def dashboard():
         casenum2.append(len(a))
         temp= str((float(len(a))/float(total))*100) + '%'
         percent2.append(temp[:5])
+    infsum=sum(casenum2)- casenum2[len(casenum2)-1]
+    infperc=str((float(infsum)/float(total)) *100) + '%'
     cases2=zip(malariaList[1:],casenum2,percent2)
-    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum, total=total, percent1=percent1, percent2=percent2)
+    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum, total=total, percent1=percent1, percent2=percent2 ,infsum=infsum, infperc=infperc)
 
 @app.route('/records/')
 @login_required
