@@ -143,7 +143,7 @@ def records():
             dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
             a=request.args.get('date_end')
             b=a.split('/')
-            dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+            dte=datetime.date(int(b[2]),int(b[0]),int(b[1])) + datetime.timedelta(days=1)
         else :
             dt=datetime.date(1000,1,1)
             dte=datetime.date(9000,12,31)
@@ -201,7 +201,7 @@ def maps():
     if not (lat and lng and zoom and date_start and date_end):
         return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
     dt=datetime.date.today()-datetime.timedelta(days=30)
-    dte=datetime.date.today()
+    dte=datetime.date.today() + datetime.timedelta(days=1)
     if date_start != 'Last 30 Days' :
             a=request.args.get('date_start')
             b=a.split('/')
