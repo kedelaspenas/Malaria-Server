@@ -118,7 +118,8 @@ def records():
         malariaSelected = request.args.get('malaria_selection')
         regionSelected = request.args.get('region_selection')
         malariaIndex = malariaList.index(malariaSelected)
-        regionIndex = Region.query.all().index(regionSelected)
+        regionList = ['The Philippines'] + [str(i) for i in Region.query.all()]
+        regionIndex = regionList.index(regionSelected)
         
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
@@ -149,14 +150,14 @@ def records():
         param= "\"case\"."+sortby+" "+order
         print param
         if regionIndex == 0 and malariaIndex == 0:
-                caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
+            caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
           
         elif regionIndex == 0:
-                caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)       
+            caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)       
         elif malariaIndex == 0:      
-                caseList = Case.query.filter(Case.address.contains(regionSelected),Case.date>=dt,Case.date<=dte).order_by(param)
+            caseList = Case.query.filter(Case.region == Region.query.filter(Region.name == regionSelected).first(),Case.date>=dt,Case.date<=dte).order_by(param)
         else:
-            caseList = Case.query.filter(Case.address.contains(regionSelected),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)
+            caseList = Case.query.filter(Case.region == Region.query.filter(Region.name == regionSelected).first(),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)
     else:
         # Default values
         malariaIndex = 0
