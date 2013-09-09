@@ -34,6 +34,7 @@
 					</ul>
 					
 					<ul class="nav pull-right">
+                        {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
 						<li><a href="/profilepage/">{{user.usertype.name}} {{ user.username }}</a></li>
 						<li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
 					</ul>
@@ -61,7 +62,7 @@
                     <table class="table table-condensed table-bordered" style="width: 100%">
                     <tr><th class="span2">Case No.<td class="span10">{{case.id}}
                     <tr><th>Age<td>{{case.age}}
-                    <tr><th>Address<td>{{case.address}}
+                    <tr><th>Address<td>{{case.region}}, {{case.address}}
                     <tr><th>Diagnosis<td>{{case.human_diagnosis}}
                     <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
                     </table>
