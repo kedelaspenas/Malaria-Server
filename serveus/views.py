@@ -28,16 +28,23 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
-admin = UserType.query.filter(UserType.name == 'Administrator').first()
-doctor = UserType.query.filter(UserType.name == 'Doctor').first()
-microscopist = UserType.query.filter(UserType.name == 'Microscopist').first()
+
+def get_admin():
+    return UserType.query.filter(UserType.name == 'Administrator').first()
+
+def get_doctor():
+    return UserType.query.filter(UserType.name == 'Doctor').first()
+
+def get_microscopist():
+    return UserType.query.filter(UserType.name == 'Microscopist').first()
 
 """Allows only UserTypes in list parameter."""
 def allowed(types=[]):
     def decorator(function):
         @wraps(function)
         def returned(*args, **kwargs):
-            if current_user.usertype in types:
+            other = [i() for i in types]
+            if current_user.usertype in other:
                 return function(*args, **kwargs)
             else:
                 abort(401)
@@ -326,7 +333,7 @@ def login():
 
 """Returns a CSV file of the cases stored."""
 @app.route('/csv/', methods = ['GET'])
-@allowed([admin, doctor])
+@allowed([get_admin, get_doctor])
 def csv():
     x = ['date,age,address,human diagnosis,latitude,longitude,malaria type,region']
     for case in Case.query.all():

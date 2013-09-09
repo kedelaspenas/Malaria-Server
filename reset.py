@@ -85,9 +85,17 @@ for i in x:
     db.session.add(i)
 
 # Cases
-db.session.add(Case(datetime.date(2005,8,26),20,'Manila City',Region.query.filter(Region.name == 'NCR (National Capital Region)').first(),'Vivax',14.58,121))
-db.session.add(Case(datetime.date(2010,5,15),18,'Baguio City',Region.query.filter(Region.name == 'CAR (Cordillera Administrative Region)').first(),'Falciparum',16.42,120.6))
-db.session.add(Case(datetime.date(2007,1,5),24,'Quezon City',Region.query.filter(Region.name == 'NCR (National Capital Region)').first(),'Ovale',14.67,121))
+x = Case(datetime.date(2005,8,26),20,'Manila City','Vivax',14.58,121)
+x.region = Region.query.filter(Region.name == 'NCR (National Capital Region)').first()
+db.session.add(x)
+
+x = Case(datetime.date(2010,5,15),18,'Baguio City','Falciparum',16.42,120.6)
+x.region = Region.query.filter(Region.name == 'CAR (Cordillera Administrative Region)').first()
+db.session.add(x)
+
+x = Case(datetime.date(2007,1,5),24,'Quezon City','Ovale',14.67,121)
+x.region = Region.query.filter(Region.name == 'NCR (National Capital Region)').first()
+db.session.add(x)
 
 # TODO: remove when keys are synced with accounts
 """
