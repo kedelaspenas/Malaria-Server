@@ -18,6 +18,9 @@ from datetime import date
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from misc import Pagination
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
 
 from models import db, User, UserType, Case, Key, Image, Database, Region
 
@@ -227,14 +230,42 @@ def case(id):
     for img in case.images:
         images.append('pic/' + str(img.id))
     images = sorted(images)
+
     if request.method == 'POST':
-        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
         if request.form:
+            c = canvas.Canvas('malaria.pdf', pagesize=letter)
+            width, height = letter
+            reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
+        
+            x = reportString.split('<br>')
+            for i, s in enumerate(x):
+                c.drawString(100, 750 - i * 15, s)
+            c.showPage()
+
+            counter = 0
             for i in range (0, len(images)):
                 if str('checkbox_' + str(i)) in request.form:
-                    reportString += str(images[i]) + ' '
-        
-        return reportString
+                    id = str(images[i]).split('/')[1]
+                    x = Image.query.get(id).im
+                    with open('image%s.jpg' % id,'w') as f:
+                        f.write(x)
+                    c.drawImage('image%s.jpg' % id, 100, 500 - counter * 200)
+                    counter += 1
+                if counter == 2:
+                    counter = 0
+                    c.showPage()
+            c.save()
+            return reportString
+
+        x = ['date,age,address,human diagnosis,latitude,longitude,malaria type,region']
+        for case in Case.query.all():
+            y = [case.date, case.age, case.address, case.human_diagnosis, case.lat, case.lng, case.maltype, case.region]
+            y = map(str, y)
+            x.append(','.join(y))
+        csv = '\n'.join(x)
+        response = make_response(csv)
+        response.headers["Content-Disposition"] = "attachment; filename=malaria.csv"
+        return response
     return render_template("case.html", case = case, user = current_user, images=images)
 
 @app.route('/logout/')
@@ -298,6 +329,7 @@ def csv():
     response = make_response(csv)
     response.headers["Content-Disposition"] = "attachment; filename=malaria.csv"
     return response
+
 
 # API
 
@@ -390,7 +422,7 @@ def upload_file():
                 return 'OK'
             else:
                 # {'username': (tries, case, folder)
-                upload_cache[user] = (0, case, folder)
+                upload_cache[username] = (0, case, folder)
                 return 'RETYPE 0'
 
 
@@ -408,18 +440,25 @@ def upload_file():
 @app.route('/api/retype/', methods=['GET','POST'])
 def retype():
     if request.method == 'POST':
-        username, aes_key = request.form['message'].split('\n')
+        x = request.form['message'].split('\n')
+        username = x[0]
+        aes_key = base64.b64decode(x[1])
         hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
 
+        print username
         user = User.query.filter(User.username == username).first()
-        if hex_aes_key == user.password[:32]:
-            entry = upload_cache[username]
-            if not entry:
-                return 'RETYPE 5'
-            tries = entry[0]
-            case = entry[1]
-            folder = entry[2]
+        print '1', hex_aes_key == user.password[:32]
+        print '2', hex_aes_key
+        print '3', user.password[:32]
 
+        print upload_cache
+        entry = upload_cache.get(username)
+        if not entry:
+            return 'RETYPE 5'
+        tries = entry[0]
+        case = entry[1]
+        folder = entry[2]
+        if hex_aes_key == user.password[:32]:
             db.session.add(case)
             db.session.commit()
 
@@ -432,9 +471,9 @@ def retype():
             return 'OK'
         else:
             if tries != 4:
-                entry[username] = (tries + 1, case, folder)
+                upload_cache[username] = (tries + 1, case, folder)
             else:
-                entry.pop(username)
+                upload_cache.pop(username)
             return "RETYPE %s" % tries
 
 

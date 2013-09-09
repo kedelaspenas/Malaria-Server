@@ -102,9 +102,9 @@ class MalType(db.Model):
     def __init__(self, type="", stage=""):
         self.type = type
         self.stage = stage
-	
-	def __repr__(self):
-		return '<MalType %r>' % self.type
+    
+    def __repr__(self):
+        return '<MalType %r>' % self.type
         
     def __str__(self):
         return 'Stage ' + str(self.stage) + ' ' + self.type
@@ -117,40 +117,40 @@ class Image(db.Model):
     im = db.Column(db.BLOB)
 
     def __init__(self, path, case):
-		with open(path, 'r') as f:
-			self.im = f.read()
-		self.case = case
+        with open(path, 'r') as f:
+            self.im = f.read()
+        self.case = case
 
     def __repr__(self):
-		return '<Image %r>' % self.id
+        return '<Image %r>' % self.id
 
 class Database(db.Model):
-	__tablename__ = 'database'
+    __tablename__ = 'database'
 
-	id = db.Column(db.Integer, primary_key=True)
-	modified = db.Column(db.DateTime())
+    id = db.Column(db.Integer, primary_key=True)
+    modified = db.Column(db.DateTime())
 
-	def __init__(self):
-		self.modified = datetime.datetime.now()
-	
-	@staticmethod
-	def need_update(app_db_date):
-		year, month, day, hours, minutes, seconds = map(int, app_db_date.split('-'))
-		return Database.query.first().modified > datetime.datetime(year, month, day, hours, minutes, seconds)
+    def __init__(self):
+        self.modified = datetime.datetime.now()
+    
+    @staticmethod
+    def need_update(app_db_date):
+        year, month, day, hours, minutes, seconds = map(int, app_db_date.split('-'))
+        return Database.query.first().modified > datetime.datetime(year, month, day, hours, minutes, seconds)
 
-	def __repr__(self):
-		return '<Database %r>' % self.id
+    def __repr__(self):
+        return '<Database %r>' % self.id
 
 class Key(db.Model):
-	__tablename__ = 'key'
+    __tablename__ = 'key'
 
-	id = db.Column(db.Integer, primary_key=True)
-	private_key = db.Column(db.String(2000))
-	public_key = db.Column(db.String(2000))
+    id = db.Column(db.Integer, primary_key=True)
+    private_key = db.Column(db.String(2000))
+    public_key = db.Column(db.String(2000))
 
-	def __init__(self, private_key, public_key):
-		self.private_key = private_key
-		self.public_key = public_key
-	
-	def __repr__(self):
-		return str(self.public_key)
+    def __init__(self, private_key, public_key):
+        self.private_key = private_key
+        self.public_key = public_key
+    
+    def __repr__(self):
+        return str(self.public_key)
