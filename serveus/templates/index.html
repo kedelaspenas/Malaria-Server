@@ -30,21 +30,25 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span3">
-                <div class="well" style="padding-bottom: 0%">
+                <div class="well">
                     <form action="/login/" method="post" name="login" class="" onsubmit="return hash();">
                     {{ login_form.hidden_tag() }}
                     {{ login_form.username(size=40, placeholder="Username", class="span12") }}<br />
                     {{login_form.password(size=40, placeholder="Password", class="span12")}}<br />
-                    <a href="#" data-toggle="collapse" data-target="#recovery" style="color: grey">Forgot your password?</a> 
-                    <input class="btn pull-right" type="submit" value="Sign In" style="height: 30px" /></form>
+                    <!-- <a href="#" data-toggle="collapse" data-target="#recovery" style="color: grey">Forgot your password?</a>  -->
+                    <input class="btn pull-right" type="submit" value="Sign In" style="height: 30px" />
+                    <!--
+                    </form>
                     <div id="recovery" class="collapse" style="max-height: 90px;">
                         <hr />
                         <form action="/recovery/" method="post" name="recovery" class="">
                         {{ recovery_form.hidden_tag() }} 
                         {{ recovery_form.username(size=35, placeholder="Enter your username", class="span9", style="display:inline-block") }} 
                         <input class="btn pull-right span3" type="submit" value="Submit"
-                        style="height: 30px; display: inline-block" /></form>
+                        style="height: 30px; display: inline-block" />
                     </div>
+                    </form>
+                    -->
                 </div>
                 {% if error_message %}
                 <div class="alert alert-error">
