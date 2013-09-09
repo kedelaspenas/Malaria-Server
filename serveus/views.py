@@ -21,6 +21,7 @@ from misc import Pagination
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
+import Image as PIL
 
 from models import db, User, UserType, Case, Key, Image, Database, Region
 
@@ -250,7 +251,7 @@ def case(id):
         if request.form:
             c = canvas.Canvas('malaria.pdf', pagesize=letter)
             width, height = letter
-            reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>' + 'Images: '
+            reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>'
         
             x = reportString.split('<br>')
             for i, s in enumerate(x):
@@ -264,23 +265,21 @@ def case(id):
                     x = Image.query.get(id).im
                     with open('image%s.jpg' % id,'w') as f:
                         f.write(x)
-                    c.drawImage('image%s.jpg' % id, 100, 500 - counter * 200)
+                    im = PIL.open('image%s.jpg' % id)
+                    #im2 = im.resize((612, 816), PIL.NEAREST)
+                    im2 = im.resize((200, 200), PIL.NEAREST)
+                    im2.save('image%s.jpg' % id)
+                    c.drawImage('image%s.jpg' % id, 100, 500 - counter * 300)
                     counter += 1
                 if counter == 2:
                     counter = 0
                     c.showPage()
             c.save()
-            return reportString
-
-        x = ['date,age,address,human diagnosis,latitude,longitude,malaria type,region']
-        for case in Case.query.all():
-            y = [case.date, case.age, case.address, case.human_diagnosis, case.lat, case.lng, case.maltype, case.region]
-            y = map(str, y)
-            x.append(','.join(y))
-        csv = '\n'.join(x)
-        response = make_response(csv)
-        response.headers["Content-Disposition"] = "attachment; filename=malaria.csv"
-        return response
+            with open('malaria.pdf','r') as f:
+                pdf = f.read()
+            response = make_response(pdf)
+            response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
+            return response
     return render_template("case.html", case = case, user = current_user, images=images)
 
 @app.route('/logout/')
@@ -420,7 +419,8 @@ def upload_file():
             region = Region.query.filter(Region.name == mapping['region']).first()
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-            case = Case(date=dt,age=age,address=address,region=region,human_diagnosis=species,lat=latitude,lng=longitude)
+            case = Case(date=dt,age=age,address=address,human_diagnosis=species,lat=latitude,lng=longitude)
+            case.region = region
 
             user = User.query.filter(User.username == username).first()
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
