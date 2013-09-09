@@ -21,7 +21,10 @@ from misc import Pagination
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
-import Image as PIL
+try: 
+    import Image as PIL
+except ImportError:
+    import PIL
 
 from models import db, User, UserType, Case, Key, Image, Database, Region
 
