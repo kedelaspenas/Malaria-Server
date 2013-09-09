@@ -105,13 +105,10 @@ def records():
     else:
         page = int(request.args.get('page'))
     # Malaria Case Filters
-    print request.args.get('malaria_selection')
-    print request.args.get('region_selection')
-    print request.args.get('date_start')
-    print request.args.get('date_end')
+    # print request.args.get('malaria_selection') + request.args.get('region_selection') + request.args.get('date_start') + request.args.get('date_end')
     # Table sorter
-    print request.args.get('sort_by') # date, location, diagnosis
-    print request.args.get('order') # asc, desc
+    # print request.args.get('sort_by') # date, location, diagnosis
+    # print request.args.get('order') # asc, desc
     if request.args:
         print 'Arguments present'
     else:
