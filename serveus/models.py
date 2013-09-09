@@ -63,11 +63,10 @@ class Case(db.Model):
     region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
     images = db.relationship('Image', backref='case', lazy='dynamic')
 
-    def __init__(self, date="", age="", address="", region="", human_diagnosis="", lat="", lng=""):
+    def __init__(self, date="", age="", address="", human_diagnosis="", lat="", lng=""):
         self.date = date
         self.age = age
         self.address = address
-        self.region = region
         self.human_diagnosis = human_diagnosis
         self.lat = lat
         self.lng = lng
