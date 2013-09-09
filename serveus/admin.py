@@ -47,10 +47,10 @@ class UserView(MyModelView):
             model.password = User.hash_password(form.password.data)
             
 # Add pages to the admin page
-#admin.add_view(ModelView(User, db.session))
 admin.add_view(MyModelView(UserType, db.session))
 admin.add_view(UserView(User, db.session))
 admin.add_view(MyModelView(Case, db.session))
 admin.add_view(MyModelView(MalType, db.session))
 
+# Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='dashboard'))
