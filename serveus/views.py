@@ -1,4 +1,4 @@
-import os
+import os, math
 import datetime
 import zipfile
 import base64
@@ -202,9 +202,15 @@ def maps():
     zoom = request.args.get('zoom')
     date_start = request.args.get('date_start')
     date_end = request.args.get('date_end')
+    default_view = False
     # Check if filters exist
-    if not (lat and lng and zoom and date_start and date_end):
-        return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
+    if not (zoom and date_start and date_end):
+        # Go to default view
+        default_view = True
+        date_start = 'Last 30 Days'
+        date_end = 'Today'
+        zoom = 7
+        # return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
     # Build marker list for map
     dt=datetime.date.today()-datetime.timedelta(days=30)
     dte=datetime.date.today() + datetime.timedelta(days=1)
@@ -242,6 +248,27 @@ def maps():
     for i in cl1:
         cl2.append(str(i.lat)+','+str(i.lng))
     list5 = cl2
+    
+    if default_view or not(lat and lng):
+        # Get centroid of marker nodes
+        nodes = Case.query.filter(Case.date>=dt,Case.date<=dte)
+        max_y = max_x = 0
+        min_y = min_x = 9999
+        for i in nodes:
+            if i.lat > max_y:
+                max_y = i.lat
+            if i.lng > max_x:
+                max_x = i.lng
+            if i.lat < min_y:
+                min_y = i.lat
+            if i.lng < min_x:
+                min_x = i.lng
+        lat = (min_y + max_y)/2
+        lng = (min_x + max_x)/2
+        
+        zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
+        
+    
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
