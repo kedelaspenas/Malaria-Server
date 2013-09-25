@@ -55,6 +55,8 @@
               
               var filter = document.getElementById('filter')
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
+              var total = document.getElementById('total_container')
+              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(total);
             }
             google.maps.event.addDomListener(window, 'load', initialize);
             var show1 = true, show2 = true, show3 = true, show4 = true, show5 = true
@@ -77,12 +79,27 @@
 		<style>
 		html, body {
 			height: 100%;
-			overflow: hidden;
+			
 			margin: 0 0 0;
 		}
         #filter { 
         background-color: transparent; 
         right: 20px;
+        width: 100px;
+        background: white; 
+        border: 1px solid;
+        border-color: #999999;
+        padding: 5px;
+        padding-left: 7px;
+        padding-bottom: 3px;
+        margin-right: 5px;
+        -webkit-box-shadow: -5px 7px 6px -6px #0F0F0F;
+	    -moz-box-shadow: -5px 7px 6px -6px #0F0F0F;
+        box-shadow: -5px 7px 6px -6px #0F0F0F;
+        }
+        #total_container { 
+        background-color: transparent; 
+        
         width: 100px;
         background: white; 
         border: 1px solid;
@@ -122,13 +139,12 @@
 			</div>
 		</div>
         
-        <div id="map-canvas" class="google-maps" style="height: 100%; width: 100%; margin: -20px 0 0;"></div>
+        <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0;"></div>
 
         <div id="filter" class="container" >
+        Showing cases of:<br>
         <span id="filter_container">
         </span>
-        Total: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px">0</div>
-        <hr style="margin: 0 0 0">
         <form action="/map/" method="get" style="padding: 0; margin: 0;">
         From:<br>
         <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{date_start}}" id="dpd1" name="date_start">
@@ -143,6 +159,10 @@
         <input type="text" id="lat" name="lat" value="{{ lat }}" style="display: None">
         <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
         </form>
+        </div>
+
+        <div id="total_container" class="container">
+        Total cases: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
         <script>
             var markerFilters = document.getElementById("filter_container");
