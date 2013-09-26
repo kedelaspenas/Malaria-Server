@@ -1,11 +1,4 @@
-import os, math
-import datetime
-import zipfile
-import base64
-import hashlib
-import time
-import glob
-import sqlite3
+import os, math, time, datetime, zipfile, base64, hashlib, glob, sqlite3
 import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import render_template, flash, redirect, request, url_for, make_response, abort
@@ -21,6 +14,7 @@ from misc import Pagination
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
+# Default to Pillow and fallback to PIL
 try: 
     import Image as PIL
 except ImportError:
@@ -124,10 +118,6 @@ def records():
     # Table sorter
     # print request.args.get('sort_by') # date, location, diagnosis
     # print request.args.get('order') # asc, desc
-    if request.args:
-        print 'Arguments present'
-    else:
-        print 'No arguments given'
     
     if request.args:
         malariaSelected = request.args.get('malaria_selection')
