@@ -25,11 +25,11 @@
                 }
             }
             var markers = [
-                new MarkerList("Falciparum", [{% for i in list1 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Vivax", [{% for i in list2 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Malariae", [{% for i in list3 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Ovale", [{% for i in list4 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("No Malaria", [{% for i in list5 %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
+                new MarkerList("Falciparum", [{% for i in case_list['Falciparum'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
+                new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
+                new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
+                new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
+                new MarkerList("No Malaria", [{% for i in case_list['No Malaria'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
             ]
             
             

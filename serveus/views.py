@@ -222,39 +222,18 @@ def maps():
             a=request.args.get('date_end')
             b=a.split('/')
             dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
-    cl1 = Case.query.filter(Case.human_diagnosis == "Falciparum",Case.date>=dt,Case.date<=dte)
-    cl2= []
-    for i in cl1:
-        cl2.append(str(i.lat)+','+str(i.lng))
-    # Falciparum, vivax, malariae, ovale, no malaria
-    list1 = cl2
-    cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "Vivax",Case.date>=dt,Case.date<=dte)
-    for i in cl1:
-        cl2.append(str(i.lat)+','+str(i.lng))
-    list2 = cl2
-    cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "Malariae",Case.date>=dt,Case.date<=dte)
-    for i in cl1:
-        cl2.append(str(i.lat)+','+str(i.lng))
-    list3 = cl2
-    cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "Ovale",Case.date>=dt,Case.date<=dte)
-    for i in cl1:
-        cl2.append(str(i.lat)+','+str(i.lng))
-    list4 = cl2
-    cl2= []
-    cl1 = Case.query.filter(Case.human_diagnosis == "No Malaria",Case.date>=dt,Case.date<=dte)
-    for i in cl1:
-        cl2.append(str(i.lat)+','+str(i.lng))
-    list5 = cl2
+    
+    case_list = Case.query.filter(Case.date>=dt,Case.date<=dte)
+    case_list = [i for i in case_list]
+    sorted_list = dict([(i, []) for i in malariaList[1:]])
+    for i in case_list:
+        sorted_list[i.human_diagnosis].append(str(i.lat)+','+str(i.lng))
     
     if default_view or not(lat and lng):
-        # Get centroid of marker nodes
-        nodes = Case.query.filter(Case.date>=dt,Case.date<=dte)
+        # Get centroid of markers of cases
         max_y = max_x = 0
         min_y = min_x = 9999
-        for i in nodes:
+        for i in case_list:
             if i.lat > max_y:
                 max_y = i.lat
             if i.lng > max_x:
@@ -263,13 +242,14 @@ def maps():
                 min_y = i.lat
             if i.lng < min_x:
                 min_x = i.lng
+        # Center
         lat = (min_y + max_y)/2
         lng = (min_x + max_x)/2
-        
+        # Calculate zoom based on resolution
+        # TODO: Move to client side javascript if applicable
         zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
         
-    
-    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, list1 = list1, list2 = list2, list3 = list3, list4 = list4, list5 = list5, date_start = date_start, date_end = date_end, user = current_user)
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):
