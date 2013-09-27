@@ -237,8 +237,11 @@ def maps():
         lng = (min_x + max_x)/2
         # Calculate zoom based on resolution
         # TODO: Move to client side javascript if applicable
-        zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
-        
+        try:
+            zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
+        except Exception, e:
+            # Default zoom
+            zoom = 7
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
