@@ -211,7 +211,7 @@ def maps():
     if date_end != 'Today' :
             a=request.args.get('date_end')
             b=a.split('/')
-            dte=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+            dte=datetime.date(int(b[2]),int(b[0]),int(b[1])) + datetime.timedelta(days=1)
     
     case_list = Case.query.filter(Case.date>=dt,Case.date<=dte)
     case_list = [i for i in case_list]
