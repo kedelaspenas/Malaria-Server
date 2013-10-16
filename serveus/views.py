@@ -242,6 +242,8 @@ def maps():
         except Exception, e:
             # Default zoom
             zoom = 7
+            lat = 10.422988
+            lng = 120.629883
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
