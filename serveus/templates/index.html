@@ -52,11 +52,10 @@
             <div class="span3">
             <img src="/static/images/banner.png"/>
             &nbsp<br>
-                <div class="well">
-                    <form action="/login/" method="post" name="login" class="" onsubmit="return hash();">
+                    <form action="/login/" method="post" name="login" class="well container-fluid" style="padding: 5%" onsubmit="return hash();">
                     {{ login_form.hidden_tag() }}
-                    {{ login_form.username(size=40, placeholder="Username", class="span12") }}<br />
-                    {{login_form.password(size=40, placeholder="Password", class="span12")}}<br />
+                    {{ login_form.username(placeholder="Username", class="span12") }}<br />
+                    {{login_form.password(placeholder="Password", class="span12")}}<br />
                     <!-- <a href="#" data-toggle="collapse" data-target="#recovery" style="color: grey">Forgot your password?</a>  -->
                     <input class="btn pull-right" type="submit" value="Sign In" style="height: 30px" />
                     <!--
@@ -71,7 +70,7 @@
                     </div>
                     </form>
                     -->
-                </div>
+                
                 {% if error_message %}
                 <div class="alert alert-error">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -79,6 +78,7 @@
                 </div>
                 {% endif %}
             </div>
+            <br>
             <div class="well span9">
                 <p style="font-size: 16px">This website is part of the malaria surveillance project pioneered by the Computer
                 Vision and Machine Intelligence Group (CVMIG) of the University of the Philippines Diliman, Philippine General Hospital and

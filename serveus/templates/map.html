@@ -4,6 +4,7 @@
 		<title>Visualization</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
@@ -79,8 +80,8 @@
 		<style>
 		html, body {
 			height: 100%;
-			
 			margin: 0 0 0;
+            padding: 0 0 0;
 		}
         #filter { 
         background-color: transparent; 
@@ -120,22 +121,33 @@
 	<body>
 		<div class="navbar" style="width: 100%;">
 			<div class="navbar-inner">
-				<div>
-                    <div>
-					<ul class="nav pull-left">
-						<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
-						<li><a href="/records/"><i class="icon-book"></i> Records</a></li>
-						<li class="active"><a href="/map/"><i class="icon-globe"></i> Visualization</a></li>
-                        <li><a href="#" id="help" data-toggle="popover"><i class="icon-question-sign"></i> Help</a></li>
-					</ul>
-					
-					<ul class="nav pull-right">
+				<a class="btn btn-navbar pull-right" data-toggle="collapse" data-target=".nav-collapse" style="padding: 4px 10px 4px; font-size: 15px">
+				Menu
+				</a>
+                <ul class="nav pull-right">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{user.usertype.name}} {{ user.username }}
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                        <li><a href="/profilepage/">Profile</a></li>
                         {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
-						<li><a href="/profilepage/">{{user.usertype.name}} {{ user.username }}</a></li>
-						<li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
-					</ul>
-					</div>
-				</div>
+                        <li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
+                        </ul>
+                    </div>
+                </ul>
+                <div class="nav-collapse collapse">
+                    <div>
+                        <ul class="nav pull-left">
+                            <li>&nbsp</li>
+                            <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
+                            <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
+                            <li class="active"><a href="/map/"><i class="icon-globe"></i> Visualization</a></li>
+                            <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
+                        </ul>
+                    </div>
+                </div>
 			</div>
 		</div>
         
@@ -163,6 +175,15 @@
 
         <div id="total_container" class="container">
         Cases displayed: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
+        </div>
+        <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+        <h3 id="helpModalLabel">Visualization</h3>
+        </div>
+        <div class="modal-body">
+        <p>This page shows the distribution of malaria cases all over the country. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7CFE7569"/> Malaria infected. <br> <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7C01DF01" /> No malaria.</p>
+        </div>
         </div>
         <script>
             var markerFilters = document.getElementById("filter_container");
@@ -214,15 +235,6 @@
             }).on('changeDate', function(ev) {
             checkout.hide();
             }).data('datepicker');
-        </script>
-        <script>
-            $('#help').popover({
-                title: 'Visualization Page',
-                placement: 'bottom',
-                html: true,
-                trigger: 'hover',
-                content: 'This page shows the distribution of malaria cases all over the country. <hr> Use the filters to narrow down the results. <i class="icon-arrow-right"></i> <hr> <span style="font-weight: bold">Legend: </span><br><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7CFE7569"/> Malaria infected. <br> <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7C01DF01" /> No malaria.'
-            });
         </script>
 	</body>
 </html>
