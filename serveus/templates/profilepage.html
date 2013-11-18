@@ -16,25 +16,47 @@
 				$('#newpassword').val(hash);
 			}
 		</script>
+        <style>
+            html,
+            body {
+               margin:0;
+               padding:0;
+               height:100%;
+            }
+        </style>
 	</head>
 	<body>
     <div class="navbar" style="width: 100%;">
         <div class="navbar-inner">
-            <div>
-                <ul class="nav pull-left">
-                    <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
-                    <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
-                    <li><a href="/map/"><i class="icon-globe"></i> Visualization</a></li>
-                </ul>
-                
-                <ul class="nav pull-right">
-                     {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
-                    <li><a href="#">{{user.usertype.name}} {{ user.username }}</a></li>
+            <a class="btn btn-navbar pull-right" data-toggle="collapse" data-target=".nav-collapse" style="padding: 4px 10px 4px; font-size: 14px; font-weight: bold">
+            Menu
+            </a>
+            <ul class="nav pull-right">
+                <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    {{user.usertype.name}} {{ user.username }}
+                    <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a href="/profilepage/">Profile</a></li>
+                    {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
                     <li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
-                </ul>
+                    </ul>
+                </div>
+            </ul>
+            <div class="nav-collapse collapse">
+                <div>
+                    <ul class="nav pull-left">
+                        <li>&nbsp</li>
+                        <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
+                        <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
+                        <li><a href="/map/"><i class="icon-globe"></i> Visualization</a></li>
+                        <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-	</div>
+    </div>
     <div class="well container span4">
 			<h4>Change Password</h4>
             {% if message %}
