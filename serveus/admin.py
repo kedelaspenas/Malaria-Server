@@ -2,7 +2,8 @@ from serveus import app
 from flask.ext.admin import Admin, AdminIndexView, expose
 from flask.ext.admin.base import MenuLink
 from flask.ext.admin.contrib.sqlamodel import ModelView
-from flask.ext.wtf import PasswordField
+#from flask.ext.wtf import PasswordField
+from wtforms import PasswordField
 from flask.ext.login import current_user
 
 from models import db, User, UserType, Case, MalType

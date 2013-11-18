@@ -3,7 +3,10 @@ import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import render_template, flash, redirect, request, url_for, make_response, abort
 from flask.ext.login import login_user, current_user, LoginManager, logout_user, login_required
-from flask.ext.wtf import Required
+#from flask.ext.wtf import Required
+from flask.ext.wtf import Form
+from wtforms import TextField, BooleanField
+from wtforms.validators import Required
 from serveus import app
 from forms import LoginForm, RecoveryForm, ChangePassForm
 from werkzeug import secure_filename
