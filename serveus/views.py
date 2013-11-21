@@ -55,6 +55,8 @@ def allowed(types=[]):
 @app.route('/')
 @app.route('/index/')
 def index():
+    if current_user.is_authenticated():
+        return redirect('/dashboard/')
     return render_template("index.html",login_form = LoginForm(), recovery_form = RecoveryForm())
     
 @app.route('/profilepage/', methods = ['GET', 'POST'])

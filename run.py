@@ -1,6 +1,9 @@
 import sys
 import socket
 from serveus import app
+from crowd import crowd
+
+app.register_blueprint(crowd)
 
 port = 5000
 if len(sys.argv) > 1 and sys.argv[1]:
