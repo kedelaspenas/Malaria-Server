@@ -9,9 +9,18 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script>
-            var noMalariaPin = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "01DF01", new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
+            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
             
-            var malariaPin = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FE7569", new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var falciparumPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var vivaxPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var malariaePin = new google.maps.MarkerImage(pinImage[2], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var ovalePin = new google.maps.MarkerImage(pinImage[3], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var noMalariaPin = new google.maps.MarkerImage(pinImage[4], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
             function MarkerList(name, list, markerImage) {
                 this.name = name;
@@ -27,10 +36,10 @@
                 }
             }
             var markers = [
-                new MarkerList("Falciparum", [{% for i in case_list['Falciparum'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
-                new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaPin),
+                new MarkerList("Falciparum", [{% for i in case_list['Falciparum'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], falciparumPin),
+                new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], vivaxPin),
+                new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaePin),
+                new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], ovalePin),
                 new MarkerList("No Malaria", [{% for i in case_list['No Malaria'] %}new google.maps.LatLng({{i}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
             ]
             
@@ -183,12 +192,27 @@
         <h3 id="helpModalLabel">Visualization</h3>
         </div>
         <div class="modal-body">
-        <p>This page shows the distribution of malaria cases all over the country. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7CFE7569"/> Malaria infected. <br> <img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2%7C01DF01" /> No malaria.</p>
+        <p>This page shows the distribution of malaria cases all over the country. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br>
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|FF0000|000000"/> Falciparum <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|00FF00|000000"/> Vivax <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|00FFFF|000000"/> Malariae <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000"/> Ovale <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Malaria</p>
         </div>
         </div>
         <script>
             var markerFilters = document.getElementById("filter_container");
             for (var i=0;i<markers.length;i++) {
+                var tmpdiv = document.createElement("div");
+                var colorbox = document.createElement("span");
+                colorbox.style.backgroundColor = "#"+markerColors[i];
+                colorbox.innerHTML = "&nbsp;&nbsp;";
+                colorbox.style.display = "inline-block";
+                colorbox.style.height = "11px";
+                colorbox.style.border = "1px solid Black"
+                colorbox.style.verticalAlign = "middle"
+                tmpdiv.appendChild(colorbox);
+            
                 var chkbox = document.createElement("input");
                 chkbox.id = "checkbox";
                 chkbox.type = "checkbox";
@@ -197,13 +221,14 @@
                     triggerMarker(this.index);
                 }
                 chkbox.checked = true;
-                markerFilters.appendChild(chkbox);
+                tmpdiv.appendChild(chkbox);
                 
                 var chkname = document.createElement("span");
                 chkname.innerHTML = " "+markers[i].name;
-                markerFilters.appendChild(chkname);
+                tmpdiv.appendChild(chkname);
                 
-                markerFilters.appendChild(document.createElement("br"));
+                tmpdiv.appendChild(document.createElement("br"));
+                markerFilters.appendChild(tmpdiv)
             }
             triggerMarker();
         </script>
