@@ -152,6 +152,8 @@
             var min_date = new Date({{date_start.year}}, {{date_start.month}}-1, {{date_start.day}});
             var max_date = new Date({{date_end.year}}, {{date_end.month}}-1, {{date_end.day}});
             
+            var total_shown = 0;
+            
             function MarkerList(name, list, dates, markerImage) {
                 this.name = name;
                 this.list = list;
@@ -163,12 +165,19 @@
                     for (var i=0; i<this.list.length; i++)
                     {
                         if (this.dates[i] >= min_date && this.dates[i] <= max_date && this.show) {
+                            if (!this.list[i].getVisible()) {
+                                total_shown += 1;
+                            }
                             this.list[i].setVisible(true);
                         }
                         else {
+                            if (this.list[i].getVisible()) {
+                                total_shown -= 1;
+                            }
                             this.list[i].setVisible(false);
                         }
                     }
+                    document.getElementById("marker_total").innerHTML = total_shown;
                 }
                 this.toggleVisible = function() {
                     this.setVisible(!this.show);
@@ -181,7 +190,6 @@
                 new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Ovale'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], ovalePin),
                 new MarkerList("No Malaria", [{% for i in case_list['No Malaria'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Malaria'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
             ]
-            
             
             function initialize() {
               var myLatlng = new google.maps.LatLng({{lat}},{{lng}});
@@ -200,9 +208,11 @@
                   });
               }
               for (var j=0;j<markers.length;j++) {
-                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage)}
+                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage);
+                    total_shown += 1;
+                    }
               }
-              
+              document.getElementById("marker_total").innerHTML = total_shown;
               var filter = document.getElementById('filter')
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
               var total = document.getElementById('total_container')
@@ -218,14 +228,6 @@
                 if (markerclass) {
                     markerclass.toggleVisible();
                 }
-                
-                var total = 0;
-                for (var i=0;i<markers.length;i++) {
-                    if (markers[i].show) {
-                        total += markers[i].list.length;
-                    }
-                }
-                document.getElementById("marker_total").innerHTML = total;
               }
         </script>
         
