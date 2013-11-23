@@ -250,6 +250,74 @@ def maps():
             lat = 10.422988
             lng = 120.629883
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
+    
+@app.route('/timeline/')
+@login_required
+def timeline():
+    # Filter arguments
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+    zoom = request.args.get('zoom')
+    date_start = request.args.get('date_start')
+    date_end = request.args.get('date_end')
+    default_view = False
+    # Check if filters exist
+    if not (zoom and date_start and date_end):
+        # Go to default view
+        default_view = True
+        date_start = datetime.date.today()-datetime.timedelta(days=30)
+        date_end = datetime.date.today()
+        zoom = 7
+        # return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
+    # Build marker list for map
+    
+    case_list = Case.query.all()
+    case_list = [i for i in case_list]
+    
+    min_date = case_list[0].date
+    max_date = case_list[0].date
+    
+    sorted_list = dict([(i, []) for i in malariaList[1:]])
+    for i in case_list:
+        sorted_list[i.human_diagnosis].append((str(i.lat)+','+str(i.lng),i.date))
+        
+        if i.date > max_date:
+            max_date = i.date
+        if i.date < min_date:
+            min_date = i.date
+    
+    date_start = str(min_date.year) + '-' + str(min_date.month) + '-' + str(min_date.day)
+    date_end = str(max_date.year) + '-' + str(max_date.month) + '-' + str(max_date.day)
+    
+    date_start = min_date
+    date_end = max_date
+    
+    if default_view or not(lat and lng):
+        # Get centroid of markers of cases
+        max_y = max_x = 0
+        min_y = min_x = 9999
+        for i in case_list:
+            if i.lat > max_y:
+                max_y = i.lat
+            if i.lng > max_x:
+                max_x = i.lng
+            if i.lat < min_y:
+                min_y = i.lat
+            if i.lng < min_x:
+                min_x = i.lng
+        # Center
+        lat = (min_y + max_y)/2
+        lng = (min_x + max_x)/2
+        # Calculate zoom based on resolution
+        # TODO: Move to client side javascript if applicable
+        try:
+            zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
+        except Exception, e:
+            # Default zoom
+            zoom = 7
+            lat = 10.422988
+            lng = 120.629883
+    return render_template("timeline.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):

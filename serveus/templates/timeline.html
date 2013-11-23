@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Timeline</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/static/css/iThing-min.css" rel="stylesheet">
+        <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+		<style>
+		html, body {
+			height: 100%;
+			margin: 0 0 0;
+            padding: 0 0 0;
+		}
+        #filter { 
+        background-color: transparent; 
+        right: 20px;
+        width: 100px;
+        background: white; 
+        border: 1px solid;
+        border-color: #999999;
+        padding: 5px;
+        padding-left: 7px;
+        padding-bottom: 3px;
+        margin-right: 5px;
+        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
+	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
+        box-shadow: 0px 7px 6px -6px #0F0F0F;
+        }
+        #total_container { 
+        background-color: transparent; 
+        
+        width: 100px;
+        background: white; 
+        border: 1px solid;
+        border-color: #999999;
+        padding: 5px;
+        padding-left: 7px;
+        padding-bottom: 3px;
+        margin-right: 5px;
+        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
+	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
+        box-shadow: 0px 7px 6px -6px #0F0F0F;
+        }
+        
+        
+        #checkbox{
+            margin-bottom: 5px;
+        }
+        .ui-rangeSlider-innerBar{
+            width: 100%;
+            max-width:100%;
+        }
+        
+		</style>
+	</head>
+	<body>
+		<div class="navbar" style="width: 100%;">
+			<div class="navbar-inner">
+				<a class="btn btn-navbar pull-right" data-toggle="collapse" data-target=".nav-collapse" style="padding: 4px 10px 4px; font-size: 14px; font-weight: bold">
+				Menu
+				</a>
+                <ul class="nav pull-right">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{user.usertype.name}} {{ user.username }}
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                        <li><a href="/profilepage/">Profile</a></li>
+                        {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
+                        <li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
+                        </ul>
+                    </div>
+                </ul>
+                <div class="nav-collapse collapse">
+                    <div>
+                        <ul class="nav pull-left">
+                            <li>&nbsp</li>
+                            <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
+                            <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
+                            <li class="active"><a href="/map/"><i class="icon-globe"></i> Visualization</a></li>
+                            <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
+                        </ul>
+                    </div>
+                </div>
+			</div>
+		</div>
+        
+        <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0;"></div>
+        
+        <div id="date_slider" style="width:50%"></div>
+        
+        <div id="filter" class="container" >
+        Showing cases of:<br>
+        <span id="filter_container">
+        </span>
+        <div style="padding: 0; margin: 0;">
+        <!--
+        From:<br>
+        <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{date_start}}" id="dpd1" name="date_start">
+        <br>
+        To:<br>
+        <input type="text" style="width: calc(100% - 15px); margin-bottom: 3px" value="{{date_end}}" id="dpd2" name="date_end">
+        -->
+        <input type="text" id="lng" name="lng" value="{{ lng }}" style="display: None">
+        <input type="text" id="lat" name="lat" value="{{ lat }}" style="display: None">
+        <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
+        </div>
+        </div>
+
+        <div id="total_container" class="container">
+        Cases displayed: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
+        </div>
+        
+        <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+        <h3 id="helpModalLabel">Visualization</h3>
+        </div>
+        <div class="modal-body">
+        <p>This page shows the distribution of malaria cases all over the country. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br>
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|FF0000|000000"/> Falciparum <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|00FF00|000000"/> Vivax <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|00FFFF|000000"/> Malariae <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000"/> Ovale <br> 
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Malaria</p>
+        </div>
+        </div>
+        <script src="/static/js/jquery.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="/static/js/jQDateRangeSlider-withRuler-min.js"></script>
+        <script src="/static/js/eyecon-datepicker.js"></script>
+        <script>
+            var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
+            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
+            
+            var falciparumPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var vivaxPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var malariaePin = new google.maps.MarkerImage(pinImage[2], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var ovalePin = new google.maps.MarkerImage(pinImage[3], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var noMalariaPin = new google.maps.MarkerImage(pinImage[4], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            
+            var min_date = new Date({{date_start.year}}, {{date_start.month}}-1, {{date_start.day}});
+            var max_date = new Date({{date_end.year}}, {{date_end.month}}-1, {{date_end.day}});
+            
+            function MarkerList(name, list, dates, markerImage) {
+                this.name = name;
+                this.list = list;
+                this.dates = dates;
+                this.markerImage = markerImage;
+                this.show = true;
+                this.setVisible = function(b) {
+                    this.show = b;
+                    for (var i=0; i<this.list.length; i++)
+                    {
+                        if (this.dates[i] >= min_date && this.dates[i] <= max_date && this.show) {
+                            this.list[i].setVisible(true);
+                        }
+                        else {
+                            this.list[i].setVisible(false);
+                        }
+                    }
+                }
+                this.toggleVisible = function() {
+                    this.setVisible(!this.show);
+                }
+            }
+            var markers = [
+                new MarkerList("Falciparum", [{% for i in case_list['Falciparum'] %} new google.maps.LatLng({{i[0]}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Falciparum'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], falciparumPin),
+                new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Vivax'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], vivaxPin),
+                new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Malariae'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaePin),
+                new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Ovale'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], ovalePin),
+                new MarkerList("No Malaria", [{% for i in case_list['No Malaria'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Malaria'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
+            ]
+            
+            
+            function initialize() {
+              var myLatlng = new google.maps.LatLng({{lat}},{{lng}});
+              var mapOptions = {
+                zoom: {{zoom}},
+                center: myLatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              }
+              var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+              function addMarker(latLng, markerType) {
+                    return new google.maps.Marker({
+                    position: latLng,
+                    icon: markerType,
+                    map: map
+                  });
+              }
+              for (var j=0;j<markers.length;j++) {
+                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage)}
+              }
+              
+              var filter = document.getElementById('filter')
+              map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
+              var total = document.getElementById('total_container')
+              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(total);
+              var slider = document.getElementById('date_slider')
+              map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(slider);
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+           
+            function triggerMarker(x)
+              {
+                var markerclass = markers[x-1];
+                if (markerclass) {
+                    markerclass.toggleVisible();
+                }
+                
+                var total = 0;
+                for (var i=0;i<markers.length;i++) {
+                    if (markers[i].show) {
+                        total += markers[i].list.length;
+                    }
+                }
+                document.getElementById("marker_total").innerHTML = total;
+              }
+        </script>
+        
+        <script>
+            var markerFilters = document.getElementById("filter_container");
+            for (var i=0;i<markers.length;i++) {
+                var tmpdiv = document.createElement("div");
+                var colorbox = document.createElement("span");
+                colorbox.style.backgroundColor = "#"+markerColors[i];
+                colorbox.innerHTML = "&nbsp;&nbsp;";
+                colorbox.style.display = "inline-block";
+                colorbox.style.height = "11px";
+                colorbox.style.border = "1px solid Black"
+                colorbox.style.verticalAlign = "middle"
+                tmpdiv.appendChild(colorbox);
+            
+                var chkbox = document.createElement("input");
+                chkbox.id = "checkbox";
+                chkbox.type = "checkbox";
+                chkbox.index = i+1;
+                chkbox.onclick = function(e) {
+                    triggerMarker(this.index);
+                }
+                chkbox.checked = true;
+                tmpdiv.appendChild(chkbox);
+                
+                var chkname = document.createElement("span");
+                chkname.innerHTML = " "+markers[i].name;
+                tmpdiv.appendChild(chkname);
+                
+                tmpdiv.appendChild(document.createElement("br"));
+                markerFilters.appendChild(tmpdiv)
+            }
+            triggerMarker();
+        </script>
+        <script>
+            $("#date_slider").dateRangeSlider({
+            defaultValues:{
+                min: min_date,
+                max: max_date
+            }},
+            {
+            bounds:{
+                min: new Date({{date_start.year}}, {{date_start.month}}-1, {{date_start.day}}-1),
+                max: new Date({{date_end.year}}, {{date_end.month}}-1, {{date_end.day}}+1)
+            }});
+            $("#date_slider").dateRangeSlider('resize');
+            $("#date_slider").bind("valuesChanging", function(e, data){
+                min_date = data.values.min;
+                max_date = data.values.max;
+                for (var i=0; i<markers.length; i++)
+                {
+                    if (markers[i].show == true) {
+                        markers[i].setVisible(true);
+                    }
+                }
+            });
+        </script>
+        <script>
+        function getCurrentWidth()
+        {
+            return "innerHeight" in window 
+               ? window.innerWidth
+               : document.documentElement.offsetWidth;
+        }
+        document.getElementById('date_slider').style.width = String(Math.round(getCurrentWidth()*0.70)) + 'px';
+        </script>
+        <script>
+            var clicked = false;
+            var checkin = $('#dpd1').datepicker({
+            onRender: function(date) {
+            return date.valueOf();
+            }
+            }).on('changeDate', function(ev) {
+            clicked = true;
+            if (true) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate());
+            checkout.setValue(newDate);
+            }
+            checkin.hide();
+            $('#dpd2')[0].focus();
+            }).data('datepicker');
+            var checkout = $('#dpd2').datepicker({
+            onRender: function(date) {
+            if (clicked)
+                return date.valueOf() <= checkin.date.valueOf() - 1 ? 'disabled' : '';
+            else
+                return date.valueOf()
+            }
+            }).on('changeDate', function(ev) {
+            checkout.hide();
+            }).data('datepicker');
+        </script>
+	</body>
+</html>
