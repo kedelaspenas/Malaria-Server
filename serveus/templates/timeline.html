@@ -91,11 +91,13 @@
 			</div>
 		</div>
         
-        <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0;"></div>
+        <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center"><img src="/static/images/loading.gif"/></div>
         
-        <div id="date_slider" style="width:50%"></div>
+        <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: none"></div>
         
-        <div id="filter" class="container" >
+        <div id="date_slider" style="width:70%"></div>
+        
+        <div id="filter" class="container" style="display: none">
         Showing cases of:<br>
         <span id="filter_container">
         </span>
@@ -113,7 +115,7 @@
         </div>
         </div>
 
-        <div id="total_container" class="container">
+        <div id="total_container" class="container" style="display: none">
         Cases displayed: <div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
         
@@ -135,7 +137,7 @@
         <script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/jquery-ui-1.10.3.custom.min.js"></script>
-        <script src="/static/js/jQDateRangeSlider-withRuler-min.js"></script>
+        <script src="/static/js/jQDateRangeSlider-min.js"></script>
         <script src="/static/js/eyecon-datepicker.js"></script>
         <script>
             var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
@@ -296,6 +298,9 @@
                : document.documentElement.offsetWidth;
         }
         document.getElementById('date_slider').style.width = String(Math.round(getCurrentWidth()*0.70)) + 'px';
+        window.onresize=function(){
+        document.getElementById('date_slider').style.width = '70%';
+        };
         </script>
         <script>
             var clicked = false;
@@ -323,6 +328,12 @@
             }).on('changeDate', function(ev) {
             checkout.hide();
             }).data('datepicker');
+        </script>
+        <script>
+            document.getElementById('loading_block').style.display = 'None';
+            document.getElementById('map-canvas').style.display = '';
+            document.getElementById('filter').style.display = '';
+            document.getElementById('total_container').style.display = '';
         </script>
 	</body>
 </html>
