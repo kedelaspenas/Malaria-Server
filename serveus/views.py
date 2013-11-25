@@ -311,7 +311,7 @@ def timeline():
         # Calculate zoom based on resolution
         # TODO: Move to client side javascript if applicable
         try:
-            zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
+            zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453);
         except Exception, e:
             # Default zoom
             zoom = 7
