@@ -74,6 +74,9 @@ class Case(db.Model):
     def __repr__(self):
         return '<Case %r>' % self.id
 
+    def __str__(self):
+        return 'Case ' + str(self.id)
+
 class Region(db.Model):
     __tablename__ = 'region'
 
@@ -114,8 +117,13 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'))
     im = db.Column(db.BLOB)
-
-    def __init__(self, path, case):
+    '''
+    def __init__(self, path="", case=""):
+        with open(path, 'r') as f:
+            self.im = f.read()
+        self.case = case
+    '''
+    def create_image(self, path="", case=""):
         with open(path, 'r') as f:
             self.im = f.read()
         self.case = case

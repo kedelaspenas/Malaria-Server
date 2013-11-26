@@ -516,7 +516,7 @@ def upload_file():
 
                 # store images in database
                 for img_file in glob.glob(os.path.join(folder, "*.jpg")):
-                    img = Image(img_file, case)
+                    img = Image.create_image(img_file, case)
                     db.session.add(img)
                     db.session.commit()
 
@@ -565,7 +565,7 @@ def retype():
 
             # store images in database
             for img_file in glob.glob(os.path.join(folder, "*.jpg")):
-                img = Image(img_file, case)
+                img = Image.create_image(img_file, case)
                 db.session.add(img)
                 db.session.commit()
 

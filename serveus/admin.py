@@ -3,10 +3,12 @@ from flask.ext.admin import Admin, AdminIndexView, expose
 from flask.ext.admin.base import MenuLink
 from flask.ext.admin.contrib.sqlamodel import ModelView
 #from flask.ext.wtf import PasswordField
-from wtforms import PasswordField
+from wtforms import PasswordField, FileField
 from flask.ext.login import current_user
+from flask import request
+from jinja2 import Markup
 
-from models import db, User, UserType, Case, MalType
+from models import db, User, UserType, Case, MalType, Image
 from views import dashboard
 
 # Custom admin links on navbar
@@ -48,11 +50,35 @@ class UserView(MyModelView):
         if len(model.password):
             model.password = User.hash_password(form.password.data)
             
+class ImageView(MyModelView):
+    can_create = True
+    can_edit = False
+    column_list = ('id', 'case_id')
+    column_excluded_list = ('im')
+    
+    def scaffold_form(self):
+        form_class = super(ImageView, self).scaffold_form()
+        form_class.im = FileField()
+        return form_class
+        
+    def on_model_change(self, form, model):
+        temp = request.files[form.im.name].read()
+        if temp:
+            model.im = temp
+        
+    def _image_link(view, context, model, name):
+        return Markup(
+            '<a href="/pic/%s">%s</a>' % (model.id, model.id)
+        ) if model.id else ""
+        
+    column_formatters = { 'id': _image_link }
+            
 # Add pages to the admin page
 admin.add_view(MyModelView(UserType, db.session))
 admin.add_view(UserView(User, db.session))
 admin.add_view(MyModelView(Case, db.session))
 admin.add_view(MyModelView(MalType, db.session))
+admin.add_view(ImageView(Image, db.session))
 
 # Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='dashboard'))
