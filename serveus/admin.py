@@ -54,7 +54,8 @@ class ImageView(MyModelView):
     can_create = True
     can_edit = False
     column_list = ('id', 'case_id')
-    column_excluded_list = ('im')
+    column_labels = dict(id='ID', case_id='Case')
+    column_exclude_list = ('im')
     
     def scaffold_form(self):
         form_class = super(ImageView, self).scaffold_form()
@@ -70,15 +71,20 @@ class ImageView(MyModelView):
         return Markup(
             '<a href="/pic/%s">%s</a>' % (model.id, model.id)
         ) if model.id else ""
-        
+    '''    
+    def _image_view(view, context, model, name):
+        return Markup(
+            '<a href="/pic/%s"><img src="/pic/%s" style="width: 100px; height: 100px"/></a>' % (model.id, model.id)
+        ) if model.im else ""
+    '''    
     column_formatters = { 'id': _image_link }
             
 # Add pages to the admin page
 admin.add_view(MyModelView(UserType, db.session))
 admin.add_view(UserView(User, db.session))
 admin.add_view(MyModelView(Case, db.session))
-admin.add_view(MyModelView(MalType, db.session))
 admin.add_view(ImageView(Image, db.session))
+admin.add_view(MyModelView(MalType, db.session))
 
 # Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='dashboard'))
