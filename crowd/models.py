@@ -1,7 +1,5 @@
 import os
 
-from serveus import app
-
 from serveus.models import db, User, Case, Image, MalType
 
 # app.config['SQLALCHEMY_BINDS'] = { 'crowd': 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db' }
@@ -18,8 +16,6 @@ db.drop_all()
 
 Column types: http://pythonhosted.org/Flask-SQLAlchemy/models.html
 '''
-
-
 
 class LabelerType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
