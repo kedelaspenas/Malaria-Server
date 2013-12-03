@@ -75,7 +75,7 @@ class Case(db.Model):
         return '<Case %r>' % self.id
 
     def __str__(self):
-        return 'Case ' + str(self.id)
+        return str(self.id)
 
 class Region(db.Model):
     __tablename__ = 'region'
