@@ -17,18 +17,9 @@ db.drop_all()
 Column types: http://pythonhosted.org/Flask-SQLAlchemy/models.html
 '''
 
-class Labeler(db.Model):
-    __tablename__ = 'labeler'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    total_images_labeled = db.Column(db.Integer)
-    total_correct_images_labeled = db.Column(db.Integer)
-    last_session = db.Column(db.DateTime())
-    labeler_rating = db.Column(db.Float)
-    labeler_type_id = db.Column(db.Integer, db.ForeignKey('labelertype.id'))
-
 class LabelerType(db.Model):
     __tablename__ = 'labelertype'
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     labelers = db.relationship('Labeler', backref='labelertype', lazy='dynamic')
@@ -42,6 +33,17 @@ class LabelerType(db.Model):
 
     def __str__(self):
         return self.name
+
+class Labeler(db.Model):
+    __tablename__ = 'labeler'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    total_images_labeled = db.Column(db.Integer)
+    total_correct_images_labeled = db.Column(db.Integer)
+    last_session = db.Column(db.DateTime())
+    labeler_rating = db.Column(db.Float)
+    labeler_type_id = db.Column(db.Integer, db.ForeignKey('labelertype.id'))
 
 class TrainingImage(db.Model):
     __tablename__ = 'trainingimage'
