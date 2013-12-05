@@ -3,6 +3,7 @@ import datetime
 import sqlite3
 
 from serveus.models import *
+from crowd.models import *
 
 if os.path.isfile('cs198pythontest.db'):
 	os.remove('cs198pythontest.db')
@@ -133,6 +134,37 @@ db.session.add(x)
 x = Case(datetime.date(2012,5,9),23,'Cuyo','Vivax',10.51,121.0)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
 db.session.add(x)
+
+# CROWDSOURCING START
+
+#LabelerType
+db.session.add(LabelerType('Novice'))
+db.session.add(LabelerType('Regular'))
+db.session.add(LabelerType('Expert'))
+
+#Labeler
+db.session.add(Labeler(1,0,0, datetime.datetime(2013,12,5,0,0), 1.0, 1))
+db.session.add(Labeler(2,0,0, datetime.datetime(2013,12,5,0,0), 1.0, 2))
+db.session.add(Labeler(3,0,0, datetime.datetime(2013,12,5,0,0), 1.0, 3))
+
+#TrainingImage
+for i in xrange(1,9):
+    db.session.add(TrainingImage(i,0,'notYetKnown',None))
+
+#TrainingImageLabel
+for i in xrange(1,9):
+    for j in range(1,9):
+        db.session.add(TrainingImageLabel(i,datetime.date(2013,12,5),datetime.time(j,j), datetime.time(j,j+2),1, None, None))
+
+#TrainingImageLabelCell
+for i in xrange(1,9):
+    for j in xrange(1,9):
+        for k in xrange(1,9):
+            db.session.add(TrainingImageLabelCell(j,k*100,k*100, None,None))
+
+log('dummy crowdsourcing data')
+# CROWDSOURCING END
+
 # TODO: remove when keys are synced with accounts
 """
 from Crypto.PublicKey import RSA
