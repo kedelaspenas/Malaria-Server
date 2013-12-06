@@ -44,6 +44,7 @@ class Labeler(db.Model):
     last_session = db.Column(db.DateTime())
     labeler_rating = db.Column(db.Float)
     labeler_type_id = db.Column(db.Integer, db.ForeignKey('labelertype.id'))
+    training_image_labels = db.relationship('TrainingImageLabel', backref='labeler', lazy='dynamic')
     
     def __init__(self, user_id="", total_images_labeled="", total_correct_images_labeled="", last_session="", labeler_rating="", labeler_type_id=""):
         self.user_id = user_id
@@ -74,6 +75,7 @@ class TrainingImageLabel(db.Model):
     __tablename__ = 'trainingimagelabel'
     
     id = db.Column(db.Integer, primary_key=True)
+    labeler_id = db.Column(db.Integer, db.ForeignKey('labeler.id'))
     training_image_id = db.Column(db.Integer, db.ForeignKey('trainingimage.id'))
     date = db.Column(db.Date)
     # is there a db column type na duration?
@@ -84,7 +86,8 @@ class TrainingImageLabel(db.Model):
     labeler_correct = db.Column(db.Boolean)
     cells = db.relationship('TrainingImageLabelCell', backref='trainingimagelabel', lazy='dynamic')
     
-    def __init__(self, training_image_id="", date="", time_start="", time_end="", initial_label="", correct_label="", labeler_correct=""):
+    def __init__(self, labeler_id="", training_image_id="", date="", time_start="", time_end="", initial_label="", correct_label="", labeler_correct=""):
+        self.labeler_id = labeler_id
         self.training_image_id = training_image_id
         self.date = date
         self.time_start = time_start

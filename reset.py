@@ -154,7 +154,7 @@ for i in xrange(1,9):
 #TrainingImageLabel
 for i in xrange(1,9):
     for j in range(1,9):
-        db.session.add(TrainingImageLabel(i,datetime.date(2013,12,5),datetime.time(j,j), datetime.time(j,j+2),1, None, None))
+        db.session.add(TrainingImageLabel((j%3)+1, i,datetime.date(2013,12,5),datetime.time(j,j), datetime.time(j,j+2),1, None, None))
 
 #TrainingImageLabelCell
 for i in xrange(1,9):
