@@ -16,7 +16,7 @@ def index():
 @crowd.route('/crowd/dashboard/')
 @login_required
 def dashboard():
-    labeler = Labeler.query.filter_by(user_id=user.id).first()
+    labeler = Labeler.query.filter_by(user_id=current_user.id).first()
     return render_template("/crowd/dashboard.html", user = current_user, labeler = labeler)
 
 @crowd.route('/crowd/session/',  methods = ['GET', 'POST'])
