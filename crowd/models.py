@@ -53,6 +53,9 @@ class Labeler(db.Model):
         self.last_session = last_session
         self.labeler_rating = labeler_rating
         self.labeler_type_id = labeler_type_id
+        
+    def __str__(self):
+        return self.user.username
 
 class TrainingImage(db.Model):
     __tablename__ = 'trainingimage'

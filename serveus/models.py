@@ -51,6 +51,9 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.username
+        
+    def __str__(self):
+        return self.username
 
 class Case(db.Model):
     __tablename__ = 'case'
@@ -120,6 +123,7 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'))
     im = db.Column(db.BLOB)
+    
     '''
     def __init__(self, path="", case=""):
         with open(path, 'r') as f:
