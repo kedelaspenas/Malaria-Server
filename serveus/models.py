@@ -34,6 +34,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(120), unique=True)
     usertype_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
+    labelers = db.relationship('Labeler', backref='user', lazy='dynamic')
     
     @validates('password')
     def update_password(self, key, value):
