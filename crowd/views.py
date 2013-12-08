@@ -1,4 +1,4 @@
-from flask import render_template, redirect
+from flask import request, render_template, redirect
 from flask.ext.login import current_user, login_user, logout_user, login_required
 from crowd import crowd
 from serveus.forms import LoginForm, RecoveryForm
@@ -22,8 +22,21 @@ def dashboard():
 @crowd.route('/crowd/session/',  methods = ['GET', 'POST'])
 @login_required
 def session():
+    # LABEL SUBMITTED
+    if request.method == 'POST':
+        # if request.form: error check if data submitted is valid
+        
+        # When html form is submitted, answers are stored in request.form
+        # To access use request.form['name attribute of <input> in session.html file']
+        with_malaria = request.form['with_malaria']
+        
+        # If input of type checkbox is left blank/untouched, di siya masasama
+        for i in request.form:
+            print i + ': ' + request.form[i]
+        
+
     '''
-    # UPON SUBMISSION
+    # LABEL SUBMITTED
     # if request.method == 'POST': # if we're using post, submission is encrypted
     # if request.args: # if we're using get, submission not encrypted
     
@@ -59,7 +72,7 @@ def session():
     '''
     '''
     # START OF LABELING
-    Query TrainingImage to be labeled. If none, create a new TrainingImage from an Image.
+    Query TrainingImage to be labeled. If none, create a new TrainingImage from an Image. How to do this?
     
     pass to render_template, and give server's time as time start
 

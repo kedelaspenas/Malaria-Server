@@ -20,7 +20,7 @@
   <nav class="top-bar" data-topbar>
     <ul class="title-area">
       <li class="name">
-        <h1><a href="#">Malaria</a></h1>
+        <h1><a href="/crowd/dashboard/">Malaria</a></h1>
       </li>
     </ul>
   
@@ -50,7 +50,7 @@
   <ul class="breadcrumbs">
     <li><a href="#">Is there malaria? [Yes]</a></li>
     <li><a href="#">Is there more than one species? [No]</a></li>
-    <li class="current"><a href="#">Is it Falciparum?</a></li>
+    <li class="current"><a href="#">Is it Falciparum? <<---- breadcrumbs for easy navigation</a></li>
   </ul>
 
   <div class="row">
@@ -58,17 +58,28 @@
       <img src="/crowd/static/img/1.jpg" width=450px height=337px />
     </div>
   </div>
-
+  
   <div class="row">
-    <div class="small-12 columns text-center">
-        <span>_</span> <!-- this is a hack lol -->
+    <div class="panel">
+        <form action="" method="post" name="label">
+            Temporary input: <br><br>
+            <input type="checkbox" name="with_malaria"/> Is there malaria? <br>
+            <input type="checkbox" name="with_falciparum"/> Is there Falciparum? <br>
+            <input type="text" placeholder="Coordinates" name="falciparum_coordinates"/>
+            <input type="text" placeholder="Answering duration 00:00:00" name="falciparum_duration"/>
+            <input type="checkbox" name="with_vivax"/> Is there Vivax? <br>
+            <input type="text" placeholder="Coordinates" name="vivax_coordinates"/>
+            <input type="text" placeholder="Answering duration 00:00:00" name="vivax_duration"/>
+            <input type="checkbox" name="unsure"/> Unsure? <br>
+            <input class="button success radius" type="submit" value="Submit" />
+        </form>
     </div>
   </div>
 
   <div class="row">
     <div class="small-centered columns text-center">
       <div class="panel radius">
-          <h4><span class="round label">#3</span>&nbsp;&nbsp;Is it <strong>Falciparum</strong>?</h4>
+          <h4>Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="round label">#3</span>&nbsp;&nbsp;Is it <strong>Falciparum</strong>? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next</h4>
       </div>
     </div>
   </div>
