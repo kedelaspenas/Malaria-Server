@@ -131,7 +131,7 @@ class Image(db.Model):
         self.case = case
     '''
     def create_image(self, path="", case=""):
-        with open(path, 'r') as f:
+        with open(path, 'rb') as f:
             self.im = f.read()
         self.case = case
 

@@ -135,6 +135,14 @@ x = Case(datetime.date(2012,5,9),23,'Cuyo','Vivax',10.51,121.0)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
 db.session.add(x)
 
+# Images
+for i in xrange(1,9):
+    tmp = Image()
+    tmp.create_image('reset_images/' + str(i) + '.jpg', None)
+    tmp.case_id = i
+    db.session.add(tmp)
+log('images')    
+    
 # CROWDSOURCING START
 
 #LabelerType
