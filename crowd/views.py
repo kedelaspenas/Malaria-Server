@@ -1,10 +1,13 @@
+import random
+import re
+
 from flask import request, render_template, redirect
 from flask.ext.login import current_user, login_user, logout_user, login_required
 from crowd import crowd
 from serveus.forms import LoginForm, RecoveryForm
 # IMPORT MODELS HERE
 from serveus.models import User
-from crowd.models import db, Labeler, LabelerType
+from crowd.models import db, Labeler, LabelerType, TrainingImage
 
 @crowd.route('/crowd/')
 @crowd.route('/crowd/index/')
@@ -22,92 +25,80 @@ def dashboard():
 @crowd.route('/crowd/session/',  methods = ['GET', 'POST'])
 @login_required
 def session():
+    # Constants
+    top_n_labels = 5
+    label_limit = 3
+    labeler = Labeler.query.filter_by(user_id=current_user.id).first()
+    
     # LABEL SUBMITTED
-    if request.method == 'POST':
-        # if request.form: error check if data submitted is valid
+    if request.method == 'POST' and request.form:
+        # Check if data submitted in request.form is valid
         
-        # When html form is submitted, answers are stored in request.form
-        # To access use request.form['name attribute of <input> in session.html file']
-        with_malaria = request.form['with_malaria']
-        
-        # If input of type checkbox is left blank/untouched, di siya masasama
+        # Print all for debugging
         for i in request.form:
             print i + ': ' + request.form[i]
         
-
-    '''
-    # LABEL SUBMITTED
-    # if request.method == 'POST': # if we're using post, submission is encrypted
-    # if request.args: # if we're using get, submission not encrypted
-    
-    Recieve duration from the submission and compute time end, adjust if there were two/more malaria specie and compute time ends accordingly
-    
-    # No Malaria
-        Dump to "No Malaria" dump, proceed to next session
+        # Unsure
+        if request.form.getlist('unsure'):
+            # UNCOMMENT NEXT LINES TO REMOVE PENDING LABEL FROM LABELER
+            # labeler.current_training_image_id = None
+            # db.session.add(labeler)
+            # db.session.commit()
+            return redirect('/crowd/index/')
         
-    # Falciparum    
-        If no, goto # Vivax
-        If yes, make a new TrainingImageLabel
-        Collect coordinates of markers and make a TrainingImageLabelCell for each
-        Check if corresponding TrainingImage has reached N (magic number of dumping) and if yes
-            process TrainingImage and all its TrainingImageLabel
-            update all who labeled as correct/otherwise
-            update participating labeler's stats
-            dump
-    
-    # Vivax    
-        If no, goto # Dunno
-        If yes, make a new TrainingImageLabel
-        Collect coordinates of markers and make a TrainingImageLabelCell for each
-        Check if corresponding TrainingImage has reached N (magic number of dumping) and if yes
-            process TrainingImage and all its TrainingImageLabel
-            update all who labeled as correct/otherwise
-            update participating labeler's stats
-            dump    
-    
-    # Dunno
-        Labeler was a noob, level down
-        Will we have an don't know/unsure count? Image might have been a selfie
+        # No Malaria
+        if not request.form.getlist('with_malaria'):
+            # Make TrainingImageLabel
+            # Do adjustments and evaluation
+            pass
         
-    '''
-    '''
-    # START OF LABELING
-    Query TrainingImage to be labeled. If none, create a new TrainingImage from an Image. How to do this?
+        # With Falciparum
+        if request.form.getlist('with_falciparum'):
+            # Make TrainingImageLabel
+            # String to tuples
+            coordinates = [(tuple(int(j) for j in re.split(',',i))) for i in re.findall('[0-9]+,[0-9]+', str(request.form.getlist('falciparum_coordinates')))]
+            print coordinates
+            # Do adjustments and evaluation
+            pass
+        
+        # With Vivax
+        if request.form.getlist('with_vivax'):
+            # Make TrainingImageLabel
+            coordinates = [(tuple(int(j) for j in re.split(',',i))) for i in re.findall('[0-9]+,[0-9]+', str(request.form.getlist('vivax_coordinates')))]
+            print coordinates
+            # Do adjustments and evaluation
+            pass
+            
+        # DONE LABELING
+        # UNCOMMENT NEXT LINES TO REMOVE PENDING LABEL FROM LABELER
+        # labeler.current_training_image_id = None
+        # db.session.add(labeler)
+        # db.session.commit()
+        return redirect('/crowd/index/')
+        
+    # START LABELING
     
-    pass to render_template, and give server's time as time start
-
-    '''
-    # How to make a new db entry, check reset.py
-    # TL;DR
-    # check models.py and follow the constructor
-    # newEntry = Score("Kirong", 0)
+    # Check if labeler still has pending labels
+    if labeler.current_training_image_id !=  None:
+        training_image_to_label = TrainingImage.query.filter_by(id=labeler.current_training_image_id).first()
+        # Check if pending label still has to be labeled
+        if training_image_to_label.total_labels < label_limit:
+            return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
+            
+    # Normal procedure
+    # Get 1 random from top n labels
+    training_image_to_label = TrainingImage.query.order_by(TrainingImage.total_labels.desc())[random.randrange(top_n_labels)]
     
-    # Modify individual columns by
-    # newEntry.columnname = something
+    # If there are no more images to label
+    if training_image_to_label == None:
+        return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = None)
     
-    # Finally
-    # db.session.add(newEntry)
+    # UNCOMMENT NEXT LINES TO SAVE PENDING LABEL TO LABELER
+    # labeler.current_training_image_id = training_image_to_label
+    # db.session.add(labeler)
     # db.session.commit()
     
-    
-    # How to query:
-    # import ModelName above
-    # ModelName.query.all() or 
-    # ModelName.query.filter_by(ModelColumn=something)
-    # it returns a db query so put .first() like 
-    # ModelName.query.filter_by(ModelColumn=something).first() if you want the first
-    
-    # get sorted by Case.query.order_by(Case.date.desc())
-    
-    # IT RETURNS QUERY (select * * * * *) not a list so
-    # Transfer it to a list if you want to iterate:
-    # caseList = Case.query.all()
-    # caseList = [i for i in caseList]
-    # 2 lines, crazy stuff happens if everything's on 1 line
-    
-    labeler = Labeler.query.filter_by(user_id=current_user.id).first()
-    
-    return render_template("/crowd/session.html", user = current_user, labeler = labeler)
+    return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
     
 @crowd.route('/crowd/login/',  methods = ['GET', 'POST'])
 def login():

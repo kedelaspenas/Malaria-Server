@@ -75,6 +75,9 @@ class TrainingImage(db.Model):
         self.total_labels = total_labels
         self.final_label = final_label
         self.date_finalized = date_finalized
+        
+    def __str__(self):
+        return 'Training image ' + str(self.id) + ' labels ' + str(self.total_labels)
     
 class TrainingImageLabel(db.Model):
     __tablename__ = 'trainingimagelabel'
