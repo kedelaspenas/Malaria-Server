@@ -24,6 +24,7 @@ except ImportError:
     import PIL
 
 from models import db, User, UserType, Case, Key, Image, Database, Region
+from crowd.models import TrainingImage
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -519,6 +520,11 @@ def upload_file():
                     img = Image()
                     img.create_image(img_file, case)
                     db.session.add(img)
+                    db.session.commit()
+                    
+                    # make new training image
+                    trainingImg = TrainingImage(img.id, 0, 'Unlabeled', None)
+                    db.session.add(trainingImg)
                     db.session.commit()
 
                 return 'OK'
