@@ -41,15 +41,17 @@ class Labeler(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     total_images_labeled = db.Column(db.Integer)
     total_correct_images_labeled = db.Column(db.Integer)
+    current_training_image_id = db.Column(db.Integer, db.ForeignKey('trainingimage.id'))
     last_session = db.Column(db.DateTime())
     labeler_rating = db.Column(db.Float)
     labeler_type_id = db.Column(db.Integer, db.ForeignKey('labelertype.id'))
     training_image_labels = db.relationship('TrainingImageLabel', backref='labeler', lazy='dynamic')
     
-    def __init__(self, user_id="", total_images_labeled="", total_correct_images_labeled="", last_session="", labeler_rating="", labeler_type_id=""):
+    def __init__(self, user_id="", total_images_labeled="", total_correct_images_labeled="", current_training_image_id ="", last_session="", labeler_rating="", labeler_type_id=""):
         self.user_id = user_id
         self.total_images_labeled = total_images_labeled
         self.total_correct_images_labeled = total_correct_images_labeled
+        self.current_training_image_id = current_training_image_id
         self.last_session = last_session
         self.labeler_rating = labeler_rating
         self.labeler_type_id = labeler_type_id

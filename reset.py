@@ -143,9 +143,9 @@ db.session.add(LabelerType('Regular'))
 db.session.add(LabelerType('Expert'))
 
 #Labeler
-db.session.add(Labeler(1,0,0, datetime.datetime(2013,12,5,0,0), 1.0, 1))
-db.session.add(Labeler(2,0,0, datetime.datetime(2013,12,5,0,0), 1.0, 2))
-db.session.add(Labeler(3,0,0, datetime.datetime(2013,12,5,0,0), 1.0, 3))
+db.session.add(Labeler(1,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 1))
+db.session.add(Labeler(2,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
+db.session.add(Labeler(3,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 3))
 
 #TrainingImage
 for i in xrange(1,9):
