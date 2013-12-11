@@ -157,8 +157,8 @@ db.session.add(Labeler(3,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 3))
 
 #TrainingImage
 for i in xrange(1,9):
-    db.session.add(TrainingImage(i,0,'Unlabeled',None))
-
+    db.session.add(TrainingImage(i,0,'Unlabeled','Unlabeled',None))
+'''
 #TrainingImageLabel
 for i in xrange(1,9):
     for j in range(1,9):
@@ -169,7 +169,7 @@ for i in xrange(1,9):
     for j in xrange(1,9):
         for k in xrange(1,9):
             db.session.add(TrainingImageLabelCell(j,k*100,k*100, None,None))
-
+'''
 log('dummy crowdsourcing data')
 # CROWDSOURCING END
 

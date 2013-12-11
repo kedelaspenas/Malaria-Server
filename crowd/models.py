@@ -28,9 +28,6 @@ class LabelerType(db.Model):
     def __init__(self, name=""):
         self.name = name
 
-    def __repr__(self):
-        return '<Labeler Type %r>' % self.name
-
     def __str__(self):
         return self.name
 
@@ -66,14 +63,16 @@ class TrainingImage(db.Model):
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
     total_labels = db.Column(db.Integer)
     # change to maltype instead of string?
-    final_label = db.Column(db.String(80))
+    final_label_1 = db.Column(db.String(80))
+    final_label_2 = db.Column(db.String(80))
     date_finalized = db.Column(db.DateTime())
     training_image_labels = db.relationship('TrainingImageLabel', backref='trainingimage', lazy='dynamic')
     
-    def __init__(self, image_id="", total_labels="", final_label="", date_finalized=""):
+    def __init__(self, image_id="", total_labels="", final_label_1="", final_label_2="", date_finalized=""):
         self.image_id = image_id
         self.total_labels = total_labels
-        self.final_label = final_label
+        self.final_label_1 = final_label_1
+        self.final_label_2 = final_label_2
         self.date_finalized = date_finalized
         
     def __str__(self):
@@ -89,8 +88,8 @@ class TrainingImageLabel(db.Model):
     # is there a db column type na duration?
     time_start = db.Column(db.Time)
     time_end = db.Column(db.Time)
-    initial_label = db.Column(db.Integer, db.ForeignKey('maltype.id'))
-    correct_label = db.Column(db.Integer, db.ForeignKey('maltype.id'))
+    initial_label = db.Column(db.String(80))
+    correct_label = db.Column(db.String(80))
     labeler_correct = db.Column(db.Boolean)
     cells = db.relationship('TrainingImageLabelCell', backref='trainingimagelabel', lazy='dynamic')
     
@@ -103,6 +102,9 @@ class TrainingImageLabel(db.Model):
         self.initial_label = initial_label
         self.correct_label = correct_label
         self.labeler_correct = labeler_correct
+        
+    def __str__(self):
+        return 'Training image ' + str(self.training_image_id) + ' label ' + str(self.id) + ' labeler ' + str(self.labeler)
 
 class TrainingImageLabelCell(db.Model):
     __tablename__ = 'trainingimagelabelcell'
@@ -120,3 +122,6 @@ class TrainingImageLabelCell(db.Model):
         self.y = y
         self.nearest_cell_x = nearest_cell_x
         self.nearest_cell_y = nearest_cell_y
+        
+    def __str__(self):
+        return 'Marker at ' + str(x) + ', ' + str(y)

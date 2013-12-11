@@ -47,8 +47,24 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
     
     # limit reached
     if current_training_image.total_labels >= label_limit:
-        pass
+        label_list = {'No Malaria':[], 'Falciparum':[], 'Vivax':[]}
+        label_total = 0
+        percent_list = {'No Malaria':0, 'Falciparum':0, 'Vivax':0}
+        sorted_keys = ('No Malaria', 'Falciparum', 'Vivax')
+        label_count = {'No Malaria':0, 'Falciparum':0, 'Vivax':0}
+        for i in current_training_image.training_image_labels[0:]:
+            label_list[i.initial_label].append(i)
+            label_total += 1
+        # 1cho
+        x = sorted(map(lambda x: (x, len(x), x[0].initial_label), filter(label_list.values(), lambda x: len(x) != 0)))[:2]
+        
+        # Calculate %
+        for i in label_list:
+            percent_list[i] = float(len(label_list[i]))/float(label_total)
+        # POP THE LEAST
+            
         # messy stuff here, finalize training image, each label and each labeler
+        
     
 @crowd.route('/crowd/session/',  methods = ['GET', 'POST'])
 @login_required
@@ -106,12 +122,28 @@ def session():
     # Normal procedure
     # Adjust top_n_labels if there are fewer TrainingImages
     global top_n_labels
+
+    '''
     total_training_images = TrainingImage.query.count()
     if total_training_images < top_n_labels:
         top_n_labels = total_training_images
     
     # Get 1 random from top n labels
     training_image_to_label = TrainingImage.query.order_by(TrainingImage.total_labels.desc())[random.randrange(top_n_labels)]
+
+    prevLabeled = TrainingImageLabel.query(image_id).filter_by(labeler_id = labeler.id) 
+    availableImgs = TrainingImage.query(image_id, total_labels).outerjoin(prevLabeled,TrainingImage.image_id = prevLabeled.image_id, prevLabeled.image_id=None)
+    training_image_to_label = availableImgs.query.order_by(availableImgs.total_labels.desc())[random.randrange(top_n_labels)]
+    '''
+    
+    training_images = TrainingImage.query.order_by(TrainingImage.total_labels.desc()).all()
+
+    for i in training_images:
+        for j in i.training_image_labels:
+            if j.labeler_id == labeler.id:
+                training_images.remove(i)
+    
+    training_image_to_label = random.choice(training_images[:top_n_labels])
     
     # If there are no more images to label
     if training_image_to_label == None:
