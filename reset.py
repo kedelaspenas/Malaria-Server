@@ -82,6 +82,12 @@ x.append(User('Noel', User.hash_password('qwert')))
 x[-1].usertype_id = 2
 x.append(User('Juancho', User.hash_password('12345')))
 x[-1].usertype_id = 3
+x.append(User('Marven', User.hash_password('asd')))
+x[-1].usertype_id = 3
+x.append(User('Jasper', User.hash_password('asd')))
+x[-1].usertype_id = 2
+x.append(User('Cat', User.hash_password('asd')))
+x[-1].usertype_id = 1
 for i in x:
     db.session.add(i)
 
@@ -151,9 +157,17 @@ db.session.add(LabelerType('Regular'))
 db.session.add(LabelerType('Expert'))
 
 #Labeler
+# comment out the loop so rodolfo stays as a novice
+'''
+for i in xrange(1,7):
+    db.session.add(Labeler(i,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, (i%3)+1))
+'''
 db.session.add(Labeler(1,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 1))
 db.session.add(Labeler(2,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
 db.session.add(Labeler(3,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 3))
+db.session.add(Labeler(4,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
+db.session.add(Labeler(5,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
+db.session.add(Labeler(6,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
 
 #TrainingImage
 for i in xrange(1,9):
