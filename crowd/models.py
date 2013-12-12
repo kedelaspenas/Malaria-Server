@@ -102,9 +102,12 @@ class TrainingImageLabel(db.Model):
         self.initial_label = initial_label
         self.correct_label = correct_label
         self.labeler_correct = labeler_correct
-        
+    
+    def __repr__(self):
+        return 'Training image ' + str(self.training_image_id) + ', label ' + str(self.id) + ', labeler ' + str(self.labeler)
+    
     def __str__(self):
-        return 'Training image ' + str(self.training_image_id) + ' label ' + str(self.id) + ' labeler ' + str(self.labeler)
+        return 'Training image ' + str(self.training_image_id) + ', label ' + str(self.id) + ', labeler ' + str(self.labeler)
 
 class TrainingImageLabelCell(db.Model):
     __tablename__ = 'trainingimagelabelcell'

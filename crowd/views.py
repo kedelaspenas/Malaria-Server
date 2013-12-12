@@ -13,6 +13,7 @@ from crowd.models import db, Labeler, LabelerType, TrainingImage, TrainingImageL
 # global values
 top_n_labels = 5
 label_limit = 3
+approval_percent = 0.51
 
 @crowd.route('/crowd/')
 @crowd.route('/crowd/index/')
@@ -46,24 +47,71 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
         current_training_image.total_labels += 1
     
     # limit reached
-    if current_training_image.total_labels >= label_limit:
+    if current_training_image.total_labels >= label_limit or labeler.labelertype == 'Expert':
         label_list = {'No Malaria':[], 'Falciparum':[], 'Vivax':[]}
         label_total = 0
         percent_list = {'No Malaria':0, 'Falciparum':0, 'Vivax':0}
-        sorted_keys = ('No Malaria', 'Falciparum', 'Vivax')
-        label_count = {'No Malaria':0, 'Falciparum':0, 'Vivax':0}
         for i in current_training_image.training_image_labels[0:]:
             label_list[i.initial_label].append(i)
             label_total += 1
-        # 1cho
-        x = sorted(map(lambda x: (x, len(x), x[0].initial_label), filter(label_list.values(), lambda x: len(x) != 0)))[:2]
-        
-        # Calculate %
-        for i in label_list:
-            percent_list[i] = float(len(label_list[i]))/float(label_total)
-        # POP THE LEAST
             
-        # messy stuff here, finalize training image, each label and each labeler
+        # 1cho's sorting algo, not working
+        '''
+        sorted_list = sorted(map(lambda x: (x, len(x), x[0].initial_label), filter(label_list.values(), lambda x: len(x) != 0)))[:2]
+        '''
+        
+        # Calculate label weights with respect to labeler rating
+        total_label_weight = 0.0
+        label_weight = {'No Malaria':0.0, 'Falciparum':0.0, 'Vivax':0.0}
+
+        for i in label_list:
+            for j in label_list[i]:
+                label_weight[i] += j.labeler.labeler_rating
+                total_label_weight += j.labeler.labeler_rating
+
+        # print label_weight
+
+        # Calculate percents with respect to weights
+        label_percent = {'No Malaria':0.0, 'Falciparum':0.0, 'Vivax':0.0}
+        for i in label_weight:
+            label_percent[i] = label_weight[i]/total_label_weight
+
+        # print label_percent
+    
+        global approval_percent
+        # Get majority label >= approval_percent
+        final_label = 'Undeterminable'
+        for i in label_percent:
+            if label_percent[i] >= approval_percent:
+                final_label = i
+                break
+
+        # print final_label
+
+        # IF LABELER IS AN EXPERT
+        if labeler.labelertype == 'Expert':
+            final_label = label.initial_diagnosis
+
+        # Finalize label
+        current_training_image.final_label_1 = final_label
+        current_training_image.date_finalized = datetime.datetime.now()
+        db.session.add(current_training_image)
+
+        for i in label_list:
+            for j in label_list[i]:
+                j.correct_label = final_label
+                j.labeler.total_images_labeled += 1
+                if j.initial_label == final_label:
+                    j.labeler_correct = True
+                    j.labeler.total_correct_images_labeled += 1
+                    # INCREASE LABELER RATING
+                else:
+                    # DECREASE LABELER RATING
+                    pass
+                db.session.add(j)
+                db.session.add(j.labeler)
+
+        db.session.commit()
         
     
 @crowd.route('/crowd/session/',  methods = ['GET', 'POST'])
@@ -115,7 +163,7 @@ def session():
     if labeler.current_training_image_id !=  None:
         training_image_to_label = TrainingImage.query.filter_by(id=labeler.current_training_image_id).first()
         # Check if pending label still has to be labeled
-        if training_image_to_label.total_labels < label_limit:
+        if training_image_to_label.total_labels < label_limit or (training_image_to_label.final_label_1 == 'Undeterminable' and labeler.labelertype == 'Expert'):
             return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
         # else give him another training image
             
@@ -136,18 +184,29 @@ def session():
     training_image_to_label = availableImgs.query.order_by(availableImgs.total_labels.desc())[random.randrange(top_n_labels)]
     '''
     
-    training_images = TrainingImage.query.order_by(TrainingImage.total_labels.desc()).all()
+    # IF LABELER IS AN EXPERT, PRIORITIZE GIVING Undeterminable TRAINING IMAGES
+    training_images = TrainingImage.query.filter_by(final_label_1='Unlabeled').order_by(TrainingImage.total_labels.desc())[0:]
+    
+    undeterminable_training_images = TrainingImage.query.filter_by(final_label_1='Undeterminable')[0:]
+    if labeler.labelertype == 'Expert' and len(undeterminable_training_images) > 0:
+        training_image_to_label = undeterminable_training_images[0]
+        
+    else:
+        if len(training_images) == 0:
+            return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = None)
 
-    for i in training_images:
-        for j in i.training_image_labels:
-            if j.labeler_id == labeler.id:
-                training_images.remove(i)
-    
-    training_image_to_label = random.choice(training_images[:top_n_labels])
-    
-    # If there are no more images to label
-    if training_image_to_label == None:
-        return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = None)
+        for i in training_images:
+            for j in i.training_image_labels:
+                if j.labeler_id == labeler.id:
+                    training_images.remove(i)
+                    
+        training_image_to_label = random.choice(training_images[:top_n_labels])
+        
+        # If there are no more images to label
+        if training_image_to_label == None:
+            return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = None)
+            
+        training_image_to_label = random.choice(training_images[:top_n_labels])
     
     # UNCOMMENT NEXT LINES TO SAVE PENDING LABEL TO LABELER
     labeler.current_training_image_id = training_image_to_label.id
