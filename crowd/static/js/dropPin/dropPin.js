@@ -65,7 +65,7 @@
 				var hiddenCtl= $('<input type="hidden" name="hiddenpin" class="pin">');
 		        hiddenCtl.css('top', y);
 		        hiddenCtl.css('left', x);
-		        hiddenCtl.val(x + "#" + y);
+		        hiddenCtl.val("(" + x + "," + ")");
 		        hiddenCtl.appendTo(thisObj);
 
 			});

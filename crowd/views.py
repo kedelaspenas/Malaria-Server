@@ -119,6 +119,7 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
 def session():
     # Constants
     labeler = Labeler.query.filter_by(user_id=current_user.id).first()
+    template = "/crowd/session.html"
     
     # LABEL SUBMITTED
     if request.method == 'POST' and request.form:
@@ -164,7 +165,7 @@ def session():
         training_image_to_label = TrainingImage.query.filter_by(id=labeler.current_training_image_id).first()
         # Check if pending label still has to be labeled
         if training_image_to_label.total_labels < label_limit or (training_image_to_label.final_label_1 == 'Undeterminable' and labeler.labelertype == 'Expert'):
-            return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
+            return render_template(template, user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
         # else give him another training image
             
     # Normal procedure
@@ -193,18 +194,19 @@ def session():
         
     else:
         if len(training_images) == 0:
-            return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = None)
+            return render_template(template, user = current_user, labeler = labeler, training_image_to_label = None)
 
         for i in training_images:
             for j in i.training_image_labels:
                 if j.labeler_id == labeler.id:
                     training_images.remove(i)
+                    break
                     
         training_image_to_label = random.choice(training_images[:top_n_labels])
         
         # If there are no more images to label
         if training_image_to_label == None:
-            return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = None)
+            return render_template(template, user = current_user, labeler = labeler, training_image_to_label = None)
             
         training_image_to_label = random.choice(training_images[:top_n_labels])
     
@@ -214,7 +216,7 @@ def session():
     db.session.add(labeler)
     db.session.commit()
     
-    return render_template("/crowd/session.html", user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
+    return render_template(template, user = current_user, labeler = labeler, training_image_to_label = training_image_to_label)
     
 @crowd.route('/crowd/login/',  methods = ['GET', 'POST'])
 def login():

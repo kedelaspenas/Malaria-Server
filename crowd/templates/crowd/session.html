@@ -14,6 +14,174 @@
 
   <script src="/crowd/static/js/vendor/custom.modernizr.js"></script>
 
+  <link rel="stylesheet" href="/crowd/static/css/dropPin.css" type="text/css" />
+  <script src="/crowd/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/crowd/static/js/dropPin/dropPin.js"></script>
+  <script type="text/javascript" src='/crowd/static/js/dropPin/jquery.elevatezoom.js'></script>
+
+  <script>
+    $(document).ready(function() {
+      $('#map').dropPin('dropMulti', {
+        fixedHeight:450,
+        fixedWidth:600,
+        backgroundImage: '/pic/{{ training_image_to_label.image_id }}/',
+        zoomImage: '/pic/{{ training_image_to_label.image_id }}/',
+        pin: '/crowd/static/img/pin.png'
+      });
+      $('#map').elevateZoom({
+        scrollZoom: true,
+        zoomWindowOffsetx: 20,
+        zoomWindowHeight: 300,
+        zoomWindowWidth: 300,
+        borderSize: 0
+      });
+    });
+  </script>
+
+  <script>
+      function Question(question, id, number, answer, yes, no, form) {
+          this.question = question;
+          this.id = id;
+          this.number = number;
+          this.answer = answer;
+          this.yes = yes;
+          this.no = no;
+          this.form = form;
+      }
+
+      function submit_form() {
+          for (var i = 0; i < breadcrumbs.length; i++) {
+              var cur = breadcrumbs[i];
+              if (cur.form == "falciparum_coordinates") {
+                  $('input[name=hiddenpin]').each(function() {
+                      falciparum_pins.push($(this).val());
+                      vivax_pins.push($(this).val());
+                  });
+                  $('#falciparum_coordinates').val("(0,0)");
+              } else if (cur.form == "vivax_coordinates") {
+                  $('#vivax_coordinates').val("(0,0)");
+              } else if (cur.form != "") {
+                  if (cur.answer == "Yes") {
+                      $('#' + cur.form).prop('checked', true);
+                  }
+              }
+          }
+          $('form#form').submit();
+      }
+
+      function answer_question(answer) {
+          // this is a hack
+          if (current_question.id == -1 && answer == "No") {
+              jump_to_breadcrumb(breadcrumbs[breadcrumbs.length-1].id);
+          } else if (current_question.id == -1 && answer == "Yes") {
+              submit_form();
+          } else if (current_question.id < 0 && answer == "No") {
+              jump_to_breadcrumb(breadcrumbs[breadcrumbs.length-1].id);
+          } else {
+              current_question.answer = answer;
+              breadcrumbs.push(current_question);
+              if (answer == "Yes") {
+                  current_question = get_question(current_question.yes);
+              } else {
+                  current_question = get_question(current_question.no);
+              }
+              display_question(current_question);
+          }
+
+      }
+
+      function display_question(question) {
+          set_current_question(question);
+          set_current_number(question);
+          set_buttons(question);
+          refresh_breadcrumbs();
+      }
+
+      function set_buttons(question) {
+          // this is a hack
+          if (question.id >= 0) {
+              $('#btn_no').text("No");
+              $('#btn_yes').text("Yes");
+          } else {
+              $('#btn_no').text("Back");
+              $('#btn_yes').text("Finish");
+          }
+      }
+
+      function set_current_question(question) {
+          // this is a hack
+          if (question.id >= 0) {
+              $('#question').text(question.question);
+          } else {
+              $('#question').text("");
+          }
+      }
+
+      function set_current_number(question) {
+          $('#question_number').html(question.number);
+      }
+
+      function refresh_breadcrumbs() {
+          $('#breadcrumbs').empty();
+          for (var i = 0; i < breadcrumbs.length; i++) {
+              var cur = breadcrumbs[i];
+              if (cur.id >= 0) {
+                  $('#breadcrumbs').append('<li><a onclick="jump_to_breadcrumb(' + cur.id + ')">' + cur.question + ' [' + cur.answer + '] </a></li>');
+              } else {
+                  $('#breadcrumbs').append('<li><a onclick="jump_to_breadcrumb(' + cur.id + ')">' + cur.question + '</a></li>');
+              }
+          }
+          $('#breadcrumbs').append('<li class="current">' + current_question.question + '</li>');
+      }
+
+      function get_question(id) {
+          for (var i = 0; i < questions.length; i++) {
+              var cur = questions[i];
+              if (cur.id == id) {
+                  return cur;
+              }
+          }
+      }
+
+      function jump_to_breadcrumb(id) {
+          var cur;
+          while (true) {
+              cur = breadcrumbs.pop();
+              if (cur.id == id) {
+                  break;
+              }
+          }
+          current_question = cur;
+          display_question(current_question);
+      }
+
+      var questions = [];
+            //<input type="text" placeholder="Answering duration 00:00:00" name="falciparum_duration"/>
+            //<input type="text" placeholder="Answering duration 00:00:00" name="vivax_duration"/>
+            //<input type="checkbox" name="unsure"/> Unsure? <br>
+      questions.push(new Question("Is there malaria?", 0, "<span class='round label'>#1</span>", "No", 1, -1, "with_malaria"));
+      questions.push(new Question("Is there more than one species?", 1, "<span class='round label'>#2</span>", "No", 2, 4, ""));
+      questions.push(new Question("Is there falciparum?", 2, "<span class='round label'>#3</span>", "No", -2, 3, "with_falciparum"));
+      questions.push(new Question("Is there vivax?", 3, "<span class='round label'>#4</span>", "No", -3, -1, "with_vivax"));
+      questions.push(new Question("Is it falciparum?", 4, "<span class='round label'>#3</span>", "No", -4, 5, "with_falciparum"));
+      questions.push(new Question("Is it vivax?", 5, "<span class='round label'>#4</span>", "No", -5, -1, "with_vivax"));
+      questions.push(new Question("Finalize", -1, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click <strong>Finish</strong> when you are ready to submit your answers.", "No", -1, -1));
+      questions.push(new Question("Pin locations of falciparum", -2, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Falciparum</strong> cells then click <strong>Finish</strong> when you are done.", "No", 3, -1, "falciparum_coordinates"));
+      questions.push(new Question("Pin locations of vivax", -3, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Vivax</strong> cells then click <strong>Finish</strong> when you are done.", "No", -1, -1, "vivax_coordinates"));
+      questions.push(new Question("Pin locations of falciparum", -4, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Falciparum</strong> cells then click <strong>Finish</strong> when you are done.", "No", -1, -1, "falciparum_coordinates"));
+      questions.push(new Question("Pin locations of vivax", -5, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Vivax</strong> cells then click <strong>Finish</strong> when you are done.", "No", -1, -1, "vivax_coordinates"));
+
+      var breadcrumbs = [];
+      var falciparum_pins = [];
+      var vivax_pins = [];
+      var current_question = get_question(0);
+
+      $(document).ready(function() {
+          display_question(current_question);
+          refresh_breadcrumbs();
+      });
+  </script>
+
 </head>
 <body>
 
@@ -47,11 +215,19 @@
     </section>
   </nav>
 
-  <ul class="breadcrumbs" style="display: none">
+  <ul class="breadcrumbs" id="breadcrumbs">
     <li><a href="#">Is there malaria? [Yes]</a></li>
     <li><a href="#">Is there more than one species? [No]</a></li>
     <li class="current"><a href="#">Is it Falciparum?</a></li>
   </ul>
+
+  <div class="row">
+    <div class='small-4 columns text-center'></div>
+    <div class="small-12 columns text-center">
+      <div id="map" data-zoom-image="/pic/{{ training_image_to_label.image_id }}/"></div>
+    </div>
+    
+  </div>
   
   <div class="row">
     <div class="small-12 columns text-center">
@@ -62,8 +238,8 @@
   <div class="row">
     <div class="small-12 columns text-center">
       {% if training_image_to_label.image_id %}
-      <img src="/pic/{{ training_image_to_label.image_id }}" width=450px height=337px />
       {% else %}
+      <img src="/pic/{{ training_image_to_label.image_id }}/" width=450px height=337px />
       No more images to label for now. Check back later or <a href="/crowd/session/">retry</a>.
       {% endif %}
     </div>
@@ -77,41 +253,40 @@
   
   {% if training_image_to_label.image_id %}
   <div class="row" style="">
-    <div class="panel">
-        <form action="" method="post" name="label">
+      <div class="panel" style="display: none">
+        <form id="form" action="" method="post" name="label">
             Training image {{ training_image_to_label.id }} with image {{ training_image_to_label.image_id }}<br><br>
-            <input type="checkbox" name="with_malaria"/> Is there malaria? <br>
-            <input type="checkbox" name="with_falciparum"/> Is there Falciparum? <br>
-            <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" name="falciparum_coordinates"/>
-            <input type="text" placeholder="Answering duration 00:00:00" name="falciparum_duration"/>
-            <input type="checkbox" name="with_vivax"/> Is there Vivax? <br>
-            <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" name="vivax_coordinates"/>
-            <input type="text" placeholder="Answering duration 00:00:00" name="vivax_duration"/>
-            <input type="checkbox" name="unsure"/> Unsure? <br>
+            <input type="checkbox" id="with_malaria" name="with_malaria"/> Is there malaria? <br>
+            <input type="checkbox" id="with_falciparum" name="with_falciparum"/> Is there Falciparum? <br>
+            <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="falciparum_coordinates" name="falciparum_coordinates"/>
+            <input type="text" placeholder="Answering duration 00:00:00" id="falciparum_duration" name="falciparum_duration"/>
+            <input type="checkbox" name="with_vivax" id="with_vivax" /> Is there Vivax? <br>
+            <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="vivax_coordinates" name="vivax_coordinates"/>
+            <input type="text" placeholder="Answering duration 00:00:00" id="vivax_duration" name="vivax_duration"/>
+            <input type="checkbox" id="unsure" name="unsure"/> Unsure? <br>
             <input class="button success radius" type="submit" value="Submit" />
         </form>
     </div>
   </div>
   {% endif %}
   
-  <div class="row" style="display: none">
+  <div class="row">
     <div class="small-centered columns text-center">
       <div class="panel radius">
-          <h4>Back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="round label">#3</span>&nbsp;&nbsp;Is it <strong>Falciparum</strong>? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next</h4>
+          <h4><span id="question_number"></span>&nbsp;&nbsp;<span id="question">Is it <strong>Falciparum</strong>?</span></h4>
       </div>
     </div>
   </div>
 
-  <div class="row" style="display: none">
+  <div class="row">
     <div class="small-6 columns text-center">
-      <a href="#" class="button large alert radius expand">No</a>
+      <a id="btn_no" onclick="answer_question('No');" class="button large alert radius expand">No</a>
     </div>
     <div class="small-6 columns text-center">
-      <a href="#" class="button large success radius expand">Yes</a>
+      <a id="btn_yes" onclick="answer_question('Yes');" class="button large success radius expand">Yes</a>
     </div>
   </div>
 
-  <script src="/crowd/static/js/vendor/jquery.js"></script>
   <script src="/crowd/static/js/foundation.min.js"></script>
   <script>
     $(document).foundation();

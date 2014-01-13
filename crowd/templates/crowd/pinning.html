@@ -7,34 +7,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Foundation 5</title>
 
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/foundation.css">
+  <link rel="stylesheet" href="/crowd/static/css/normalize.css">
+  <link rel="stylesheet" href="/crowd/static/css/foundation.css">
 
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="/crowd/static/css/app.css">
 
-  <link rel="stylesheet" href="js/dropPin/dropPin.css" type="text/css" />
-  <script src="js/dropPin/jquery.min.js"></script>
-  <script type="text/javascript" src="js/dropPin/dropPin.js"></script>
-  <script type="text/javascript" src='js/dropPin/jquery.elevatezoom.js'></script>
+  <link rel="stylesheet" href="/crowd/static/css/dropPin.css" type="text/css" />
+  <script src="/crowd/static/js/jquery.js"></script>
+  <script type="text/javascript" src="/crowd/static/js/dropPin/dropPin.js"></script>
+  <script type="text/javascript" src='/crowd/static/js/dropPin/jquery.elevatezoom.js'></script>
 
   <script>
-    //$(document).foundation();
     $(document).ready(function() {
       $('#map').dropPin('dropMulti', {
         fixedHeight:450,
         fixedWidth:600,
-        backgroundImage: 'images/tagging.jpg',
-        zoomImage: 'images/tagging.jpg',
-        pin: 'images/pin.png'
+        backgroundImage: '/crowd/static/img/1.jpg',
+        zoomImage: '/crowd/static/img/1.jpg',
+        pin: '/crowd/static/img/pin.png'
       });
       $('#map').elevateZoom({
         scrollZoom: true,
-        zoomWindowOffetx: 20,
+        zoomWindowOffsetx: 20,
         zoomWindowHeight: 300,
         zoomWindowWidth: 300,
         borderSize: 0
       });
     });
+  </script>
+
+  <script>
+      var questions = ["Is there malaria?", "Is there more than 1?", "Is there falciparum?", "Is there vivax?", "Is it falciparum?", "Is it vivax?"];
   </script>
 
 </head>
@@ -70,7 +73,7 @@
   <div class="row">
     <div class='small-4 columns text-center'></div>
     <div class="small-12 columns text-center">
-      <div id="map" data-zoom-image="images/tagging.jpg"></div>
+      <div id="map" data-zoom-image="/crowd/static/img/1.jpg"></div>
     </div>
     
   </div>
