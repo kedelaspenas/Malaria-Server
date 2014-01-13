@@ -46,7 +46,23 @@
       </ul>
     </section>
   </nav>
-  Stats, leaderboad and <a class="button" href="/crowd/session/">big button to start answering here</a>.
+  <div class="row">
+      <div class="small-centered large-6 columns text-left">
+          <h3>{{labeler.labelertype.name}} {{user.username}}</h3>
+          <div class="text-left">
+            <table>
+            <tr><th>Last Activity: <td>{{labeler.last_session.date() }}
+            <tr><th>Correct Images Labeled: <td>{{labeler.total_correct_images_labeled}} of {{labeler.total_images_labeled}}
+            <tr><th>Labels Not Yet Evaluated: <td> {{labeler.training_image_labels.count()}}
+            <tr><th>Total Labels Submitted: <td>{{labeler.total_images_labeled + labeler.training_image_labels.count()}}
+            <tr><th>Rating: <td>{{labeler.labeler_rating * 100}}
+            </table>
+          </div>
+      </div>
+      <div class="large-6 text-center">
+      <a class="button" href="/crowd/session/">Start Labeling</a>
+      </div>
+  </div>
   <script src="/crowd/static/js/vendor/jquery.js"></script>
   <script src="/crowd/static/js/foundation.min.js"></script>
   <script>
