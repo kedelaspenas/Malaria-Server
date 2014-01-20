@@ -523,7 +523,7 @@ def upload_file():
                     db.session.commit()
                     
                     # make new training image
-                    trainingImg = TrainingImage(img.id, 0, 'Unlabeled', None)
+                    trainingImg = TrainingImage(img.id, 0, 'Unlabeled', 'Unlabeled', None)
                     db.session.add(trainingImg)
                     db.session.commit()
 
