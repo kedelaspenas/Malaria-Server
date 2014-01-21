@@ -77,7 +77,7 @@
           <tr><th>Total Unlabeled Images: <td>{{totalUnlabeled}}
           <tr><th>Expert-Needed Images: <td> {{expertNeeded}}
           <tr><th>Leaderboard:<td>
-            <tr><th> <td>{% for i in leaderboard %} #{{loop.index}} {{i.user.username}} <br> {% endfor %}
+            <tr><th> <td>{% for i in leaderboard %} {{loop.index}} {{i.user.username}} <br> {% endfor %}
           <tr><th>Global Ranking: <td>{{labeler.labeler_rating * 100}}
         </table>
       </div>
