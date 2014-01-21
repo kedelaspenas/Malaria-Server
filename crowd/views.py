@@ -29,6 +29,7 @@ def dashboard():
     totalLabeled = len(TrainingImage.query.all()) - totalUnlabeled
     expertNeeded = TrainingImage.query.filter_by(final_label_1 = 'Undeterminable').count()
     leaderboard = Labeler.query.order_by(Labeler.labeler_rating).limit(10)
+    # sort leaderboard so Cat is not last:))
     labeler = Labeler.query.filter_by(user_id=current_user.id).first()
     return render_template("/crowd/dashboard.html", user = current_user, labeler = labeler, totalUnlabeled = totalUnlabeled, totalLabeled = totalLabeled, expertNeeded = expertNeeded, leaderboard = leaderboard)
 
