@@ -59,46 +59,38 @@
           <tr><th>Total Labels Submitted: <td>{{labeler.total_images_labeled + labeler.training_image_labels.count()}}
           <tr><th>Rating: <td>{{labeler.labeler_rating * 100}}
         </table>
-        <h5>Global Statistics</h5>
-        <table>
-          <tr><th>Total Labeled Images: <td>{{totalLabeled}}
-          <tr><th>Total Unlabeled Images: <td>{{totalUnlabeled}}
-          <tr><th>Expert-Needed Images: <td> {{expertNeeded}}
-          <tr><th>Leaderboard:<td>
-          <tr><th><td>{{leaderboard}} <td>
-          <tr><th>National Ranking: <td>{{labeler.labeler_rating * 100}}
-        </table>
       </div>
 
 
-      <div class="large-8 columns">
+      <div class="large-4 columns">
         <h3>{{user.username}}</h3>
         <br>
         <div class="text-center">
           <a class="large button" href="/crowd/session/">Start Labeling</a>
           <a class="large success button disabled" href="/crowd/session/">Expert Labeling</a>
         </div>
-
-<<<<<<< HEAD
-        <h4 class="subheader">Galleries<h4>
-        <ul class="small-block-grid-4">
-          <li><img class="button radius secondary" src="../static/images/red.jpg">Falciparum</li>
-          <li><img class="button radius secondary" src="../static/images/green.jpg">Vivax</li>
-          <li><img class="button radius secondary" src="../static/images/blue.jpg">Malariae</li>
-          <li><img class="button radius secondary" src="../static/images/yellow.jpg">Ovale</li>
-        </ul>
-=======
+      </div>
       <div class="large-4 columns text-left">
-          <div class="text-left">
-            <table>
-            <tr><th>Total Labeled Images: <td>{{totalLabeled}}
-            <tr><th>Total Unlabeled Images: <td>{{totalUnlabeled}}
-            <tr><th>Expert-Needed Images: <td> {{expertNeeded}}
-            <tr><th>Leaderboard: <td>{% for i in leaderboard %} #{{loop.index}} {{i.user.username}} <br> {% endfor %}
-            <tr><th>National Ranking: <td>{{labeler.labeler_rating * 100}}
-            </table>
-          </div>
->>>>>>> 17c56a245f3db8d70c82a26523ebc5cd8d230463
+        <h5>Global Statistics</h5>
+        <table>
+          <tr><th>Total Labeled Images: <td>{{totalLabeled}}
+          <tr><th>Total Unlabeled Images: <td>{{totalUnlabeled}}
+          <tr><th>Expert-Needed Images: <td> {{expertNeeded}}
+          <tr><th>Leaderboard:<td>
+            <tr><th> <td>{% for i in leaderboard %} #{{loop.index}} {{i.user.username}} <br> {% endfor %}
+          <tr><th>Global Ranking: <td>{{labeler.labeler_rating * 100}}
+        </table>
+      </div>
+  </div>
+  <div class="row">
+    <div class="large-9 columns large-centered">
+    <h4 class="subheader">Galleries<h4>
+        <ul class="small-block-grid-4">
+          <li><img class="button secondary" src="../static/images/red.jpg">Falciparum</li>
+          <li><img class="button secondary" src="../static/images/green.jpg">Vivax</li>
+          <li><img class="button secondary" src="../static/images/blue.jpg">Malariae</li>
+          <li><img class="button secondary" src="../static/images/yellow.jpg">Ovale</li>
+        </ul>
       </div>
   </div>
   <script src="/crowd/static/js/vendor/jquery.js"></script>
