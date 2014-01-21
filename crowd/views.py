@@ -25,8 +25,12 @@ def index():
 @crowd.route('/crowd/dashboard/')
 @login_required
 def dashboard():
+    totalUnlabeled = TrainingImage.query.filter_by(date_finalized = None).count()
+    totalLabeled = len(TrainingImage.query.all()) - totalUnlabeled
+    expertNeeded = TrainingImage.query.filter_by(final_label_1 = 'Undeterminable').count()
+    leaderboard = Labeler.query.order_by(Labeler.labeler_rating).limit(10)
     labeler = Labeler.query.filter_by(user_id=current_user.id).first()
-    return render_template("/crowd/dashboard.html", user = current_user, labeler = labeler)
+    return render_template("/crowd/dashboard.html", user = current_user, labeler = labeler, totalUnlabeled = totalUnlabeled, totalLabeled = totalLabeled, expertNeeded = expertNeeded, leaderboard = leaderboard)
 
 def makeTrainingImageLabel(labeler, diagnosis, coordinates):
     global label_limit
