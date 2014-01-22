@@ -154,6 +154,16 @@ def session():
                 if request.form.getlist('with_vivax'):
                     coordinates = [(tuple(int(j) for j in re.split(',',i))) for i in re.findall('[0-9]+,[0-9]+', str(request.form.getlist('vivax_coordinates')))]
                     makeTrainingImageLabel(labeler, 'Vivax', coordinates)
+                    
+                # With Malariae
+                if request.form.getlist('with_malariae'):
+                    coordinates = [(tuple(int(j) for j in re.split(',',i))) for i in re.findall('[0-9]+,[0-9]+', str(request.form.getlist('malariae_coordinates')))]
+                    makeTrainingImageLabel(labeler, 'Malariae', coordinates)
+                    
+                # With Ovale
+                if request.form.getlist('with_ovale'):
+                    coordinates = [(tuple(int(j) for j in re.split(',',i))) for i in re.findall('[0-9]+,[0-9]+', str(request.form.getlist('ovale_coordinates')))]
+                    makeTrainingImageLabel(labeler, 'Ovale', coordinates)
             
         # DONE LABELING
         # UNCOMMENT NEXT LINES TO REMOVE PENDING LABEL FROM LABELER
