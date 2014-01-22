@@ -26,159 +26,196 @@
         fixedWidth:600,
         backgroundImage: '/pic/{{ training_image_to_label.image_id }}/',
         zoomImage: '/pic/{{ training_image_to_label.image_id }}/',
-        pin: '/crowd/static/img/pin.png'
+        pin: '/pic/{{ training_image_to_label.image_id }}/'
       });
       $('#map').elevateZoom({
         scrollZoom: true,
-        zoomWindowOffsetx: 20,
+        zoomWindowOffetx: 20,
         zoomWindowHeight: 300,
         zoomWindowWidth: 300,
         borderSize: 0
       });
     });
+    $('img').on('dragstart', function(event) { event.preventDefault(); });
   </script>
-
+  
   <script>
-      function Question(question, id, number, answer, yes, no, form) {
-          this.question = question;
+      function Question(id, text, breadcrumb, state) {
           this.id = id;
-          this.number = number;
-          this.answer = answer;
-          this.yes = yes;
-          this.no = no;
-          this.form = form;
+          this.text = text;
+          this.breadcrumb = breadcrumb;
+          this.state = state;
+      }
+
+      function select_species(species) {
+          if ($('#with_' + species).prop('checked')) {
+              $('#btn_' + species).toggleClass('secondary', true);
+          } else {
+              $('#btn_' + species).toggleClass('secondary', false);
+          }
+          $('#with_' + species).prop('checked', !$('#with_' + species).prop('checked'));
       }
 
       function submit_form() {
-          for (var i = 0; i < breadcrumbs.length; i++) {
-              var cur = breadcrumbs[i];
-              if (cur.form == "falciparum_coordinates") {
-                  $('input[name=hiddenpin]').each(function() {
-                      falciparum_pins.push($(this).val());
-                      vivax_pins.push($(this).val());
-                  });
-                  $('#falciparum_coordinates').val("(0,0)");
-              } else if (cur.form == "vivax_coordinates") {
-                  $('#vivax_coordinates').val("(0,0)");
-              } else if (cur.form != "") {
-                  if (cur.answer == "Yes") {
-                      $('#' + cur.form).prop('checked', true);
-                  }
-              }
-          }
+          $('input[maltype="F"]').each(function() {
+              falciparum_pins.push($(this).val());
+          });
+          $('#falciparum_coordinates').val(falciparum_pins.join());
+
+          $('input[maltype="V"]').each(function() {
+              vivax_pins.push($(this).val());
+          });
+          $('#vivax_coordinates').val(vivax_pins.join());
+
+          $('input[maltype="O"]').each(function() {
+              ovale_pins.push($(this).val());
+          });
+          $('#ovale_coordinates').val(ovale_pins.join());
+
+          $('input[maltype="M"]').each(function() {
+              malariae_pins.push($(this).val());
+          });
+          $('#malariae_coordinates').val(malariae_pins.join());
+          //$('#g_checkboxes').show();
           $('form#form').submit();
       }
 
       function answer_question(answer) {
-          // this is a hack
-          if (current_question.id == -1 && answer == "No") {
+          if (answer == "No") {
               jump_to_breadcrumb(breadcrumbs[breadcrumbs.length-1].id);
-          } else if (current_question.id == -1 && answer == "Yes") {
-              submit_form();
-          } else if (current_question.id < 0 && answer == "No") {
-              jump_to_breadcrumb(breadcrumbs[breadcrumbs.length-1].id);
-          } else {
-              current_question.answer = answer;
+          } else if (current_question.state <= 1) {
               breadcrumbs.push(current_question);
-              if (answer == "Yes") {
-                  current_question = get_question(current_question.yes);
-              } else {
-                  current_question = get_question(current_question.no);
-              }
-              display_question(current_question);
+              current_question = get_next_question(current_question);
+              display(current_question);
+          } else if (current_question.state == 2) {
+              submit_form();
           }
-
-      }
-
-      function display_question(question) {
-          set_current_question(question);
-          set_current_number(question);
-          set_buttons(question);
-          refresh_breadcrumbs();
-      }
-
-      function set_buttons(question) {
-          // this is a hack
-          if (question.id >= 0) {
-              $('#btn_no').text("No");
-              $('#btn_yes').text("Yes");
-          } else {
-              $('#btn_no').text("Back");
-              $('#btn_yes').text("Finish");
-          }
-      }
-
-      function set_current_question(question) {
-          // this is a hack
-          if (question.id >= 0) {
-              $('#question').text(question.question);
-          } else {
-              $('#question').text("");
-          }
-      }
-
-      function set_current_number(question) {
-          $('#question_number').html(question.number);
       }
 
       function refresh_breadcrumbs() {
           $('#breadcrumbs').empty();
           for (var i = 0; i < breadcrumbs.length; i++) {
               var cur = breadcrumbs[i];
-              if (cur.id >= 0) {
-                  $('#breadcrumbs').append('<li><a onclick="jump_to_breadcrumb(' + cur.id + ')">' + cur.question + ' [' + cur.answer + '] </a></li>');
-              } else {
-                  $('#breadcrumbs').append('<li><a onclick="jump_to_breadcrumb(' + cur.id + ')">' + cur.question + '</a></li>');
-              }
+              $('#breadcrumbs').append('<li><a onclick="jump_to_breadcrumb(' + cur.id + ')">' + cur.breadcrumb + '</a></li>');
           }
-          $('#breadcrumbs').append('<li class="current">' + current_question.question + '</li>');
+          $('#breadcrumbs').append('<li class="current">' + current_question.breadcrumb + '</li>');
       }
 
-      function get_question(id) {
-          for (var i = 0; i < questions.length; i++) {
-              var cur = questions[i];
-              if (cur.id == id) {
-                  return cur;
+      function get_next_question(question) {
+          var num = question.id;
+          var map = ['with_falciparum','with_vivax','with_ovale','with_malariae'];
+          if (num == 4) {
+              return questions[STATE_FINAL];
+          } else if (num == STATE_FINAL) {
+              submit_form();
+          } else {
+              for (var i = num; i <= 3; i++) {
+                  if ($('#' + map[i]).prop('checked')) {
+                      return questions[i+1];
+                  }
+              }
+              return questions[STATE_FINAL];
+          }
+      }
+
+      function remove_pins(id) {
+          if (id >= 1 && id <= 4) {
+              $('input[maltype="' + img_map[id-1] + '"]').each(function() {
+                  $(this).remove();
+              });
+              $('img[pintype="' + (id-1) + '"]').each(function() {
+                  $(this).remove();
+              });
+              if (id == 1) {
+                  falciparum_pins.length = 0;
+              } else if (id == 2) {
+                  vivax_pins.length = 0;
+              } else if (id == 3) {
+                  ovale_pins.length = 0;
+              } else {
+                  malariae_pins.length = 0;
               }
           }
       }
 
       function jump_to_breadcrumb(id) {
           var cur;
+          remove_pins(current_question.id);
           while (true) {
               cur = breadcrumbs.pop();
+              remove_pins(cur.id);
               if (cur.id == id) {
                   break;
               }
           }
           current_question = cur;
-          display_question(current_question);
+          display(current_question);
+      }
+
+      function display(question) {
+          display_bottom(question);
+          refresh_breadcrumbs();
+          refresh_pin_type();
+      }
+
+      function refresh_pin_type() {
+          if (current_question.state == 1) {
+              $('#map').dropPin('pinType' + img_map[current_question.id-1]);
+          } else {
+              $('#map').dropPin('pinTypeNone');
+          }
+      }
+
+      function display_bottom(question) {
+          $('.g_bottom').each(function() {
+              $(this).hide();
+          });
+          if (question.state == 0) {
+              $('#question').text(question.text);
+              $('#g_checkboxes').show();
+          } else if (question.state == 1) {
+              $('#question').html("<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>" + question.text + "</strong> cells then click <strong>Finish</strong> when you are done.");
+              $('#g_buttons').show();
+          } else {
+              $('#question').html("<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click <strong>Finish</strong> when you are ready to submit your answers.");
+
+              for (var i = 0; i < species_list.length; i++) {
+                  var species = species_list[i];
+                  if ($('#with_' + species).prop('checked')) {
+                      $('#sum_' + species).toggleClass('secondary', false);
+                  } else {
+                      $('#sum_' + species).toggleClass('secondary', true);
+                  }
+              }
+              $('#g_summary').show();
+              $('#g_buttons').show();
+          }
       }
 
       var questions = [];
-            //<input type="text" placeholder="Answering duration 00:00:00" name="falciparum_duration"/>
-            //<input type="text" placeholder="Answering duration 00:00:00" name="vivax_duration"/>
-            //<input type="checkbox" name="unsure"/> Unsure? <br>
-      questions.push(new Question("Is there malaria?", 0, "<span class='round label'>#1</span>", "No", 1, -1, "with_malaria"));
-      questions.push(new Question("Is there more than one species?", 1, "<span class='round label'>#2</span>", "No", 2, 4, ""));
-      questions.push(new Question("Is there falciparum?", 2, "<span class='round label'>#3</span>", "No", -2, 3, "with_falciparum"));
-      questions.push(new Question("Is there vivax?", 3, "<span class='round label'>#4</span>", "No", -3, -1, "with_vivax"));
-      questions.push(new Question("Is it falciparum?", 4, "<span class='round label'>#3</span>", "No", -4, 5, "with_falciparum"));
-      questions.push(new Question("Is it vivax?", 5, "<span class='round label'>#4</span>", "No", -5, -1, "with_vivax"));
-      questions.push(new Question("Finalize", -1, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click <strong>Finish</strong> when you are ready to submit your answers.", "No", -1, -1));
-      questions.push(new Question("Pin locations of falciparum", -2, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Falciparum</strong> cells then click <strong>Finish</strong> when you are done.", "No", 3, -1, "falciparum_coordinates"));
-      questions.push(new Question("Pin locations of vivax", -3, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Vivax</strong> cells then click <strong>Finish</strong> when you are done.", "No", -1, -1, "vivax_coordinates"));
-      questions.push(new Question("Pin locations of falciparum", -4, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Falciparum</strong> cells then click <strong>Finish</strong> when you are done.", "No", -1, -1, "falciparum_coordinates"));
-      questions.push(new Question("Pin locations of vivax", -5, "<span class='round alert label'>&nbsp;!&nbsp;</span>&nbsp;&nbsp;Click on the image to pinpoint <strong>Vivax</strong> cells then click <strong>Finish</strong> when you are done.", "No", -1, -1, "vivax_coordinates"));
+
+      // id, text, breadcrumb, state
+      // state: 0 = unpinnable|checkboxes, 1 = pinnable|pin:finish/back, 2 = summary|finish/back
+      questions.push(new Question(0, "Which malaria species are present?", "Which malaria species are present?", 0));
+      questions.push(new Question(1, "Falciparum", "Pin locations of falciparum", 1));
+      questions.push(new Question(2, "Vivax", "Pin locations of vivax", 1));
+      questions.push(new Question(3, "Ovale", "Pin locations of ovale", 1));
+      questions.push(new Question(4, "Malariae", "Pin locations of malariae", 1));
+      questions.push(new Question(5, "Final", "Finalize", 2));
 
       var breadcrumbs = [];
       var falciparum_pins = [];
       var vivax_pins = [];
-      var current_question = get_question(0);
+      var ovale_pins = [];
+      var malariae_pins = [];
+      var current_question = questions[0];
+
+      var STATE_FINAL = 5;
+      var species_list = ['falciparum','vivax','ovale','malariae'];
+      var img_map = ['F','V','O','M'];
 
       $(document).ready(function() {
-          display_question(current_question);
-          refresh_breadcrumbs();
+          display(current_question);
       });
   </script>
 
@@ -216,9 +253,6 @@
   </nav>
 
   <ul class="breadcrumbs" id="breadcrumbs">
-    <li><a href="#">Is there malaria? [Yes]</a></li>
-    <li><a href="#">Is there more than one species? [No]</a></li>
-    <li class="current"><a href="#">Is it Falciparum?</a></li>
   </ul>
 
   <div class="row">
@@ -252,38 +286,79 @@
   </div>
   
   {% if training_image_to_label.image_id %}
-  <div class="row" style="">
+  <div class="row">
       <div class="panel" style="display: none">
-        <form id="form" action="" method="post" name="label">
-            Training image {{ training_image_to_label.id }} with image {{ training_image_to_label.image_id }}<br><br>
-            <input type="checkbox" id="with_malaria" name="with_malaria"/> Is there malaria? <br>
-            <input type="checkbox" id="with_falciparum" name="with_falciparum"/> Is there Falciparum? <br>
-            <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="falciparum_coordinates" name="falciparum_coordinates"/>
-            <input type="text" placeholder="Answering duration 00:00:00" id="falciparum_duration" name="falciparum_duration"/>
-            <input type="checkbox" name="with_vivax" id="with_vivax" /> Is there Vivax? <br>
-            <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="vivax_coordinates" name="vivax_coordinates"/>
-            <input type="text" placeholder="Answering duration 00:00:00" id="vivax_duration" name="vivax_duration"/>
-            <input type="checkbox" id="unsure" name="unsure"/> Unsure? <br>
-            <input class="button success radius" type="submit" value="Submit" />
-        </form>
     </div>
   </div>
   {% endif %}
   
-  <div class="row">
-    <div class="small-centered columns text-center">
-      <div class="panel radius">
-          <h4><span id="question_number"></span>&nbsp;&nbsp;<span id="question">Is it <strong>Falciparum</strong>?</span></h4>
-      </div>
+  <div class="row g_bottom" id="g_summary">
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary disabled button" id="sum_falciparum" value="Falciparum" />
+    </div>
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary disabled button" id="sum_vivax" value="Vivax" />
+    </div>
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary disabled button" id="sum_ovale" value="Ovale" />
+    </div>
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary disabled button" id="sum_malariae" value="Malariae" />
     </div>
   </div>
 
   <div class="row">
+    <div class="small-centered columns text-center">
+      <div class="panel radius">
+          <h4><span id="question"></span></h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g_bottom" id="g_buttons">
     <div class="small-6 columns text-center">
-      <a id="btn_no" onclick="answer_question('No');" class="button large alert radius expand">No</a>
+      <a id="btn_no" onclick="answer_question('No');" class="button large alert radius expand">Back</a>
     </div>
     <div class="small-6 columns text-center">
-      <a id="btn_yes" onclick="answer_question('Yes');" class="button large success radius expand">Yes</a>
+      <a id="btn_yes" onclick="answer_question('Yes');" class="button large success radius expand">Finish</a>
+    </div>
+  </div>
+
+  <div class="row g_bottom" id="g_checkboxes">
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary button" id="btn_falciparum" value="Falciparum" onclick="select_species('falciparum');" />
+    </div>
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary button" id="btn_vivax" value="Vivax" onclick="select_species('vivax');" />
+    </div>
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary button" id="btn_ovale" value="Ovale" onclick="select_species('ovale');" />
+    </div>
+    <div class="small-3 columns text-center">
+        <input type="button" class="round expand secondary button" id="btn_malariae" value="Malariae" onclick="select_species('malariae');" />
+    </div>
+    <form id="form" action="" method="post" name="label">
+        <span style="display: none">
+        <input type="checkbox" id="with_malaria" name="with_malaria"/> Is there malaria? <br>
+        <input type="checkbox" id="with_falciparum" name="with_falciparum"/> Falciparum <br>
+        <input type="checkbox" id="with_vivax" name="with_vivax"/> Vivax <br>
+        <input type="checkbox" id="with_ovale" name="with_ovale"/> Ovale <br>
+        <input type="checkbox" id="with_malariae" name="with_malariae"/> Malariae <br>
+        <input type="checkbox" id="with_malaria" name="with_malaria"/> Is there malaria? <br>
+        <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="falciparum_coordinates" name="falciparum_coordinates"/>
+        <input type="text" placeholder="Answering duration 00:00:00" id="falciparum_duration" name="falciparum_duration"/>
+        <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="vivax_coordinates" name="vivax_coordinates"/>
+        <input type="text" placeholder="Answering duration 00:00:00" id="vivax_duration" name="vivax_duration"/>
+        <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="ovale_coordinates" name="ovale_coordinates"/>
+        <input type="text" placeholder="Answering duration 00:00:00" id="ovale_duration" name="ovale_duration"/>
+        <input type="text" placeholder="Coordinates (1,2)(3,5)(23,13)" id="malariae_coordinates" name="malariae_coordinates"/>
+        <input type="text" placeholder="Answering duration 00:00:00" id="malariae_duration" name="malariae_duration"/>
+        <input type="checkbox" id="unsure" name="unsure"/> Unsure? <br>
+        <input class="button success radius" type="submit" value="Submit" />
+        </span>
+    </form>
+    <div class="small-12 columns text-center">
+      <a onclick="answer_question('Yes');" class="button large success radius expand">Next</a>
     </div>
   </div>
 

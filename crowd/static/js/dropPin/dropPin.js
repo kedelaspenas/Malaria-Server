@@ -5,6 +5,8 @@
 */
 (function( $ ){
 
+	var pinType = -1;
+
 	$.fn.dropPin = function(method) {
 
 		var defaults = {
@@ -12,6 +14,10 @@
 		fixedWidth: 500,
 		dropPinPath: '/js/dropPin/',
 		pin: 'dropPin/defaultpin@2x.png',
+		pinF: '../static/images/pinF.png',
+        pinV: '../static/images/pinV.png',
+        pinO: '../static/images/pinO.png',
+        pinM: '../static/images/pinM.png',
 		backgroundImage: 'dropPin/access-map.png',
 		backgroundColor: '#9999CC',
 		xoffset : 12,
@@ -23,7 +29,8 @@
 		hiddenYid: '#ycoord', //used for saving to db via hidden form field
 		pinX: false, //set to value if you pass pin co-ords to overirde click binding to position
 		pinY: false, //set to value if you pass pin co-ords to overirde click binding to position
-		pinDataSet: '' //array of pin coordinates for front end render
+		pinDataSet: '', //array of pin coordinates for front end render
+		pinType: -1
 	}
 
 
@@ -39,6 +46,8 @@
 			var i = 10;
 			
 			thisObj.on(options.userevent, function (ev) {
+                if (pinType == -1)
+                    return;
 
 				$('.pin').remove();
 
@@ -65,7 +74,16 @@
 				var hiddenCtl= $('<input type="hidden" name="hiddenpin" class="pin">');
 		        hiddenCtl.css('top', y);
 		        hiddenCtl.css('left', x);
-		        hiddenCtl.val("(" + x + "," + ")");
+		        hiddenCtl.val("(" + x + "," + y + ")");
+                if(pinType == 0) {
+                    hiddenCtl.attr('maltype', 'F');
+                } else if (pinType == 1) {
+                    hiddenCtl.attr('maltype', 'V');
+                } else if (pinType == 2) {
+                    hiddenCtl.attr('maltype', 'O');
+                } else if (pinType == 3) {
+                    hiddenCtl.attr('maltype', 'M');
+                }
 		        hiddenCtl.appendTo(thisObj);
 
 			});
@@ -103,8 +121,18 @@
 					imgC.css('left', xval+'px');
 					imgC.css('z-index', i);
 
-					imgC.attr('src',  options.pin);
+					if(pinType == 0) {
+                        imgC.attr('src',  options.pinF);
+                    } else if (pinType == 1) {
+                        imgC.attr('src',  options.pinV);
+                    } else if (pinType == 2) {
+                        imgC.attr('src',  options.pinO);
+                    } else if (pinType == 3) {
+                        imgC.attr('src',  options.pinM);
+                    }
+                    
 					imgC.attr('pinnum', i);
+					imgC.attr('pinType', pinType)
 
 					imgC.appendTo(thisObj);
 					// console.log(ev.target);
@@ -115,15 +143,26 @@
 					var hiddenCtl= $('<input type="hidden" name="hiddenpin" class="pin">');
 			        hiddenCtl.css('top', y);
 			        hiddenCtl.css('left', x);
-			        hiddenCtl.val(x + "#" + y);
+			        hiddenCtl.val("(" + x + "," + y + ")");
 			        hiddenCtl.attr('pinnum', i);
+					if(pinType == 0) {
+                        hiddenCtl.attr('maltype', 'F');
+                    } else if (pinType == 1) {
+                        hiddenCtl.attr('maltype', 'V');
+                    } else if (pinType == 2) {
+                        hiddenCtl.attr('maltype', 'O');
+                    } else if (pinType == 3) {
+                        hiddenCtl.attr('maltype', 'M');
+                    }
 			        hiddenCtl.appendTo(thisObj);
 
 			        imgC.on(options.userevent, function (ev) {
-						imgC.remove();
-						hiddenCtl.remove();
-						justremoved = true;
-						i = i - 10;
+                        if(imgC.attr('pinType') == pinType) {
+                            imgC.remove();
+                            hiddenCtl.remove();
+                            i = i - 10;
+                            justremoved = true;
+                        }
 					});
 		    	}
 		    	
@@ -162,13 +201,66 @@
 				var dataPin = options.pinDataSet.markers[i];
 
 				var imgC = $('<img rel="/map-content.php?id='+dataPin.id+'" class="pin '+options.pinclass+'" style="top:'+dataPin.ycoord+'px;left:'+dataPin.xcoord+'px;">');
-				imgC.attr('src',  options.pin);
+			  	if(dataPin.pinType == 0) {
+                    imgC.attr('src',  options.pinF);
+                } else if (dataPin.pinType == 1) {
+                    imgC.attr('src',  options.pinV);
+                } else if (dataPin.pinType == 2) {
+                    imgC.attr('src',  options.pinO);
+                } else if (dataPin.pinType == 3) {
+                    imgC.attr('src',  options.pinM);
+                }
 				imgC.attr('title',  dataPin.title);
 
 				imgC.appendTo(this);
 			}
 
-		}
+		},
+
+		pinTypeNone: function(options) {
+
+            var options =  $.extend(defaults, options);
+            var thisObj = this;
+
+            pinType = -1;
+
+        },
+
+		pinTypeF: function(options) {
+
+            var options =  $.extend(defaults, options);
+            var thisObj = this;
+
+            pinType = 0;
+
+        },
+
+        pinTypeV: function(options) {
+
+            var options =  $.extend(defaults, options);
+            var thisObj = this;
+
+            pinType = 1;
+
+        },
+
+        pinTypeO: function(options) {
+
+            var options =  $.extend(defaults, options);
+            var thisObj = this;
+
+            pinType = 2;
+
+        },
+
+        pinTypeM: function(options) {
+
+            var options =  $.extend(defaults, options);
+            var thisObj = this;
+
+            pinType = 3;
+
+        }
 	};
 
 	if (methods[method]) {
@@ -181,7 +273,7 @@
 
 	} else {
 
-		alert("method does not exist");
+		alert("method " + method + " does not exist");
 
 	}
 
