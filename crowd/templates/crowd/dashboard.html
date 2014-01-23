@@ -55,7 +55,6 @@
           <tr><th>Labeler Type: <td>{{labeler.labelertype.name}} 
           <tr><th>Last Activity: <td>{{labeler.last_session.date() }}
           <tr><th>Correct Images Labeled: <td>{{labeler.total_correct_images_labeled}} of {{labeler.total_images_labeled}}
-          <tr><th>Labels Not Yet Evaluated: <td> {{total_images_labeled - labeler.training_image_labels.count()}}
           <tr><th>Total Labels Submitted: <td>{{total_images_labeled}}
           <tr><th>Rating: <td>{{labeler.labeler_rating * 100}}
         </table>
@@ -86,10 +85,10 @@
     <div class="large-9 columns large-centered">
     <h4 class="subheader">Galleries<h4>
         <ul class="small-block-grid-4">
-          <li><img class="button secondary" src="../static/images/red.jpg">Falciparum</li>
-          <li><img class="button secondary" src="../static/images/green.jpg">Vivax</li>
-          <li><img class="button secondary" src="../static/images/blue.jpg">Malariae</li>
-          <li><img class="button secondary" src="../static/images/yellow.jpg">Ovale</li>
+            <li><a href="/crowd/gallery/"><img class="button secondary" src="../static/images/red.jpg">Falciparum</a></li>
+                <li><a href="/crowd/gallery/"><img class="button secondary" src="../static/images/green.jpg">Vivax</a></li>
+              <li><a href="/crowd/gallery/"><img class="button secondary" src="../static/images/blue.jpg">Malariae</a></li>
+              <li><a href="/crowd/gallery/"><img class="button secondary" src="../static/images/yellow.jpg">Ovale</a></li>
         </ul>
       </div>
   </div>

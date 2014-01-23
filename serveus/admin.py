@@ -72,13 +72,12 @@ class ImageView(MyModelView):
         return Markup(
             '<a href="/pic/%s">%s</a>' % (model.id, model.id)
         ) if model.id else ""
-    '''    
+
     def _image_view(view, context, model, name):
         return Markup(
-            '<a href="/pic/%s"><img src="/pic/%s" style="width: 100px; height: 100px"/></a>' % (model.id, model.id)
+            '<a href="/pic/%s/"><img src="/pic/%s/" style="width: 100px; height: 100px"/></a>' % (model.id, model.id)
         ) if model.im else ""
-    '''    
-    column_formatters = { 'id': _image_link }
+    column_formatters = { 'id': _image_view }
             
 # Add pages to the admin page
 admin.add_view(MyModelView(UserType, db.session))

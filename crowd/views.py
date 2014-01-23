@@ -133,6 +133,18 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
 
         db.session.commit()
         
+@crowd.route('/crowd/gallery/')
+@login_required
+def gallery():
+    totalUnlabeled = TrainingImage.query.filter_by(date_finalized = None).count()
+    totalLabeled = len(TrainingImage.query.all()) - totalUnlabeled
+    expertNeeded = TrainingImage.query.filter_by(final_label_1 = 'Undeterminable').count()
+    leaderboard = Labeler.query.order_by(Labeler.labeler_rating).limit(10)
+    # sort leaderboard so Cat is not last:))
+    labeler = Labeler.query.filter_by(user_id=current_user.id).first()
+    total_images_labeled = TrainingImageLabel.query.group_by(TrainingImageLabel.training_image_id).count()
+    
+    return render_template("/crowd/gallery.html", user = current_user, labeler = labeler, totalUnlabeled = totalUnlabeled, totalLabeled = totalLabeled, expertNeeded = expertNeeded, leaderboard = leaderboard, total_images_labeled=total_images_labeled)
     
 @crowd.route('/crowd/session/',  methods = ['GET', 'POST'])
 @login_required

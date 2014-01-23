@@ -73,10 +73,13 @@ class Case(db.Model):
         self.date = date
         self.age = age
         self.address = address
+        self.human_diagnosis = human_diagnosis
+        """
         if human_diagnosis == 'No Malaria':
             self.human_diagnosis = human_diagnosis
         else:
             self.human_diagnosis = 'P. ' + human_diagnosis.lower()
+        """
         self.lat = lat
         self.lng = lng
 
