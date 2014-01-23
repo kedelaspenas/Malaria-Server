@@ -31,7 +31,11 @@ def dashboard():
     leaderboard = Labeler.query.order_by(Labeler.labeler_rating).limit(10)
     # sort leaderboard so Cat is not last:))
     labeler = Labeler.query.filter_by(user_id=current_user.id).first()
-    return render_template("/crowd/dashboard.html", user = current_user, labeler = labeler, totalUnlabeled = totalUnlabeled, totalLabeled = totalLabeled, expertNeeded = expertNeeded, leaderboard = leaderboard)
+    total_images_labeled = TrainingImageLabel.query.group_by(TrainingImageLabel.training_image_id).count()
+    
+   
+    
+    return render_template("/crowd/dashboard.html", user = current_user, labeler = labeler, totalUnlabeled = totalUnlabeled, totalLabeled = totalLabeled, expertNeeded = expertNeeded, leaderboard = leaderboard, total_images_labeled=total_images_labeled)
 
 def makeTrainingImageLabel(labeler, diagnosis, coordinates):
     global label_limit
@@ -45,17 +49,28 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
         db.session.commit()
     
     current_training_image = label.trainingimage
-    if current_training_image.total_labels >= label_limit:
+    
+    
+    total_unique_labelers = TrainingImageLabel.query.filter_by(training_image_id = current_training_image.id).group_by(TrainingImageLabel.labeler_id).count()
+    
+    print 'ASDASJDLKASHJDLAKSFHKAJSFHKAJFHLSAHDLKASDJ'
+    print str(total_unique_labelers)
+    
+    if total_unique_labelers >= label_limit:
         return 'Not accepting anymore labels for this image'
         
-    if current_training_image.total_labels < label_limit:
+    if total_unique_labelers < label_limit:
         current_training_image.total_labels += 1
     
+    print 'LABELER TYPE'
+    print labeler.labelertype
+    
     # limit reached
-    if current_training_image.total_labels >= label_limit or labeler.labelertype == 'Expert':
-        label_list = {'No Malaria':[], 'Falciparum':[], 'Vivax':[]}
+    if total_unique_labelers >= label_limit or str(labeler.labelertype) == 'Expert':
+        print 'EXPERT SIYA'
+        label_list = {'No Malaria':[], 'Falciparum':[], 'Vivax':[], 'Malariae':[], 'Ovale':[]}
         label_total = 0
-        percent_list = {'No Malaria':0, 'Falciparum':0, 'Vivax':0}
+        percent_list = {'No Malaria':0, 'Falciparum':0, 'Vivax':0, 'Malariae':0, 'Ovale':0}
         for i in current_training_image.training_image_labels[0:]:
             label_list[i.initial_label].append(i)
             label_total += 1
@@ -67,7 +82,7 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
         
         # Calculate label weights with respect to labeler rating
         total_label_weight = 0.0
-        label_weight = {'No Malaria':0.0, 'Falciparum':0.0, 'Vivax':0.0}
+        label_weight = {'No Malaria':0.0, 'Falciparum':0.0, 'Vivax':0.0, 'Malariae':0.0, 'Ovale':0.0}
 
         for i in label_list:
             for j in label_list[i]:
@@ -77,7 +92,7 @@ def makeTrainingImageLabel(labeler, diagnosis, coordinates):
         # print label_weight
 
         # Calculate percents with respect to weights
-        label_percent = {'No Malaria':0.0, 'Falciparum':0.0, 'Vivax':0.0}
+        label_percent = {'No Malaria':0.0, 'Falciparum':0.0, 'Vivax':0.0, 'Malariae':0.0, 'Ovale':0.0}
         for i in label_weight:
             label_percent[i] = label_weight[i]/total_label_weight
 
@@ -140,7 +155,8 @@ def session():
             
         else:
             # No Malaria
-            if not request.form.getlist('with_malaria'):
+            #if not request.form.getlist('with_malaria'):
+            if not (request.form.getlist('with_falciparum') or request.form.getlist('with_vivax') or request.form.getlist('with_malariae') or request.form.getlist('with_ovale')):
                 makeTrainingImageLabel(labeler, 'No Malaria', None)
                 
             else:
