@@ -29,7 +29,7 @@ from crowd.models import TrainingImage
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
+malariaList = ['Any Malaria Species','P. falciparum','P. vivax','P. ovale','P. malariae','No Malaria']
 
 def get_admin():
     return UserType.query.filter(UserType.name == 'Administrator').first()
