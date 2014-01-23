@@ -55,8 +55,8 @@
           <tr><th>Labeler Type: <td>{{labeler.labelertype.name}} 
           <tr><th>Last Activity: <td>{{labeler.last_session.date() }}
           <tr><th>Correct Images Labeled: <td>{{labeler.total_correct_images_labeled}} of {{labeler.total_images_labeled}}
-          <tr><th>Labels Not Yet Evaluated: <td> {{labeler.training_image_labels.count()}}
-          <tr><th>Total Labels Submitted: <td>{{labeler.total_images_labeled + labeler.training_image_labels.count()}}
+          <tr><th>Labels Not Yet Evaluated: <td> {{total_images_labeled - labeler.training_image_labels.count()}}
+          <tr><th>Total Labels Submitted: <td>{{total_images_labeled}}
           <tr><th>Rating: <td>{{labeler.labeler_rating * 100}}
         </table>
       </div>

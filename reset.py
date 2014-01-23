@@ -81,7 +81,7 @@ x[-1].usertype_id = 1
 x.append(User('Noel', User.hash_password('qwert')))
 x[-1].usertype_id = 2
 x.append(User('Juancho', User.hash_password('12345')))
-x[-1].usertype_id = 3
+x[-1].usertype_id = 1
 x.append(User('Marven', User.hash_password('asd')))
 x[-1].usertype_id = 3
 x.append(User('Jasper', User.hash_password('asd')))
