@@ -95,50 +95,62 @@ for i in x:
 
 x = Case(datetime.date(2010,5,15),20,'El Nido','Vivax',11.2,119.41)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 1
 db.session.add(x)
 
 x = Case(datetime.date(2005,8,26),20,'El Nido','Vivax',11.2,119.41)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 2
 db.session.add(x)
 
 x = Case(datetime.date(2010,5,15),18,'Taytay','Falciparum',10.49,119.31)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 3
 db.session.add(x)
 
 x = Case(datetime.date(2007,1,5),24,'Narra','Ovale',9.17,118.25)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 4
 db.session.add(x)
 
 x = Case(datetime.date(2009,9,9),20,'Taytay','No Malaria',10.42,119.2)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 5
 db.session.add(x)
 
 x = Case(datetime.date(2011,9,9),15," Brooke's Point",'Malariae',8.4,117.2)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 6
 db.session.add(x)
 
 x = Case(datetime.date(2008,9,9),39,'Narra','No Malaria',9.25,118.05)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 1
 db.session.add(x)
 
 x = Case(datetime.date(2012,9,9),45,'Arbolan','Malariae',9.26,118.33)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 2
 db.session.add(x)
 
 x = Case(datetime.date(2013,1,10),12,'San Vicente','Falciparum',10.32,119.17)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 3
 db.session.add(x)
 
 x = Case(datetime.date(2013,9,10),23,'Dumaran','Ovale',10.32,119.46)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 4
 db.session.add(x)
 
 x = Case(datetime.date(2011,5,15),12,"Brooke's Point",'No Malaria',8.47,117.5)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 5
 db.session.add(x)
 
 x = Case(datetime.date(2012,5,9),23,'Cuyo','Vivax',10.51,121.0)
 x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x.user_id = 6
 db.session.add(x)
 
 # Images

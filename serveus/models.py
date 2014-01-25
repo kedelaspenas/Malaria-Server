@@ -35,7 +35,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(120))
     usertype_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
     labelers = db.relationship('Labeler', backref='user', lazy='dynamic')
-    
+    case =  db.relationship('Case', backref='user', lazy='dynamic')
     @validates('password')
     def update_password(self, key, value):
         Database.query.first().modified = datetime.datetime.now()
@@ -67,6 +67,7 @@ class Case(db.Model):
     lng = db.Column(db.Float)
     maltype_id = db.Column(db.Integer, db.ForeignKey('maltype.id'))
     region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     images = db.relationship('Image', backref='case', lazy='dynamic')
 
     def __init__(self, date="", age="", address="", human_diagnosis="", lat="", lng=""):

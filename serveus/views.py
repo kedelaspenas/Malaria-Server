@@ -177,7 +177,13 @@ def records():
         sort_by = "date"
         order = "desc"
         caseList = Case.query.order_by(Case.date.desc())
-
+    # filter allowed records to view if not admin or doctor   
+    if (str(current_user.usertype)=='Microscopist'):
+        templist=[]
+        for i in caseList:
+            if(i.user == current_user):
+                templist.append(i)
+        caseList=templist
     # Pagination
     caseList = [i for i in caseList]
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
