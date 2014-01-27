@@ -257,6 +257,69 @@ def maps():
             lat = 10.422988
             lng = 120.629883
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
+
+@app.route('/monitoring/')
+@login_required
+def monitoring():
+    # Filter arguments
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+    zoom = request.args.get('zoom')
+    date_start = request.args.get('date_start')
+    date_end = request.args.get('date_end')
+    default_view = False
+    # Check if filters exist
+    if not (zoom and date_start and date_end):
+        # Go to default view
+        default_view = True
+        date_start = 'Last 30 Days'
+        date_end = 'Today'
+        zoom = 7
+        # return redirect('/map/?lat=10.422988&lng=120.629883&zoom=7&date_start=Last 30 Days&date_end=Today')
+    # Build marker list for map
+    dt=datetime.date.today()-datetime.timedelta(days=30)
+    dte=datetime.date.today() + datetime.timedelta(days=1)
+    if date_start != 'Last 30 Days' :
+            a=request.args.get('date_start')
+            b=a.split('/')
+            dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
+    if date_end != 'Today' :
+            a=request.args.get('date_end')
+            b=a.split('/')
+            dte=datetime.date(int(b[2]),int(b[0]),int(b[1])) + datetime.timedelta(days=1)
+    
+    case_list = Case.query.filter(Case.date>=dt,Case.date<=dte)
+    case_list = [i for i in case_list]
+    sorted_list = dict([(i, []) for i in malariaList[1:]])
+    for i in case_list:
+        sorted_list[i.human_diagnosis].append(str(i.lat)+','+str(i.lng))
+    
+    if default_view or not(lat and lng):
+        # Get centroid of markers of cases
+        max_y = max_x = 0
+        min_y = min_x = 9999
+        for i in case_list:
+            if i.lat > max_y:
+                max_y = i.lat
+            if i.lng > max_x:
+                max_x = i.lng
+            if i.lat < min_y:
+                min_y = i.lat
+            if i.lng < min_x:
+                min_x = i.lng
+        # Center
+        lat = (min_y + max_y)/2
+        lng = (min_x + max_x)/2
+        # Calculate zoom based on resolution
+        # TODO: Move to client side javascript if applicable
+        try:
+            zoom = math.floor(math.log(480 * 360 / (((max_y - min_y)+(max_x - min_x))/2) / 256) / 0.6931471805599453) - 1;
+        except Exception, e:
+            # Default zoom
+            zoom = 7
+            lat = 10.422988
+            lng = 120.629883
+    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
     
 @app.route('/timeline/')
 @login_required
