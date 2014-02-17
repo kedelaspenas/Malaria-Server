@@ -58,7 +58,7 @@ def allowed(types=[]):
 @app.route('/index/')
 def index():
     if current_user.is_authenticated():
-        return redirect('/dashboard/')
+        return redirect('/monitoring/')
     return render_template("index.html",login_form = LoginForm(), recovery_form = RecoveryForm())
     
 @app.route('/profilepage/', methods = ['GET', 'POST'])
@@ -188,7 +188,8 @@ def maps():
     case_list = [i for i in case_list]
     sorted_list = dict([(i, []) for i in parasiteList[1:]])
     for i in case_list:
-        sorted_list[i.parasite].append((str(i.id),str(i.lat)+','+str(i.lng)))
+        #sorted_list[i.parasite].append((str(i.id),str(i.lat)+','+str(i.lng)))
+        sorted_list["Falciparum"].append((str(i.id),str(i.lat)+','+str(i.lng)))
     
     if default_view or not(lat and lng):
         # Get centroid of markers of cases
@@ -287,7 +288,8 @@ def timeline():
     
     sorted_list = dict([(i, []) for i in parasiteList[1:]])
     for i in case_list:
-        sorted_list[i.parasite].append((str(i.lat)+','+str(i.lng),i.date))
+        #sorted_list[i.parasite].append((str(i.lat)+','+str(i.lng),i.date))
+        sorted_list["Falciparum"].append((str(i.lat)+','+str(i.lng),i.date))
         
         if i.date > max_date:
             max_date = i.date
@@ -423,7 +425,7 @@ def login():
         user = User.query.filter_by(username=username,password=password).first()
         if user:
             login_user(user)
-            return redirect("/dashboard")
+            return redirect("/monitoring")
         else:
             error = True
             error_message = "Invalid username or password!"
@@ -511,16 +513,18 @@ def upload_file():
             mapping = {}
             for child in root:
                 mapping[child.tag] = child.text
-            print mapping
             month, day, year = map(int, mapping['date-created'].split('/'))
             hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
             latitude = float(mapping['latitude'])
             longitude = float(mapping['longitude'])
             parasite = mapping['species'].replace('Plasmodium ', '').capitalize()
             description = mapping['description']
+            age = mapping['age']
+            address = mapping['address']
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
             case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude)
+            case.region = region
 
             user = User.query.filter(User.username == username).first()
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)

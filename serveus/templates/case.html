@@ -46,7 +46,7 @@
                     <div>
                         <ul class="nav pull-left">
                             <li>&nbsp</li>
-                            <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
+                            <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
                             <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
                             <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
                             <li><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
@@ -76,9 +76,10 @@
 					<h4 class="pull-left">Patient Information</h4>
                     <h4 class="pull-right">{{case.date}}</h4>
                     <table class="table table-condensed table-bordered" style="width: 100%">
-                    <tr><th class="span2">Case No.<td class="span10">{{case.id}}
-                    <tr><th>Parasite<td>{{case.parasite}}
-                    <tr><th>Description<td>{{case.description}}
+                    <tr><th class="span2">Case ID.<td class="span10">Region code, pt number {{case.id}}
+                    <tr><th>Address<td>Address
+                    <tr><th>Diagnosis<td>{{case.parasite}}
+                    <tr><th>Remarks<td>{{case.description}}
                     <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
                     </table>
                     <div class="pull-right">
@@ -87,9 +88,11 @@
                     </div>
 				</div>
 				<div class="span3 well" style="background-color: white; overflow-y: auto; overflow-x:hidden; position: relative; height: 100%; padding: 0.5%; padding-top: 0;">
+                    <!--
                     <ul class="nav nav-tabs" id="image_tabs">
                         <li class="active"><a href="#raw_images" data-toggle="tab">Raw Images</a></li>
                     </ul>
+                    -->
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="raw_images">
                             <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">

@@ -98,7 +98,7 @@
                     <div>
                         <ul class="nav pull-left">
                             <li>&nbsp</li>
-                            <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
+                            <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
                             <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
                             <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
                             <li><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
@@ -117,10 +117,11 @@
         <div id="date_slider" style="width:70%"></div>
         
         <div id="filter" class="container" style="display: none">
-            Showing cases of:<br>
+            Showing cases:<br>
+            <!--
             <span id="filter_container">
             </span>
-            
+            -->
             <form action="/timeline/" method="get" style="padding: 0; margin: 0;">
             From:<br>
             <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{bound_start.month}}/{{bound_start.day}}/{{bound_start.year}}" id="dpd1" name="date_start">
@@ -163,7 +164,7 @@
         <script src="/static/js/eyecon-datepicker.js"></script>
         <script>
             var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
-            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
+            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
             
             var falciparumPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             

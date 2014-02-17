@@ -73,7 +73,7 @@
                     <div>
                         <ul class="nav pull-left">
                             <li>&nbsp</li>
-                            <li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>
+                            <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
                             <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
                             <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
                             <li class="active"><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
@@ -90,9 +90,11 @@
         <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: none"></div>
 
         <div id="filter" class="container" style="display: none">
-        Showing cases of:<br>
+        Showing cases:<br>
+        <!--
         <span id="filter_container">
         </span>
+        -->
         <form action="/map/" method="get" style="padding: 0; margin: 0;">
         From:<br>
         <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{date_start}}" id="dpd1" name="date_start">
@@ -119,7 +121,7 @@
         </div>
         <div class="modal-body">
         <p>This page shows the distribution of malaria cases all over the country. <br> Cases from the last 30 days are shown by default. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br>
-        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|FF0000|000000"/> Falciparum &nbsp;&nbsp;&nbsp; 
+        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Falciparum &nbsp;&nbsp;&nbsp; 
         <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|00FF00|000000"/> Vivax &nbsp;&nbsp;&nbsp; 
         <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|00FFFF|000000"/> Malariae &nbsp;&nbsp;&nbsp; 
         <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000"/> Ovale &nbsp;&nbsp;&nbsp; 
@@ -128,7 +130,7 @@
         </div>
         <script>
             var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
-            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
+            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
             
             var falciparumPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
@@ -277,7 +279,6 @@
             document.getElementById('loading_block').style.display = 'None';
             document.getElementById('map-canvas').style.display = '';
             document.getElementById('filter').style.display = '';
-            document.getElementById('total_container').style.display = '';
         </script>
 	</body>
 </html>
