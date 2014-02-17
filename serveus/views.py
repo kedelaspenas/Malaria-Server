@@ -232,13 +232,13 @@ def monitoring():
     week_start = datetime.date.today()-datetime.timedelta(days=7)
     week_start = week_start.strftime('%b. %d , %Y')
     week_end = date.today().strftime('%b. %d , %Y')
-    location = "Palawan"
+    location = "Philippines"
     cases_this_week = 13
     cases_last_week = 14
     # Default to palawan
-    zoom = 7
-    lat = 10.066667
-    lng = 118.905
+    zoom = 6
+    lat = 11.3333
+    lng = 123.0167
     return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user)
     
 @app.route('/timeline/')
