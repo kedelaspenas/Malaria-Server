@@ -8,9 +8,8 @@ from flask.ext.login import current_user
 from flask import request
 from jinja2 import Markup
 
-from models import db, User, UserType, Case, MalType, Image
+from models import db, User, UserType, Case, Image
 from views import dashboard
-from crowd.models import LabelerType, Labeler, TrainingImage,TrainingImageLabel,TrainingImageLabelCell
 
 # Custom admin links on navbar
 
@@ -84,12 +83,6 @@ admin.add_view(MyModelView(UserType, db.session))
 admin.add_view(UserView(User, db.session))
 admin.add_view(MyModelView(Case, db.session))
 admin.add_view(ImageView(Image, db.session))
-admin.add_view(MyModelView(MalType, db.session))
-admin.add_view(MyModelView(LabelerType,db.session))
-admin.add_view(MyModelView(Labeler,db.session))
-admin.add_view(MyModelView(TrainingImage,db.session))
-admin.add_view(MyModelView(TrainingImageLabel,db.session,'TIL'))
-admin.add_view(MyModelView(TrainingImageLabelCell,db.session,'TILC'))
 
 # Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='dashboard'))

@@ -25,13 +25,12 @@ try:
 except ImportError:
     import PIL
 
-from models import db, User, UserType, Case, Key, Image, Database, Region
-from crowd.models import TrainingImage
+from models import db, User, UserType, Case, Key, Image, Database
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-malariaList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
+parasiteList = ['All Parasites', 'Falciparum', 'Vivax', 'Ovale', 'Malariae', 'No Parasite']
 
 def get_admin():
     return UserType.query.filter(UserType.name == 'Administrator').first()
@@ -85,127 +84,7 @@ def profilepage():
 @app.route('/dashboard/')
 @login_required
 def dashboard():
-    # Tabular summaries of malaria distribution
-    casenum=[]
-    casenum2=[]
-    percent1=[]
-    percent2=[]
-    regionList= Region.query.all()
-    total = len(Case.query.all())
-    for i in regionList:
-        print i
-        a=Case.query.filter(Case.region==i)
-        a= [i for i in a] 
-        casenum.append(len(a))
-        temp= str((float(len(a))/float(total))*100)
-        percent1.append(temp[:5] + '%')
-    cases=zip(regionList,casenum,percent1)
-    print 'cases:', len(cases), cases
-    for i in malariaList[1:]:
-        a=Case.query.filter(Case.human_diagnosis == i)
-        a= [i for i in a] 
-        print len(a)
-        casenum2.append(len(a))
-        temp= str((float(len(a))/float(total))*100)
-        percent2.append(temp[:5] + '%')
-    infsum=sum(casenum2)- casenum2[len(casenum2)-1]
-    infperc=str((float(infsum)/float(total)) *100)[:5] + '%'
-    cases2=zip(malariaList[1:],casenum2,percent2)
-    return render_template("dashboard.html", user = current_user, cases=cases, cases2=cases2, malariaList = malariaList[1:], regionList = regionList[1:], date=datetime.datetime.now().strftime('%B %d, %Y'), casenum=casenum, total=total, percent1=percent1, percent2=percent2 ,infsum=infsum, infperc=infperc)
-
-@app.route('/ajax/records')
-@login_required
-def ajax_records():
-	data = {}
-
-	# fake data
-	string = """
-	Region IV-B (MIMAROPA)
-		 Occidental Mindoro
-		 Oriental Mindoro
-		 Marinduque
-		 Romblon
-		 Palawan
-			Aborlan
-			Agutaya
-			Araceli
-			Balabac
-			Bataraza
-			Brooke's Point
-			Busuanga
-			Cagayancillo
-			Coron
-			Culion
-			Cuyo
-			Dumaran
-			El Nido
-			Kalayaan
-			Linapacan
-			Magsaysay
-			Narra
-			Puerto Princesa City
-			Quezon
-			Rizal
-			Roxas
-			San Vicente
-			Sofronio Espanola
-			Taytay
-	NCR (National Capital Region)
-		Capital
-			Manila
-		Eastern Manila
-			Mandaluyong
-			Marikina
-			Pasig
-			Quezon City
-			San Juan
-		CAMANAVA
-			Caloocan
-			Malabon
-			Navotas
-			Valenzuela
-		Southern Manila
-			Las Pinas
-			Makati
-			Muntinlupa
-			Paranaque
-			Pasay
-			Pateros
-			Taguig
-	"""
-	cur_region = None
-	cur_province = None
-	cur_city = None
-	for line in string.split('\n'):
-		count = line.count('\t')
-		name = line.strip()
-		if count == 1:
-			data[name] = {}
-			cur_region = name
-		elif count == 2:
-			data[cur_region][name] = {}
-			cur_province = name
-		elif count == 3:
-			data[cur_region][cur_province][name] = {}
-			cur_city = name
-
-	# region -> province -> city -> barangay
-	try:
-		if 'city' in request.args and 'province' in request.args and 'region' in request.args:
-			city = request.args.get('city', None)
-			province = request.args.get('province', None)
-			region = request.args.get('region', None)
-			result = data[region][province][city].keys()
-		elif 'province' in request.args and 'region' in request.args:
-			province = request.args.get('province', None)
-			region = request.args.get('region', None)
-			result = data[region][province].keys()
-		elif 'region' in request.args:
-			region = request.args.get('region', None)
-			result = data[region].keys()
-	except KeyError:
-		result=None
-	return jsonify(result=result)
+    return render_template("dashboard.html", user = current_user, date=datetime.datetime.now().strftime('%B %d, %Y'))
 
 @app.route('/records/')
 @login_required
@@ -215,22 +94,10 @@ def records():
         page = 1
     else:
         page = int(request.args.get('page'))
-    # Malaria Case Filters
-    # print request.args.get('malaria_selection') + request.args.get('region_selection') + request.args.get('date_start') + request.args.get('date_end')
-    # Table sorter
-    # print request.args.get('sort_by') # date, location, diagnosis
-    # print request.args.get('order') # asc, desc
-    regionList = ['All Regions']
-    provinceList = ['All Provinces', 'kirong']
-    cityList = ['All Cities', 'aldric']
-    barangayList = ['All Barangays', 'noel']
     
     if request.args:
-        malariaSelected = request.args.get('malaria_selection')
-        regionSelected = request.args.get('region_selection')
-        malariaIndex = malariaList.index(malariaSelected)
-        regionList += [str(i) for i in Region.query.all()]
-        regionIndex = regionList.index(regionSelected)
+        parasiteSelected = request.args.get('parasite_selection')
+        parasiteIndex = parasiteList.index(parasiteSelected)
         
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
@@ -252,26 +119,21 @@ def records():
         sortby=''
         if sort_by== 'date':
             sortby='date'
-        elif sort_by== 'location':
-            sortby='address'
-        elif sort_by== 'diagnosis':
-            sortby='human_diagnosis'
+        elif sort_by== 'parasite':
+            sortby='parasite'
+        elif sort_by== 'description':
+            sortby='description'
         else:
             sortby='id'
         param= "\"case\"."+sortby+" "+order
         print param
-        if regionIndex == 0 and malariaIndex == 0: # Display all
+        if parasiteIndex == 0: # Display all
             caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
-        elif regionIndex == 0: # Whole Philippines
-            caseList = Case.query.filter(Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)       
-        elif malariaIndex == 0: # Any malaria
-            caseList = Case.query.filter(Case.region == Region.query.filter(Region.name == regionSelected).first(),Case.date>=dt,Case.date<=dte).order_by(param)
         else:
-            caseList = Case.query.filter(Case.region == Region.query.filter(Region.name == regionSelected).first(),Case.human_diagnosis == malariaSelected,Case.date>=dt,Case.date<=dte).order_by(param)
+            caseList = Case.query.filter(Case.parasite==parasiteList[parasiteIndex],Case.date>=dt,Case.date<=dte).order_by(param)
     else:
         # Default values
-        malariaIndex = 0
-        regionIndex = 0
+        parasiteIndex = 0
         date_start = "The Beginning"
         date_end = "This Day"
         sort_by = "date"
@@ -289,9 +151,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    regionList += [i for i in Region.query.all()]
-    
-    return render_template("records.html", caseList = caseList, pagination = pagination, malariaList = malariaList, regionList = regionList, malariaIndex = malariaIndex, regionIndex = regionIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, provinceList=provinceList, cityList=cityList, barangayList=barangayList)
+    return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
 
     
 @app.route('/map/')
@@ -326,9 +186,9 @@ def maps():
     
     case_list = Case.query.filter(Case.date>=dt,Case.date<=dte)
     case_list = [i for i in case_list]
-    sorted_list = dict([(i, []) for i in malariaList[1:]])
+    sorted_list = dict([(i, []) for i in parasiteList[1:]])
     for i in case_list:
-        sorted_list[i.human_diagnosis].append((str(i.id),str(i.lat)+','+str(i.lng)))
+        sorted_list[i.parasite].append((str(i.id),str(i.lat)+','+str(i.lng)))
     
     if default_view or not(lat and lng):
         # Get centroid of markers of cases
@@ -368,15 +228,17 @@ def monitoring():
         count = Case.query.filter_by(lat=i.lat, lng=i.lng).count()
         print str(i.lng) + ', ' + str(i.lat) + ' = ' + str(count)
         bar_list.append(((i.lat, i.lng), count))
-    week_start = "week_start"
-    week_end = "today"
-    location = "palawan"
+    week_start = datetime.date.today()-datetime.timedelta(days=7)
+    week_start = week_start.strftime('%b. %d , %Y')
+    week_end = date.today().strftime('%b. %d , %Y')
+    location = "Palawan"
     cases_this_week = 13
+    cases_last_week = 14
     # Default to palawan
     zoom = 7
     lat = 10.066667
     lng = 118.905
-    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, user = current_user)
+    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user)
     
 @app.route('/timeline/')
 @login_required
@@ -423,9 +285,9 @@ def timeline():
     min_date = case_list[0].date
     max_date = case_list[0].date
     
-    sorted_list = dict([(i, []) for i in malariaList[1:]])
+    sorted_list = dict([(i, []) for i in parasiteList[1:]])
     for i in case_list:
-        sorted_list[i.human_diagnosis].append((str(i.lat)+','+str(i.lng),i.date))
+        sorted_list[i.parasite].append((str(i.lat)+','+str(i.lng),i.date))
         
         if i.date > max_date:
             max_date = i.date
@@ -485,7 +347,7 @@ def case(id):
     if request.method == 'POST':
         c = canvas.Canvas('malaria.pdf', pagesize=letter)
         width, height = letter
-        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Address: ' + case.address + '<br>' + 'Diagnosis: ' + case.human_diagnosis + '<br>'
+        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
     
         x = reportString.split('<br>')
         for i, s in enumerate(x):
@@ -574,9 +436,9 @@ def login():
 @app.route('/csv/', methods = ['GET'])
 @allowed([get_admin, get_doctor])
 def csv():
-    x = ['date,age,address,human diagnosis,latitude,longitude,malaria type,region']
+    x = ['date,parasite,description,latitude,longitude']
     for case in Case.query.all():
-        y = [case.date, case.age, case.address, case.human_diagnosis, case.lat, case.lng, case.maltype, case.region]
+        y = [case.date, case.parasite, case.description, case.lat, case.lng]
         y = map(str, y)
         x.append(','.join(y))
     csv = '\n'.join(x)
@@ -649,18 +511,16 @@ def upload_file():
             mapping = {}
             for child in root:
                 mapping[child.tag] = child.text
+            print mapping
             month, day, year = map(int, mapping['date-created'].split('/'))
             hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
             latitude = float(mapping['latitude'])
             longitude = float(mapping['longitude'])
-            species = mapping['species'].replace('Plasmodium ', '').capitalize()
-            age = mapping['age']
-            address = mapping['address']
-            region = Region.query.filter(Region.name == mapping['region']).first()
+            parasite = mapping['species'].replace('Plasmodium ', '').capitalize()
+            description = mapping['description']
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-            case = Case(date=dt,age=age,address=address,human_diagnosis=species,lat=latitude,lng=longitude)
-            case.region = region
+            case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude)
 
             user = User.query.filter(User.username == username).first()
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
@@ -673,11 +533,6 @@ def upload_file():
                     img = Image()
                     img.create_image(img_file, case)
                     db.session.add(img)
-                    db.session.commit()
-                    
-                    # make new training image
-                    trainingImg = TrainingImage(img.id, 0, 'Unlabeled', 'Unlabeled', None)
-                    db.session.add(trainingImg)
                     db.session.commit()
 
                 return 'OK'

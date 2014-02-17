@@ -153,7 +153,7 @@
         <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|00FF00|000000"/> Vivax &nbsp;&nbsp;&nbsp;
         <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|00FFFF|000000"/> Malariae &nbsp;&nbsp;&nbsp;
         <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000"/> Ovale &nbsp;&nbsp;&nbsp;
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Malaria</p>
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Parasite</p>
         </div>
         </div>
         <script src="/static/js/jquery.js"></script>
@@ -214,7 +214,7 @@
                 new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Vivax'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], vivaxPin),
                 new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Malariae'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaePin),
                 new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Ovale'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], ovalePin),
-                new MarkerList("No Malaria", [{% for i in case_list['No Malaria'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Malaria'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
+                new MarkerList("No Parasite", [{% for i in case_list['No Parasite'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Parasite'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
             ]
             
             function initialize() {

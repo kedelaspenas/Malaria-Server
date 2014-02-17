@@ -3,7 +3,6 @@ import datetime
 import sqlite3
 
 from serveus.models import *
-from crowd.models import *
 
 if os.path.isfile('cs198pythontest.db'):
 	os.remove('cs198pythontest.db')
@@ -33,39 +32,12 @@ c.execute('''CREATE TABLE user (id INTEGER NOT NULL, username VARCHAR(80), passw
 conn.commit()
 conn.close()
 
-# Malaria types
-malaria_types = ['Falciparum', 'Vivax', 'Ovale', 'Malariae']
-for i in malaria_types:
-	for j in xrange(1,5):
-		temp = MalType(i, j)
-		db.session.add(temp)
-		log(temp)
-
 # User types
 user_types = ['Administrator', 'Doctor', 'Microscopist']
 for user_type in user_types:
 	temp = UserType(user_type)
 	db.session.add(temp)
 	log(temp)
-
-# Region
-db.session.add(Region('NCR (National Capital Region)'))
-db.session.add(Region('CAR (Cordillera Administrative Region)'))
-db.session.add(Region('Region I (Ilocos Region)'))
-db.session.add(Region('Region II (Cagayan Valley)'))
-db.session.add(Region('Region III (Central Luzon)'))
-db.session.add(Region('Region IV-A (CALABARZON)'))
-db.session.add(Region('Region IV-B (MIMAROPA)'))
-db.session.add(Region('Region V (Bicol Region)'))
-db.session.add(Region('Region VI (Western Visayas)'))
-db.session.add(Region('Region VII (Central Visayas)'))
-db.session.add(Region('Region VIII (Eastern Visayas)'))
-db.session.add(Region('Region IX (Zamboanga Peninsula)'))
-db.session.add(Region('Region X (Northern Mindanao)'))
-db.session.add(Region('Region XI (Davao Region)'))
-db.session.add(Region('Region XII (Soccsksargen)'))
-db.session.add(Region('Region XIII (Caraga)'))
-db.session.add(Region('ARMM (Autonomous Region in Muslim Mindanao)'))
 
 db.session.commit()
 
@@ -93,63 +65,51 @@ for i in x:
 
 # Cases
 
-x = Case(datetime.date(2010,5,15),20,'El Nido','Vivax',11.2,119.41)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2010,5,15),'Vivax','Description',11.2,119.41)
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2005,8,26),20,'El Nido','Vivax',11.2,119.41)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2005,8,26),'Vivax','Description',11.2,119.41)
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2010,5,15),18,'Taytay','Falciparum',10.49,119.31)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2010,5,15),'Falciparum','Description',10.49,119.31)
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2007,1,5),24,'Narra','Ovale',9.17,118.25)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2007,1,5),'Ovale','Description',9.17,118.25)
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2009,9,9),20,'Taytay','No Malaria',10.42,119.2)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2009,9,9),'No Parasite','Description',10.42,119.2)
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2011,9,9),15," Brooke's Point",'Malariae',8.4,117.2)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2011,9,9),'Malariae','Description',8.4,117.2)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2008,9,9),39,'Narra','No Malaria',9.25,118.05)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2008,9,9),'No Parasite','Description',9.25,118.05)
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2012,9,9),45,'Arbolan','Malariae',9.26,118.33)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2012,9,9),'Malariae','Description',9.26,118.33)
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2013,1,10),12,'San Vicente','Falciparum',10.32,119.17)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2013,1,10),'Falciparum','Description',10.32,119.17)
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2013,9,10),23,'Dumaran','Ovale',10.32,119.46)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2013,9,10),'Ovale','Description',10.32,119.46)
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2011,5,15),12,"Brooke's Point",'No Malaria',8.47,117.5)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2011,5,15),'No Parasite','Description',8.47,117.5)
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2012,5,9),23,'Cuyo','Vivax',10.51,121.0)
-x.region = Region.query.filter(Region.name == 'Region IV-B (MIMAROPA)').first()
+x = Case(datetime.date(2012,5,9),'Vivax','Description',10.51,121.0)
 x.user_id = 6
 db.session.add(x)
 
@@ -160,44 +120,6 @@ for i in xrange(1,9):
     tmp.case_id = i
     db.session.add(tmp)
 log('images')    
-    
-# CROWDSOURCING START
-
-#LabelerType
-db.session.add(LabelerType('Novice'))
-db.session.add(LabelerType('Regular'))
-db.session.add(LabelerType('Expert'))
-
-#Labeler
-# comment out the loop so rodolfo stays as a novice
-'''
-for i in xrange(1,7):
-    db.session.add(Labeler(i,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, (i%3)+1))
-'''
-db.session.add(Labeler(1,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 1))
-db.session.add(Labeler(2,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
-db.session.add(Labeler(3,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 3))
-db.session.add(Labeler(4,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
-db.session.add(Labeler(5,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
-db.session.add(Labeler(6,0,0,None,datetime.datetime(2013,12,5,0,0), 1.0, 2))
-
-#TrainingImage
-for i in xrange(1,9):
-    db.session.add(TrainingImage(i,0,'Unlabeled','Unlabeled',None))
-'''
-#TrainingImageLabel
-for i in xrange(1,9):
-    for j in range(1,9):
-        db.session.add(TrainingImageLabel((j%3)+1, i,datetime.date(2013,12,5),datetime.time(j,j), datetime.time(j,j+2),1, None, None))
-
-#TrainingImageLabelCell
-for i in xrange(1,9):
-    for j in xrange(1,9):
-        for k in xrange(1,9):
-            db.session.add(TrainingImageLabelCell(j,k*100,k*100, None,None))
-'''
-log('dummy crowdsourcing data')
-# CROWDSOURCING END
 
 # TODO: remove when keys are synced with accounts
 """

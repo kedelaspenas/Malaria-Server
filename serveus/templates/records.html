@@ -105,48 +105,12 @@
 		<div class="container-fluid">
             <div class="row-fluid">
 				<form action="/records/" method="get" name="filter" class="span3 container" style="background-color: white; ">
-					<h4>Show Malaria Cases:</h4>
+					<h4>Show Parasite Cases:</h4>
 					<div class="input-prepend" style="width: 100%">
                     <span class="add-on">with</span>
-					<select style="width: calc(100% - 35px)" name="malaria_selection">
-                    {% for i in malariaList %}
-                        <option {% if loop.index0 == malariaIndex %}selected{% endif %}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div class="input-prepend" style="width: 100%">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_region" style="width: calc(100% - 34px)" name="region_selection">
-					{% for i in regionList %}
-                        <option {% if loop.index0 == regionIndex %}selected{% endif %}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div id="province" class="input-prepend" style="width: 100%">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_province" style="width: calc(100% - 34px)" name="region_selection">
-					{% for i in provinceList %}
-                        <option {% if loop.index0 == provinceIndex %}selected{% endif %}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div id="city" class="input-prepend" style="width: 100%">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_city" style="width: calc(100% - 34px)" name="region_selection">
-					{% for i in cityList %}
-                        <option {% if loop.index0 == cityIndex %}selected{% endif %}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div id="barangay" class="input-prepend" style="width: 100%">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_barangay" style="width: calc(100% - 34px)" name="region_selection">
-					{% for i in barangayList %}
-                        <option {% if loop.index0 == barangayIndex %}selected{% endif %}>{{ i }}</option>
+					<select style="width: calc(100% - 35px)" name="parasite_selection">
+                    {% for i in parasiteList %}
+                        <option {% if loop.index0 == parasiteIndex %}selected{% endif %}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -196,11 +160,11 @@
 					<tr>
                     <th class="span1" onclick="sort('case');"># <div class="pull-right"><i class="icon-minus" id="case_chevron"></i></div>
                     <th class="span2" onclick="sort('date');" style="min-width: 80px">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
-                    <th class="span5" onclick="sort('location');">Location <div class="pull-right"><i class="icon-minus" id="location_chevron"></i></div>
-                    <th class="span3" onclick="sort('diagnosis');">Diagnosis <div class="pull-right"><i class="icon-minus" id="diagnosis_chevron"></i></div>
+                    <th class="span3" onclick="sort('parasite');">Parasite <div class="pull-right"><i class="icon-minus" id="parasite_chevron"></i></div>
+                    <th class="span3" onclick="sort('description');">Description <div class="pull-right"><i class="icon-minus" id="description_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
-					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.region}}, {{i.address}}<td>{{i.human_diagnosis}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
+					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.parasite}}<td>{{i.description}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
                     {% if not caseList %}
                     <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results</a>
@@ -226,7 +190,7 @@
         <h3 id="helpModalLabel">Records</h3>
         </div>
         <div class="modal-body">
-        <p>This page displays the latest malaria cases on the table. <br><br>Details of induvidual cases can be seen by clicking the respective "View" button.<br><br> Filters are available to narrow down the results.</p>
+        <p>This page displays the latest parasite cases on the table. <br><br>Details of individual cases can be seen by clicking the respective "View" button.<br><br> Filters are available to narrow down the results.</p>
         </div>
         </div>
 		<script src="/static/js/jquery.js"></script>
@@ -266,71 +230,6 @@
             checkout.hide();
             }).data('datepicker');
 
-            $('select#sel_region').change(function() {
-                if ($('select#sel_region').val() == 'All Regions') {
-                    $('div#province').hide();
-                } else {
-					$.getJSON('/ajax/records', {
-						region: $('select#sel_region').val()
-					}, function(data) {
-						$('select#sel_province').empty().append('<option selected>All Provinces</option>');
-						$.each(data.result, function(key, value) {
-							$('select#sel_province').append('<option>' + value + '</option>');
-						});
-					});
-                    $('div#province').show();
-                }
-                $('select#sel_province').prop('selectedIndex', 0);
-                $('div#city').hide();
-                $('select#sel_city').prop('selectedIndex', 0);
-                $('div#barangay').hide();
-                $('select#sel_barangay').prop('selectedIndex', 0);
-            });
-
-            $('select#sel_province').change(function() {
-                if ($('select#sel_province').val() == 'All Provinces') {
-                    $('div#city').hide();
-                } else {
-					$.getJSON('/ajax/records', {
-						region: $('select#sel_region').val(),
-						province: $('select#sel_province').val()
-					}, function(data) {
-						$('select#sel_city').empty().append('<option selected>All Cities</option>');
-						$.each(data.result, function(key, value) {
-							$('select#sel_city').append('<option>' + value + '</option>');
-						});
-					});
-                    $('div#city').show();
-                }
-                $('select#sel_city').prop('selectedIndex', 0);
-                $('div#barangay').hide();
-                $('select#sel_barangay').prop('selectedIndex', 0);
-            });
-
-            $('select#sel_city').change(function() {
-                if ($('select#sel_city').val() == 'All Cities') {
-                    $('div#barangay').hide();
-                } else {
-					$.getJSON('/ajax/records', {
-						region: $('select#sel_region').val(),
-						province: $('select#sel_province').val(),
-						city: $('select#sel_city').val()
-					}, function(data) {
-						$('select#sel_barangay').empty().append('<option selected>All Barangays</option>');
-						$.each(data.result, function(key, value) {
-							$('select#sel_barangay').append('<option>' + value + '</option>');
-						});
-					});
-                    $('div#barangay').show();
-                }
-                $('select#sel_barangay').prop('selectedIndex', 0);
-            });
-
-            $(document).ready(function() {
-                $('div#province').hide();
-                $('div#city').hide();
-                $('div#barangay').hide();
-            });
         </script>
 	</body>
 </html>

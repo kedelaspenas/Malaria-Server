@@ -34,7 +34,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(120))
     usertype_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
-    labelers = db.relationship('Labeler', backref='user', lazy='dynamic')
     case =  db.relationship('Case', backref='user', lazy='dynamic')
     @validates('password')
     def update_password(self, key, value):
@@ -60,27 +59,17 @@ class Case(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime())
-    age = db.Column(db.Integer)
-    address = db.Column(db.String(120))
-    human_diagnosis = db.Column(db.String(80))
+    parasite = db.Column(db.String(100))
+    description = db.Column(db.String(1000))
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
-    maltype_id = db.Column(db.Integer, db.ForeignKey('maltype.id'))
-    region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     images = db.relationship('Image', backref='case', lazy='dynamic')
 
-    def __init__(self, date="", age="", address="", human_diagnosis="", lat="", lng=""):
+    def __init__(self, date="", parasite="", description="", lat="", lng=""):
         self.date = date
-        self.age = age
-        self.address = address
-        self.human_diagnosis = human_diagnosis
-        """
-        if human_diagnosis == 'No Malaria':
-            self.human_diagnosis = human_diagnosis
-        else:
-            self.human_diagnosis = 'P. ' + human_diagnosis.lower()
-        """
+        self.parasite = parasite
+        self.description = description
         self.lat = lat
         self.lng = lng
 
@@ -89,40 +78,6 @@ class Case(db.Model):
 
     def __str__(self):
         return str(self.id)
-
-class Region(db.Model):
-    __tablename__ = 'region'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
-    case = db.relationship('Case', backref='region', lazy='dynamic')
-
-    def __init__(self, name=""):
-        self.name = name
-
-    def __repr__(self):
-        return '<Region %r>' % self.name
-
-    def __str__(self):
-        return self.name
-
-class MalType(db.Model):
-    __tablename__ = 'maltype'
-
-    id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(80))
-    stage = db.Column(db.Integer)
-    cases = db.relationship('Case', backref='maltype', lazy='dynamic')
-
-    def __init__(self, type="", stage=""):
-        self.type = type
-        self.stage = stage
-    
-    def __repr__(self):
-        return '<MalType %r>' % self.type
-        
-    def __str__(self):
-        return 'Stage ' + str(self.stage) + ' ' + self.type
 
 class Image(db.Model):
     __tablename__ = 'image'

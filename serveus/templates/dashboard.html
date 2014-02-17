@@ -78,7 +78,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="well span8">
-            Table of Malaria Distribution per Region
+            Table of Parasite Distribution per Region
             <br><br>
             <table class="table table-condensed">
             <tr><th>Region<th>Cases<th>Percent
@@ -88,10 +88,10 @@
 			</div>
             <div class="span4">
                 <div class="well span12">
-                Table of Malaria Distribution by species
+                Table of Parasite Distribution
                 <br><br>
                 <table class="table table-condensed">
-                <tr><th>Species<th>Cases<th>Percent
+                <tr><th>Parasite<th>Cases<th>Percent
                 {% for i in cases2 %}<tr><td>{{ i[0] }}<td>{{ i[1] }}<td>{{ i[2] }}{% endfor %}
                 <tr><th>Total Infections<td>{{infsum}}<td>{{infperc}}
                 <tr><th>Total Cases<td>{{ total }}<td>100.0%
