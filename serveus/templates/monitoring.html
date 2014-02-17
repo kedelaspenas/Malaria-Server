@@ -95,6 +95,7 @@
                         icon: markerType,
                         map: map,
                         url: "/records/"
+
                     });
                     google.maps.event.addListener(marker, 'click', function() {
                         window.location.href = marker.url;
@@ -103,15 +104,17 @@
                 }
                 
                 {% for i in bar_list %}
-                    addMarker(
+                    {% for j in range(i[1]) %}
+                        addMarker(
                             new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
                             new google.maps.MarkerImage(
                                 "/static/images/bar.png",
-                                new google.maps.Size(5,20*{{i[1]}}),
-                                new google.maps.Point(0,0),
-                                new google.maps.Point(10,20*{{i[1]}})
+                                new google.maps.Size(5,10),
+                                new google.maps.Point(0,({{j}}*10)+({{j}}*2)),
+                                new google.maps.Point(10,({{j}}*10)+10+({{j}}*2))
                             )
-                    )
+                        )
+                    {% endfor %}
                 {% endfor %}
                 var monitoring_timeframe=document.getElementById('monitoring_timeframe')
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(monitoring_timeframe);
