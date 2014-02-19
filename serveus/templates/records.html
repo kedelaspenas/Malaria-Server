@@ -158,10 +158,10 @@
 				<div class="span9" style="background-color: white;">
 				    <table class="table table-bordered table-condensed">
 					<tr>
-                    <th class="span1" onclick="sort('case');"># <div class="pull-right"><i class="icon-minus" id="case_chevron"></i></div>
-                    <th class="span2" onclick="sort('date');" style="min-width: 80px">Date <div class="pull-right"><i class="icon-minus" id="date_chevron"></i></div>
-                    <th class="span3" onclick="sort('parasite');">Diagnosis <div class="pull-right"><i class="icon-minus" id="parasite_chevron"></i></div>
-                    <th class="span3" onclick="sort('description');">Remarks <div class="pull-right"><i class="icon-minus" id="description_chevron"></i></div>
+                    <th class="span1">ID</div>
+                    <th class="span2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class="" id="date_chevron"></i></div>
+                    <th class="span3" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class="" id="parasite_chevron"></i></div>
+                    <th class="span3" onclick="sort('description');" style="cursor: pointer;">Remarks <div class="pull-left"><i class="" id="description_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
 					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.parasite}}<td>{{i.description}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>

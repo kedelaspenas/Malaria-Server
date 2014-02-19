@@ -45,6 +45,21 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
+        #coordinates_container { 
+        background-color: transparent; 
+        
+        width: 77px;
+        background: white; 
+        border: 1px solid;
+        border-color: #999999;
+        padding: 5px;
+        padding-left: 7px;
+        padding-bottom: 3px;
+        margin-left: 5px;
+        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
+	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
+        box-shadow: 0px 7px 6px -6px #0F0F0F;
+        }
         #checkbox{
             margin-bottom: 5px;
         }
@@ -91,10 +106,8 @@
 
         <div id="filter" class="container" style="display: none">
         Showing cases:<br>
-        <!--
         <span id="filter_container">
         </span>
-        -->
         <form action="/map/" method="get" style="padding: 0; margin: 0;">
         From:<br>
         <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{date_start}}" id="dpd1" name="date_start">
@@ -110,37 +123,34 @@
         <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
         </form>
         </div>
-
+            
         <div id="total_container" class="container" style="display: none">
         Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
+        
+        <div id="coordinates_container" class="container" style="display: none">
+        Lat:<br>Lng:
+        </div>
+        
         <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
         <h3 id="helpModalLabel">Map</h3>
         </div>
         <div class="modal-body">
-        <p>This page shows the distribution of malaria cases all over the country. <br> Cases from the last 30 days are shown by default. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br>
-        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Falciparum &nbsp;&nbsp;&nbsp; 
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|00FF00|000000"/> Vivax &nbsp;&nbsp;&nbsp; 
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|00FFFF|000000"/> Malariae &nbsp;&nbsp;&nbsp; 
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000"/> Ovale &nbsp;&nbsp;&nbsp; 
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Parasite</p>
+        <p>This page shows the distribution of recorded cases all over the country. <br> Cases from the last 30 days are shown by default. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br>
+        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Any Disease &nbsp;&nbsp;&nbsp; 
+       
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Disease</p>
         </div>
         </div>
         <script>
-            var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
-            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
+            var markerColors = ["FF0000","FFFFFF"]
+            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[1] + "|000000"]
             
-            var falciparumPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var infectedPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
-            var vivaxPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var malariaePin = new google.maps.MarkerImage(pinImage[2], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var ovalePin = new google.maps.MarkerImage(pinImage[3], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var noMalariaPin = new google.maps.MarkerImage(pinImage[4], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var noDiseasePin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
             function MarkerList(name, list, ids, markerImage) {
                 this.name = name;
@@ -157,11 +167,8 @@
                 }
             }
             var markers = [
-                new MarkerList("Falciparum", [{% for i in case_list['Falciparum'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Falciparum'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}],falciparumPin),
-                new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Vivax'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], vivaxPin),
-                new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Malariae'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaePin),
-                new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Ovale'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], ovalePin),
-                new MarkerList("No Parasite", [{% for i in case_list['No Parasite'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Parasite'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
+                new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}],infectedPin),
+                new MarkerList("No Disease", [{% for i in case_list['No Disease'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Disease'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noDiseasePin)
             ]
             
             function initialize() {
@@ -172,6 +179,14 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
               }
               var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+              
+              
+                google.maps.event.addListener(map, "mousemove", function(event) {
+                    var lat = event.latLng.lat().toFixed(5);
+                    var lng = event.latLng.lng().toFixed(5);
+                    document.getElementById("coordinates_container").innerHTML = "Lat: " + lat + "<br>Lng: " + lng;
+                });
+            
               
               function addMarker(latLng, markerType, id) {
                     var marker = new google.maps.Marker({
@@ -194,6 +209,8 @@
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
               var total = document.getElementById('total_container')
               map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(total);
+              var coordinates_container = document.getElementById('coordinates_container');
+              map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(coordinates_container);
             }
             google.maps.event.addDomListener(window, 'load', initialize);
             var show1 = true, show2 = true, show3 = true, show4 = true, show5 = true
@@ -279,6 +296,8 @@
             document.getElementById('loading_block').style.display = 'None';
             document.getElementById('map-canvas').style.display = '';
             document.getElementById('filter').style.display = '';
+            document.getElementById('total_container').style.display = '';
+            document.getElementById('coordinates_container').style.display = '';
         </script>
 	</body>
 </html>

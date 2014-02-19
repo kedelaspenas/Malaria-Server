@@ -63,7 +63,21 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
+        #coordinates_container { 
+        background-color: transparent; 
         
+        width: 77px;
+        background: white; 
+        border: 1px solid;
+        border-color: #999999;
+        padding: 5px;
+        padding-left: 7px;
+        padding-bottom: 3px;
+        margin-left: 5px;
+        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
+	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
+        box-shadow: 0px 7px 6px -6px #0F0F0F;
+        }
         
         #checkbox{
             margin-bottom: 5px;
@@ -72,7 +86,9 @@
             width: 100%;
             max-width:100%;
         }
-        
+        #date_slider{
+            margin-bottom: 20px;
+        }
 		</style>
 	</head>
 	<body>
@@ -118,10 +134,8 @@
         
         <div id="filter" class="container" style="display: none">
             Showing cases:<br>
-            <!--
             <span id="filter_container">
             </span>
-            -->
             <form action="/timeline/" method="get" style="padding: 0; margin: 0;">
             From:<br>
             <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{bound_start.month}}/{{bound_start.day}}/{{bound_start.year}}" id="dpd1" name="date_start">
@@ -141,20 +155,20 @@
         <div id="total_container" class="container" style="display: none">
         Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
-        
+        <div id="coordinates_container" class="container" style="display: none">
+        Lat:<br>Lng:
+        </div>
         <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
         <h3 id="helpModalLabel">Timeline</h3>
         </div>
         <div class="modal-body">
-        <p>This page shows the distribution of all recorded malaria cases in the country. <br><br> Use the filters to narrow down the results. <br><br> The slider on the bottom controls the date range of cases displayed. <br> Change the start and end dates by dragging the date bubbles. <br> Range of dates is adjusted by dragging the blue area of the slider.<br><br>
+        <p>This page shows the distribution of all recorded cases in the country. <br><br> Use the filters to narrow down the results. <br><br> The slider on the bottom controls the date range of cases displayed. <br> Change the start and end dates by dragging the date bubbles. <br> Range of dates is adjusted by dragging the blue area of the slider.<br><br>
         <span style="font-weight: bold">Legend: </span><br>
-        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=F|FF0000|000000"/> Falciparum &nbsp;&nbsp;&nbsp;
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|00FF00|000000"/> Vivax &nbsp;&nbsp;&nbsp;
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|00FFFF|000000"/> Malariae &nbsp;&nbsp;&nbsp;
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000"/> Ovale &nbsp;&nbsp;&nbsp;
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Parasite</p>
+        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Any Disease &nbsp;&nbsp;&nbsp;
+        
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Disease</p>
         </div>
         </div>
         <script src="/static/js/jquery.js"></script>
@@ -163,18 +177,12 @@
         <script src="/static/js/jQDateRangeSlider-min.js"></script>
         <script src="/static/js/eyecon-datepicker.js"></script>
         <script>
-            var markerColors = ["FF0000","00FF00","00FFFF","FFFF00","FFFFFF"]
-            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=V|" + markerColors[1] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=M|" + markerColors[2] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|" + markerColors[3] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[4] + "|000000"]
+            var markerColors = ["FF0000","FFFFFF"]
+            var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[1] + "|000000"]
             
-            var falciparumPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var vivaxPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var malariaePin = new google.maps.MarkerImage(pinImage[2], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var ovalePin = new google.maps.MarkerImage(pinImage[3], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
-            
-            var noMalariaPin = new google.maps.MarkerImage(pinImage[4], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var infectedPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+                       
+            var noDiseasePin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
             var min_date = new Date({{date_start.year}}, {{date_start.month}}-1, {{date_start.day}});
             var max_date = new Date({{date_end.year}}, {{date_end.month}}-1, {{date_end.day}});
@@ -211,11 +219,8 @@
                 }
             }
             var markers = [
-                new MarkerList("Falciparum", [{% for i in case_list['Falciparum'] %} new google.maps.LatLng({{i[0]}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Falciparum'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], falciparumPin),
-                new MarkerList("Vivax", [{% for i in case_list['Vivax'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Vivax'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], vivaxPin),
-                new MarkerList("Malariae", [{% for i in case_list['Malariae'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Malariae'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], malariaePin),
-                new MarkerList("Ovale", [{% for i in case_list['Ovale'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Ovale'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], ovalePin),
-                new MarkerList("No Parasite", [{% for i in case_list['No Parasite'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Parasite'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noMalariaPin)
+                new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %} new google.maps.LatLng({{i[0]}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], infectedPin),
+                new MarkerList("No Disease", [{% for i in case_list['No Disease'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Disease'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noDiseasePin)
             ]
             
             function initialize() {
@@ -226,6 +231,13 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
               }
               var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+              
+                google.maps.event.addListener(map, "mousemove", function(event) {
+                    var lat = event.latLng.lat().toFixed(5);
+                    var lng = event.latLng.lng().toFixed(5);
+                    document.getElementById("coordinates_container").innerHTML = "Lat: " + lat + "<br>Lng: " + lng;
+                });
+
 
               function addMarker(latLng, markerType) {
                     return new google.maps.Marker({
@@ -245,9 +257,11 @@
               var total = document.getElementById('total_container')
               map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(total);
               var slider = document.getElementById('date_slider')
-              map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(slider);
-              var slider_controls = document.getElementById('slider_controls')
-              map.controls[google.maps.ControlPosition.RIGHT].push(slider_controls)
+              map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(slider);
+              var slider_controls = document.getElementById('slider_controls');
+              map.controls[google.maps.ControlPosition.RIGHT].push(slider_controls);
+              var coordinates_container = document.getElementById('coordinates_container');
+              map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(coordinates_container);
             }
             google.maps.event.addDomListener(window, 'load', initialize);
            
@@ -345,8 +359,8 @@
         
         <div id="slider_controls" class="row-fluid">
             Slider size: <br />
-            <input class="btn btn-medium span12" type="submit" value="1 Week" onclick="setMin('Week')"><br/>
-            <input class="btn btn-medium span12" type="submit" value="1 Month" onclick="setMin('Month')"><br/>
+            <input class="btn btn-medium span12" type="submit" value="7 Days" onclick="setMin('Week')"><br/>
+            <input class="btn btn-medium span12" type="submit" value="30 Days" onclick="setMin('Month')"><br/>
             <input class="btn btn-medium span12" type="submit" value="1 Year" onclick="setMin('Year')"><br/>
         </div>
         <script>
@@ -393,6 +407,7 @@
             document.getElementById('map-canvas').style.display = '';
             document.getElementById('filter').style.display = '';
             document.getElementById('total_container').style.display = '';
+            document.getElementById('coordinates_container').style.display = '';
         </script>
 	</body>
 </html>

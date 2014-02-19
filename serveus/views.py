@@ -30,7 +30,7 @@ from models import db, User, UserType, Case, Key, Image, Database
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-parasiteList = ['All Parasites', 'Falciparum', 'Vivax', 'Ovale', 'Malariae', 'No Parasite']
+parasiteList = ['Any Disease', 'Falciparum', 'Vivax', 'Ovale', 'Malariae', 'No Disease']
 
 def get_admin():
     return UserType.query.filter(UserType.name == 'Administrator').first()
@@ -186,10 +186,13 @@ def maps():
     
     case_list = Case.query.filter(Case.date>=dt,Case.date<=dte)
     case_list = [i for i in case_list]
-    sorted_list = dict([(i, []) for i in parasiteList[1:]])
+    sorted_list = dict([(i, []) for i in parasiteList[0:]])
     for i in case_list:
         #sorted_list[i.parasite].append((str(i.id),str(i.lat)+','+str(i.lng)))
-        sorted_list["Falciparum"].append((str(i.id),str(i.lat)+','+str(i.lng)))
+        if i.parasite == "No Disease":
+            sorted_list["No Disease"].append((str(i.id),str(i.lat)+','+str(i.lng)))
+        else:
+            sorted_list["Any Disease"].append((str(i.id),str(i.lat)+','+str(i.lng)))
     
     if default_view or not(lat and lng):
         # Get centroid of markers of cases
@@ -286,10 +289,13 @@ def timeline():
     min_date = case_list[0].date
     max_date = case_list[0].date
     
-    sorted_list = dict([(i, []) for i in parasiteList[1:]])
+    sorted_list = dict([(i, []) for i in parasiteList[0:]])
     for i in case_list:
         #sorted_list[i.parasite].append((str(i.lat)+','+str(i.lng),i.date))
-        sorted_list["Falciparum"].append((str(i.lat)+','+str(i.lng),i.date))
+        if i.parasite == "No Disease":
+            sorted_list["No Disease"].append((str(i.lat)+','+str(i.lng),i.date))
+        else:
+            sorted_list["Any Disease"].append((str(i.lat)+','+str(i.lng),i.date))
         
         if i.date > max_date:
             max_date = i.date
