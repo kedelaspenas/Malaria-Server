@@ -7,7 +7,7 @@
         <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
         <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&components=country:Philippines"></script>
         
 		<style>
 		html, body {
@@ -74,11 +74,16 @@
                 <p>This page shows all instances of cases in the past week. <br> The height of the bar signifies how many cases there are in that area. <br><br> The + or - indicates either the increase or decrease of cases compared to the previous week. The number shows by how many. <br><br> 
             </div>
         </div>
+
+        
+
         <span id="monitoring_timeframe">
-            <h1>{{location}}</h1>
-            <h3>{{week_start}} - {{week_end}}</h3>
-            <h4> This week: {{cases_this_week}} cases
-            <font color="yellow"> Last week: {{cases_last_week}} cases</font></h4>
+            <br>
+            <input type="text" id="autocomplete">
+            <!-- <h1>{{location}}</h1> -->
+            <h4>{{week_start}} - {{week_end}}</h4>
+            <h5> This week: {{cases_this_week}} cases
+            <font color="yellow"> Last week: {{cases_last_week}} cases</font></h5>
         </span>  
         <script>
             function initialize() {
@@ -116,8 +121,36 @@
                         )
                     {% endfor %}
                 {% endfor %}
+
                 var monitoring_timeframe=document.getElementById('monitoring_timeframe')
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(monitoring_timeframe);
+
+                var acOptions = {
+                    types: ['geocode']
+                };
+                var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'),acOptions);
+                autocomplete.bindTo('bounds',map);
+                var infoWindow = new google.maps.InfoWindow();
+
+                google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                  infoWindow.close();
+                  var place = autocomplete.getPlace();
+                  if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                  } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                  }
+                  marker.setPosition(place.geometry.location);
+                  infoWindow.setContent('<div><strong>' + place.name + '</strong><br>');
+                  infoWindow.open(map, marker);
+                  google.maps.event.addListener(marker,'click',function(e){
+
+                    infoWindow.open(map, marker);
+
+                  });
+                });
+                
             }
             google.maps.event.addDomListener(window, 'load', initialize); 
         </script>
