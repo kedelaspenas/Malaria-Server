@@ -349,7 +349,7 @@ def case(id):
     case = Case.query.get(id)
     images = []
     for img in case.images:
-        images.append('pic/' + str(img.id))
+        images.append((img.id, 'pic/' + str(img.id)))
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
@@ -365,11 +365,10 @@ def case(id):
 
         counter = 0
         page = 2
-        print 'images:', images
         if request.form:
             for i in range (0, len(images)):
                 if str('checkbox_' + str(i)) in request.form:
-                    id = str(images[i]).split('/')[1]
+                    id = str(images[1][i]).split('/')[1]
                     x = Image.query.get(id).im
                     with open('image%s.jpg' % id,'w') as f:
                         f.write(x)
@@ -639,7 +638,9 @@ def update_db():
             conn.close()
             with open('updated.db', 'r') as f:
                 g = f.read()
-            return base64.b64encode(g)
+            response = make_response(base64.b64encode(g))
+            response.headers["Expires"] = 'Thu, 01 Jan 1970 00:00:00 GMT'
+            return response
         else:
             return 'OK'
 

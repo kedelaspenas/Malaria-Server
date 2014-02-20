@@ -48,17 +48,17 @@ log('dummy data')
 
 # Users
 x = []
-x.append(User('Rodolfo', User.hash_password('genius123')))
+x.append(User('Rodolfo', User.hash_password('genius123'), '0912-345-6789'))
 x[-1].usertype_id = 1
-x.append(User('Noel', User.hash_password('qwert')))
+x.append(User('Noel', User.hash_password('qwert'), '0912-345-6789'))
 x[-1].usertype_id = 2
-x.append(User('Juancho', User.hash_password('12345')))
+x.append(User('Juancho', User.hash_password('12345'), '0912-345-6789'))
 x[-1].usertype_id = 1
-x.append(User('Marven', User.hash_password('asd')))
+x.append(User('Marven', User.hash_password('asd'), '0912-345-6789'))
 x[-1].usertype_id = 3
-x.append(User('Jasper', User.hash_password('asd')))
+x.append(User('Jasper', User.hash_password('asd'), '0912-345-6789'))
 x[-1].usertype_id = 2
-x.append(User('Cat', User.hash_password('asd')))
+x.append(User('Cat', User.hash_password('asd'), '0912-345-6789'))
 x[-1].usertype_id = 1
 for i in x:
     db.session.add(i)

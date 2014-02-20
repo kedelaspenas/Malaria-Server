@@ -60,7 +60,7 @@
         
         <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
             <div class="modal-header">
-                <input type="checkbox" id="currentlyViewed_chkbox_printing" onchange="document.getElementById('chkbox_'+window.currentImageIndex).checked = this.checked;toggleSelectAll(window.currentImageIndex)"> select for printing
+                <input type="checkbox" id="currentlyViewed_chkbox_printing" onchange="document.getElementById('chkbox_'+window.currentImageIndex).checked = this.checked;toggleSelectAll(window.currentImageIndex)"> Select slide #<span id="modalSlideNumber"> for printing</span>
                 <a class="close" data-dismiss="modal">&times;</a>
             </div>
             <div class="modal-body"><div class="modal-image" id="modal-image_currentlyViewed"></div></div>
@@ -81,6 +81,8 @@
                     <tr><th>Diagnosis<td>{{case.parasite}}
                     <tr><th>Remarks<td>{{case.description}}
                     <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
+                    <tr><th>Microscopist<td>{{case.user}}
+                    <tr><th>Contact details<td>{{case.user.contact}}
                     </table>
                     <div class="pull-right">
                     <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
@@ -119,11 +121,12 @@
                             </table>
                             <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery" style="padding: 0">
                                 <ul class="thumbnails">
-                                 {% for i in images %}
+                                 {% for j, i in images %}
                                 <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
                                     <div class="container span12">
                                         <input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
-                                        <a title="{{i}}" href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked;">
+										<p>&nbsp;Slide #{{j}}</p>
+										<a title="{{i}}" href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked; $('span#modalSlideNumber').text('{{j}}');">
                                           <img src="/{{i}}" alt="">
                                         </a>
                                     </div>
