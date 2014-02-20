@@ -36,6 +36,7 @@ class User(db.Model, UserMixin):
     usertype_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
     case =  db.relationship('Case', backref='user', lazy='dynamic')
     contact = db.Column(db.String(80))
+    email = db.Column(db.String(80))
 
     @validates('password')
     def update_password(self, key, value):
@@ -46,10 +47,11 @@ class User(db.Model, UserMixin):
     def hash_password(password):
         return hashlib.sha1(password).hexdigest()
 
-    def __init__(self, username="", password="", contact=""):
+    def __init__(self, username="", password="", contact="", email=""):
         self.username = username
         self.password = password
         self.contact = contact
+        self.email = email
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -88,6 +90,7 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'))
     im = db.Column(db.BLOB)
+    number = db.Column(db.Integer)
     
     '''
     def __init__(self, path="", case=""):

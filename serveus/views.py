@@ -349,13 +349,13 @@ def case(id):
     case = Case.query.get(id)
     images = []
     for img in case.images:
-        images.append((img.id, 'pic/' + str(img.id)))
+        images.append((img.number, 'pic/' + str(img.id)))
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
         c = canvas.Canvas('malaria.pdf', pagesize=letter)
         width, height = letter
-        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + 'Age: ' + str(case.age) + '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
+        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + '<br>' + 'Disease: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
     
         x = reportString.split('<br>')
         for i, s in enumerate(x):
@@ -368,14 +368,17 @@ def case(id):
         if request.form:
             for i in range (0, len(images)):
                 if str('checkbox_' + str(i)) in request.form:
-                    id = str(images[1][i]).split('/')[1]
+                    id = str(images[i][1]).split('/')[1]
                     x = Image.query.get(id).im
                     with open('image%s.jpg' % id,'w') as f:
                         f.write(x)
                     im = PIL.open('image%s.jpg' % id)
-                    im2 = im.resize((200, 200), PIL.NEAREST).rotate(-90)
+                    #im2 = im.resize((im.size[0]/16, im.size[1]/16), PIL.NEAREST)
+                    im2 = im.resize((320, 240), PIL.NEAREST)
                     im2.save('image%s.jpg' % id)
-                    c.drawImage('image%s.jpg' % id, 100, 500 - counter * 300)
+                    c.drawImage('image%s.jpg' % id, 100, 450 - counter * 300)
+                    os.remove('image%s.jpg' % id)
+                    c.drawString(100, 500 - counter * 300 + 200, "Image #" + str(Image.query.get(id).number))
                     counter += 1
                     if counter == 1:
                         c.drawString(459, 750, str(page))
@@ -524,12 +527,9 @@ def upload_file():
             longitude = float(mapping['longitude'])
             parasite = mapping['species'].replace('Plasmodium ', '').capitalize()
             description = mapping['description']
-            age = mapping['age']
-            address = mapping['address']
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
             case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude)
-            case.region = region
 
             user = User.query.filter(User.username == username).first()
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
@@ -538,9 +538,10 @@ def upload_file():
                 db.session.commit()
 
                 # store images in database
-                for img_file in glob.glob(os.path.join(folder, "*.jpg")):
+                for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
                     img = Image()
                     img.create_image(img_file, case)
+                    img.number = i + 1
                     db.session.add(img)
                     db.session.commit()
 
