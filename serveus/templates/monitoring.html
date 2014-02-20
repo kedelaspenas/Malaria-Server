@@ -117,13 +117,14 @@
                     });
                 return marker;
                 }
+                var barImage = new Image();
+                barImage.src = '/static/images/bar.png';
                 function makeIcon(size){
                     var c = document.getElementById("myCanvas");
                     var ctx = c.getContext("2d");
-                    var barImage = new Image();
-                    barImage.src = '/static/images/bar.png';
                     c.height = (size*20)+20+(size*2);
                     c.width = 20;
+                    
                     for (var i=0; i<size; i++) {
                         ctx.drawImage(barImage, 0,(i*20)+(i*2), 20, (i*20)+20+(i*2));
                     }
@@ -134,21 +135,23 @@
                         origin: new google.maps.Point(0,0),
                         anchor: new google.maps.Point(0,0)
                     };
+                    
                     return img;
                 }
-                {% for i in bar_list %}
-                    addMarker(
-                        new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
-                        new google.maps.MarkerImage(
-                            makeIcon({{i[1]}}),
-                            new google.maps.Size(10,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*2)),
-                            new google.maps.Point(0,0),
-                            new google.maps.Point(5,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*2)) 
-                        ),
-                        "Municipality : "+{{i[1]}}
-                    )
-                {% endfor %}
-
+                barImage.onload = function(){
+                    {% for i in bar_list %}
+                        addMarker(
+                            new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
+                            new google.maps.MarkerImage(
+                                makeIcon({{i[1]}}),
+                                new google.maps.Size(10,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*2)),
+                                new google.maps.Point(0,0),
+                                new google.maps.Point(5,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*2)) 
+                            ),
+                            "Municipality : "+{{i[1]}}
+                        )
+                    {% endfor %}
+                }
                 var monitoring_timeframe=document.getElementById('monitoring_timeframe')
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(monitoring_timeframe);
 

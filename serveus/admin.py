@@ -85,4 +85,4 @@ admin.add_view(MyModelView(Case, db.session))
 admin.add_view(ImageView(Image, db.session))
 
 # Navbar links
-admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='dashboard'))
+admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='monitoring'))

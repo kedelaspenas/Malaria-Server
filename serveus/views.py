@@ -355,8 +355,13 @@ def case(id):
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
-        if request.form['validator']:
-            case.parasite = request.form['validator']
+        if request.form['validator_diagnosis'] or request.form['validator_remarks']:
+            if request.form['validator_diagnosis']:
+                case.parasite = request.form['validator_diagnosis']
+                
+            if request.form['validator_remarks']:
+                case.description = request.form['validator_remarks']
+                
             db.session.commit();
         else:
             c = canvas.Canvas('malaria.pdf', pagesize=letter)
