@@ -629,6 +629,7 @@ def update_db():
         '''
     elif request.method == 'POST':
         date_string = request.form['message']
+        print date_string
         # if sent date < modified date
         if Database.need_update(date_string):
             conn = sqlite3.connect('updated.db')

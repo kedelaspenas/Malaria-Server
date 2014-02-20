@@ -48,17 +48,17 @@ log('dummy data')
 
 # Users
 x = []
-x.append(User('Rodolfo', User.hash_password('genius123'), '0912-345-6789', 'juanfelipe.coronel@gmail.com'))
+x.append(User('Rodolfo', 'Kirong', 'Rodolfo', User.hash_password('genius123'), '0912-345-6789', 'rodolfo@mailinator.com'))
 x[-1].usertype_id = 1
-x.append(User('Noel', User.hash_password('qwert'), '0912-345-6789', 'juanfelipe.coronel@gmail.com'))
+x.append(User('Noel', 'Sison', 'Noel', User.hash_password('qwert'), '0912-345-6789', 'noel@mailinator.com'))
 x[-1].usertype_id = 2
-x.append(User('Juancho', User.hash_password('12345'), '0912-345-6789', 'juanfelipe.coronel@gmail.com'))
+x.append(User('Juancho', 'Coronel', 'Juancho', User.hash_password('12345'), '0912-345-6789', 'juancho@mailinator.com'))
 x[-1].usertype_id = 1
-x.append(User('Marven', User.hash_password('asd'), '0912-345-6789', 'juanfelipe.coronel@gmail.com'))
+x.append(User('Marven', 'Sanchez', 'Marven', User.hash_password('asd'), '0912-345-6789', 'marven@mailinator.com'))
 x[-1].usertype_id = 3
-x.append(User('Jasper', User.hash_password('asd'), '0912-345-6789', 'juanfelipe.coronel@gmail.com'))
+x.append(User('Jasper', 'Cacbay', 'Jasper', User.hash_password('asd'), '0912-345-6789', 'jasper@mailinator.com'))
 x[-1].usertype_id = 2
-x.append(User('Cat', User.hash_password('asd'), '0912-345-6789', 'juanfelipe.coronel@gmail.com'))
+x.append(User('Cat', 'Angangco', 'Cat', User.hash_password('asd'), '0912-345-6789', 'cat@mailinator.com'))
 x[-1].usertype_id = 1
 for i in x:
     db.session.add(i)
