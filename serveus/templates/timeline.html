@@ -147,7 +147,7 @@
             <input type="text" id="autocomplete">
         </div>
 
-        <div id="date_slider" style="width:70%"></div>
+        <div id="date_slider" style="width:70%; display: none;"></div>
         
         <div id="filter" class="container" style="display: none">
             Showing cases:<br>
@@ -312,11 +312,13 @@
                 
                 google.maps.event.addListenerOnce(map, 'tilesloaded', function(){
                     document.getElementById('loading_block').style.display = 'None';
-                    document.getElementById('map-canvas').style.display = '';
+                    document.getElementById('map-canvas').style.display = '';document.getElementById('date_slider').style.display = '';document.getElementById('slider_controls').style.display = '';
                     document.getElementById('filter').style.display = '';
                     document.getElementById('total_container').style.display = '';
                     document.getElementById('coordinates_container').style.display = '';
                     document.getElementById('extra_controls').style.display = '';
+                     $('#date_slider').dateRangeSlider('min', min_date);
+                     $('#date_slider').dateRangeSlider('max', max_date);
                 });
                 
             }
@@ -414,7 +416,7 @@
             }
         </script>
         
-        <div id="slider_controls" class="row-fluid">
+        <div id="slider_controls" class="row-fluid" style="display: None">
             Slider size: <br />
             <input class="btn btn-medium span12" type="submit" value="7 Days" onclick="setMin('Week')"><br/>
             <input class="btn btn-medium span12" type="submit" value="30 Days" onclick="setMin('Month')"><br/>
