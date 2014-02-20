@@ -358,6 +358,9 @@ def case(id):
         if request.form['validator']:
             case.parasite = request.form['validator']
             db.session.commit();
+        elif request.form['comment']:
+            case.description = request.form['comment']
+            db.session.commit();
         else:
             c = canvas.Canvas('malaria.pdf', pagesize=letter)
             width, height = letter

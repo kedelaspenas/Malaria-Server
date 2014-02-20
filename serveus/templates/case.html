@@ -90,8 +90,8 @@
                     </div>
                     Validation: <input type="text" id="validator" name="validator">
                     <input type="submit" value="Submit">
-               <!--     <textarea style="resize:none; width: 500px; height: 150px;" id="comment">{{case.comment}}</textarea>
-                    <button type="button" onclick="SaveArea()">Save</button> -->
+                    <textarea style="resize:none; width: 500px; height: 150px;" id="comment" name="comment">{{case.comment}}</textarea>
+                    <input type="submit" value="Save">
 				</div>
 				<div class="span3 well" style="background-color: white; overflow-y: auto; overflow-x:hidden; position: relative; height: 100%; padding: 0.5%; padding-top: 0;">
                     <!--
@@ -178,11 +178,6 @@
             }
         </script>
         <script>
-    function SaveArea()
-    {
-    var x = document.getElementById("comment").value;
-    alert({{x}});
-    }
     </script>
 	</body>
 </html>
