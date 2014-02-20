@@ -105,7 +105,7 @@
                             <tr>
                             <td style="width: 64%"><h5 class="pull-left">Check for printing</h5>
                             <td style="width: 34%"><h5 class="pull-right">Select all</h5> 
-                            <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()" style="margin-bottom: 5px">
+                            <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()" style="margin-bottom: 5px" checked>
                             <script>
                              function toggleAll()
                              {
@@ -128,7 +128,7 @@
                                  {% for j, i in images %}
                                 <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
                                     <div class="container span12">
-                                        <input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
+										<input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" checked>
 										<p>&nbsp;Image #{{j}}</p>
 										<a title="{{i}}" href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked; $('span#modalImageNumber').text('{{j}}');">
                                           <img src="/{{i}}" alt="">
