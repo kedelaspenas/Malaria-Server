@@ -88,6 +88,8 @@
                     <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
                     <input class="btn btn-medium" type="submit" value="Print" style="height: 30px">
                     </div>
+                    Validation: <input type="text" id="validator" name="validator">
+                    <input type="submit" value="Submit">
                     <textarea style="resize:none; width: 500px; height: 150px;" id="comment">{{case.comment}}</textarea>
                     <button type="button" onclick="SaveArea()">Save</button>
 				</div>
