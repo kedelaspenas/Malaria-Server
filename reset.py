@@ -81,7 +81,7 @@ x = Case(datetime.date(2007,1,5),'Ovale','Description',9.17,118.25)
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2009,9,9),'No Parasite','Description',10.42,119.2)
+x = Case(datetime.date(2009,9,9),'No Disease','Description',10.42,119.2)
 x.user_id = 5
 db.session.add(x)
 
@@ -89,7 +89,7 @@ x = Case(datetime.date(2011,9,9),'Malariae','Description',8.4,117.2)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2008,9,9),'No Parasite','Description',9.25,118.05)
+x = Case(datetime.date(2008,9,9),'No Disease','Description',9.25,118.05)
 x.user_id = 1
 db.session.add(x)
 
@@ -105,7 +105,7 @@ x = Case(datetime.date(2013,9,10),'Ovale','Description',10.32,119.46)
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2011,5,15),'No Parasite','Description',8.47,117.5)
+x = Case(datetime.date(2011,5,15),'No Disease','Description',8.47,117.5)
 x.user_id = 5
 db.session.add(x)
 
