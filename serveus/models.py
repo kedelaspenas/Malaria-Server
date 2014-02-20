@@ -81,7 +81,6 @@ class Case(db.Model):
     date = db.Column(db.DateTime())
     parasite = db.Column(db.String(100))
     description = db.Column(db.String(1000))
-    comment = db.Column(db.String(1000))
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
