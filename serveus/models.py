@@ -42,10 +42,12 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(80),unique=True)
 
     @models_committed.connect_via(app)
-    def on_models_committed(sender, changes):
+    def models_committed(sender, changes):
 		for obj, method in changes:
 			if method == 'insert' and type(obj) == User:
-				body = """Greetings, %s %s! You have successfully been registered to the system. Your temporary password is <b>%s</b>.<br><br>Below are your account details:<br><br>Username: %s<br>User type: %s<br>Contact number: %s<br>Email: %s<br><br>Please login and change your password. Thank you!""" % (obj.firstname, obj.lastname, '123', obj.username, obj.usertype, obj.contact, obj.email)
+				password = os.urandom(4).encode('hex') 
+				body = """Greetings, %s %s! You have successfully been registered to the system. Your temporary password is <b>%s</b>.<br><br>Below are your account details:<br><br>Username: %s<br>User type: %s<br>Contact number: %s<br>Email: %s<br><br>Please login and change your password. Thank you!""" % (obj.firstname, obj.lastname, password, obj.username, obj.usertype, obj.contact, obj.email)
+				#obj.password = User.hash_password(password)
 				msg = Message('Outbreak Monitoring', sender="cvmig.group.23@gmail.com", recipients=['generic@mailinator.com',obj.email])
 				msg.html = body
 				mail.send(msg)
