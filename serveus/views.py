@@ -351,49 +351,49 @@ def case(id):
     case = Case.query.get(id)
     images = []
     for img in case.images:
-        images.append((img.number, 'pic/' + str(img.id)))
+        images.append((img.id, 'pic/' + str(img.id)))
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
-        c = canvas.Canvas('malaria.pdf', pagesize=letter)
-        width, height = letter
-        reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') + '<br>' + '<br>' + 'Disease: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
-    
-        x = reportString.split('<br>')
-        for i, s in enumerate(x):
-            c.drawString(100, 750 - i * 15, s)
-        c.drawString(459, 750, '1')
-        c.showPage()
+        if request.form['validator']:
+            case.parasite = request.form['validator']
+        else:
+            c = canvas.Canvas('malaria.pdf', pagesize=letter)
+            width, height = letter
+            reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') +  '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
+        
+            x = reportString.split('<br>')
+            for i, s in enumerate(x):
+                c.drawString(100, 750 - i * 15, s)
+            c.drawString(459, 750, '1')
+            c.showPage()
 
-        counter = 0
-        page = 2
-        if request.form:
-            for i in range (0, len(images)):
-                if str('checkbox_' + str(i)) in request.form:
-                    id = str(images[i][1]).split('/')[1]
-                    x = Image.query.get(id).im
-                    with open('image%s.jpg' % id,'w') as f:
-                        f.write(x)
-                    im = PIL.open('image%s.jpg' % id)
-                    #im2 = im.resize((im.size[0]/16, im.size[1]/16), PIL.NEAREST)
-                    im2 = im.resize((320, 240), PIL.NEAREST)
-                    im2.save('image%s.jpg' % id)
-                    c.drawImage('image%s.jpg' % id, 100, 450 - counter * 300)
-                    os.remove('image%s.jpg' % id)
-                    c.drawString(100, 500 - counter * 300 + 200, "Image #" + str(Image.query.get(id).number))
-                    counter += 1
-                    if counter == 1:
-                        c.drawString(459, 750, str(page))
-                if counter == 2:
-                    counter = 0
-                    page += 1
-                    c.showPage()
-        c.save()
-        with open('malaria.pdf','r') as f:
-            pdf = f.read()
-        response = make_response(pdf)
-        response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
-        return response
+            counter = 0
+            page = 2
+            if request.form:
+                for i in range (0, len(images)):
+                    if str('checkbox_' + str(i)) in request.form:
+                        id = str(images[i][1]).split('/')[1]
+                        x = Image.query.get(id).im
+                        with open('image%s.jpg' % id,'w') as f:
+                            f.write(x)
+                        im = PIL.open('image%s.jpg' % id)
+                        im2 = im.resize((200, 200), PIL.NEAREST).rotate(-90)
+                        im2.save('image%s.jpg' % id)
+                        c.drawImage('image%s.jpg' % id, 100, 500 - counter * 300)
+                        counter += 1
+                        if counter == 1:
+                            c.drawString(459, 750, str(page))
+                    if counter == 2:
+                        counter = 0
+                        page += 1
+                        c.showPage()
+            c.save()
+            with open('malaria.pdf','r') as f:
+                pdf = f.read()
+            response = make_response(pdf)
+            response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
+            return response
     return render_template("case.html", case = case, user = current_user, images=images)
 
 @app.route('/logout/')
@@ -532,6 +532,7 @@ def upload_file():
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
             case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude)
+
             user = User.query.filter(User.username == username).first()
             case.user = user
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
@@ -673,8 +674,3 @@ def fetch_image(picture_id):
     response = make_response(x.im)
     response.headers['Content-Type'] = 'image/jpeg'
     return response
-
-@app.route('/test', methods=['GET'])
-def mailer():
-	msg = Message("Hi", sender="cvmig.group.23@gmail.com", recipients=['generic@mailinator.com'])
-	mail.send(msg)
