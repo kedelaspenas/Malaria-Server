@@ -24,8 +24,10 @@ try:
     import Image as PIL
 except ImportError:
     import PIL
+from flask_mail import Message
 
 from models import db, User, UserType, Case, Key, Image, Database
+from serveus import mail
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -530,8 +532,8 @@ def upload_file():
 
             dt = datetime.datetime(year, month, day, hours, minutes, seconds)
             case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude)
-
             user = User.query.filter(User.username == username).first()
+            case.user = user
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
             if hex_aes_key == user.password[:32]:
                 db.session.add(case)
@@ -671,3 +673,8 @@ def fetch_image(picture_id):
     response = make_response(x.im)
     response.headers['Content-Type'] = 'image/jpeg'
     return response
+
+@app.route('/test', methods=['GET'])
+def mailer():
+	msg = Message("Hi", sender="cvmig.group.23@gmail.com", recipients=['generic@mailinator.com'])
+	mail.send(msg)

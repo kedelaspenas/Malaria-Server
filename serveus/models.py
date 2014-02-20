@@ -3,10 +3,10 @@ import datetime
 import hashlib
 from sqlalchemy.orm import validates
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy, models_committed
 from flask.ext.login import UserMixin
 
-from serveus import app
+from serveus import app, mail
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
 db = SQLAlchemy(app)
@@ -37,6 +37,10 @@ class User(db.Model, UserMixin):
     case =  db.relationship('Case', backref='user', lazy='dynamic')
     contact = db.Column(db.String(80))
     email = db.Column(db.String(80))
+
+    @models_committed.connect_via(app)
+    def on_models_committed(sender, changes):
+        print 'TEST', sender, changes
 
     @validates('password')
     def update_password(self, key, value):
