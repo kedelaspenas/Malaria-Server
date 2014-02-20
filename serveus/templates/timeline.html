@@ -8,7 +8,7 @@
         <link href="/static/css/iThing-min.css" rel="stylesheet">
         <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
         <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&components=country:Philippines"></script>
 		<style>
 		html, body {
 			height: 100%;
@@ -30,7 +30,6 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
-        
         #slider_controls { 
         background-color: transparent; 
         right: 20px;
@@ -47,10 +46,8 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
-        
         #total_container { 
         background-color: transparent; 
-        
         width: 85px;
         background: white; 
         border: 1px solid;
@@ -65,7 +62,6 @@
         }
         #coordinates_container { 
         background-color: transparent; 
-        
         width: 77px;
         background: white; 
         border: 1px solid;
@@ -78,7 +74,16 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
-        
+        #extra_controls { 
+        background-color: transparent; 
+        margin-top: 27px;
+        }
+        #autocomplete[type='text']{
+        font-size: 12px;
+        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
+	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
+        box-shadow: 0px 7px 6px -6px #0F0F0F;
+        }
         #checkbox{
             margin-bottom: 5px;
         }
@@ -87,7 +92,15 @@
             max-width:100%;
         }
         #date_slider{
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+        }
+        #loading_block {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index:99;
         }
 		</style>
 	</head>
@@ -126,11 +139,15 @@
 			</div>
 		</div>
         
-        <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center"><img src="/static/images/loading.gif"/></div>
+        <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center; z-index: 100;"><img src="/static/images/loading.gif"/></div>
         
-        <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: none"></div>
+        <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: "></div>
         
-        <div id="date_slider" style="width:70%"></div>
+        <div id="extra_controls" style="display: none;">
+            <input type="text" id="autocomplete">
+        </div>
+
+        <div id="date_slider" style="width:70%; display: none;"></div>
         
         <div id="filter" class="container" style="display: none">
             Showing cases:<br>
@@ -237,7 +254,8 @@
                     var lng = event.latLng.lng().toFixed(5);
                     document.getElementById("coordinates_container").innerHTML = "Lat: " + lat + "<br>Lng: " + lng;
                 });
-
+                
+                
 
               function addMarker(latLng, markerType) {
                     return new google.maps.Marker({
@@ -262,6 +280,47 @@
               map.controls[google.maps.ControlPosition.RIGHT].push(slider_controls);
               var coordinates_container = document.getElementById('coordinates_container');
               map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(coordinates_container);
+              
+                var extra_controls=document.getElementById('extra_controls')
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(extra_controls);
+
+                var acOptions = {
+                    types: ['geocode']
+                };
+                var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'),acOptions);
+                autocomplete.bindTo('bounds',map);
+                var infoWindow = new google.maps.InfoWindow();
+
+                google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                  infoWindow.close();
+                  var place = autocomplete.getPlace();
+                  if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                  } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);
+                  }
+                  marker.setPosition(place.geometry.location);
+                  infoWindow.setContent('<div><strong>' + place.name + '</strong><br>');
+                  infoWindow.open(map, marker);
+                  google.maps.event.addListener(marker,'click',function(e){
+
+                    infoWindow.open(map, marker);
+
+                  });
+                });
+                
+                google.maps.event.addListenerOnce(map, 'tilesloaded', function(){
+                    document.getElementById('loading_block').style.display = 'None';
+                    document.getElementById('map-canvas').style.display = '';document.getElementById('date_slider').style.display = '';document.getElementById('slider_controls').style.display = '';
+                    document.getElementById('filter').style.display = '';
+                    document.getElementById('total_container').style.display = '';
+                    document.getElementById('coordinates_container').style.display = '';
+                    document.getElementById('extra_controls').style.display = '';
+                     $('#date_slider').dateRangeSlider('min', min_date);
+                     $('#date_slider').dateRangeSlider('max', max_date);
+                });
+                
             }
             google.maps.event.addDomListener(window, 'load', initialize);
            
@@ -357,7 +416,7 @@
             }
         </script>
         
-        <div id="slider_controls" class="row-fluid">
+        <div id="slider_controls" class="row-fluid" style="display: None">
             Slider size: <br />
             <input class="btn btn-medium span12" type="submit" value="7 Days" onclick="setMin('Week')"><br/>
             <input class="btn btn-medium span12" type="submit" value="30 Days" onclick="setMin('Month')"><br/>
@@ -403,11 +462,7 @@
             }).data('datepicker');
         </script>
         <script>
-            document.getElementById('loading_block').style.display = 'None';
-            document.getElementById('map-canvas').style.display = '';
-            document.getElementById('filter').style.display = '';
-            document.getElementById('total_container').style.display = '';
-            document.getElementById('coordinates_container').style.display = '';
+            
         </script>
 	</body>
 </html>
