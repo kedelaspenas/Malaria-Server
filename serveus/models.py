@@ -84,15 +84,17 @@ class Case(db.Model):
     comment = db.Column(db.String(1000))
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
+    region = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     images = db.relationship('Image', backref='case', lazy='dynamic')
 
-    def __init__(self, date="", parasite="", description="", lat="", lng=""):
+    def __init__(self, date="", parasite="", description="", lat="", lng="", region=""):
         self.date = date
         self.parasite = parasite
         self.description = description
         self.lat = lat
         self.lng = lng
+        self.region = region
 
     def __repr__(self):
         return '<Case %r>' % self.id

@@ -113,6 +113,30 @@ x = Case(datetime.date(2012,5,9),'Vivax','Description',10.51,121.0)
 x.user_id = 6
 db.session.add(x)
 
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973, 'Manila')
+x.user_id = 6
+db.session.add(x)
+
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973,'Manila')
+x.user_id = 6
+db.session.add(x)
+
+x = Case(datetime.date(2014,2,10),'Malariae','Severe',14.565454,120.993973, 'Manila')
+x.user_id = 6
+db.session.add(x)
+
+x = Case(datetime.date(2014,2,17),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City')
+x.user_id = 6
+db.session.add(x)
+
+x = Case(datetime.date(2014,2,18),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City')
+x.user_id = 6
+db.session.add(x)
+
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City')
+x.user_id = 6
+db.session.add(x)
+
 # Images
 for i in xrange(1,9):
     tmp = Image()
