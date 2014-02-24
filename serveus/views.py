@@ -233,7 +233,8 @@ def monitoring():
     for i in unique_coor:
         count = Case.query.filter_by(lat=i.lat, lng=i.lng).count()
         print str(i.lng) + ', ' + str(i.lat) + ' = ' + str(count)
-        bar_list.append(((i.lat, i.lng), count))
+        print str(i.region)
+        bar_list.append(((i.lat, i.lng), count, i.region))
     week_start = datetime.date.today()-datetime.timedelta(days=7)
     week_start = week_start.strftime('%b. %d , %Y')
     week_end = date.today().strftime('%b. %d , %Y')
