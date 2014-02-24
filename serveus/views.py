@@ -228,16 +228,39 @@ def maps():
 def monitoring():
     # Build bar list for map
     # Get all unique coordinates
+
     unique_coor = Case.query.group_by(Case.lat, Case.lng)
     bar_list = []
     for i in unique_coor:
         count = Case.query.filter_by(lat=i.lat, lng=i.lng).count()
-        print str(i.lng) + ', ' + str(i.lat) + ' = ' + str(count)
-        print str(i.region)
         bar_list.append(((i.lat, i.lng), count, i.region))
     week_start = datetime.date.today()-datetime.timedelta(days=7)
     week_start = week_start.strftime('%b. %d , %Y')
     week_end = date.today().strftime('%b. %d , %Y')
+
+    def getGeoCenter(coordinatesList):
+        latList = []
+        lngList = []
+        for a in coordinatesList:
+            latList.append(a[0])
+            lngList.append(a[1])
+        centerlat = sum(latList)/float(len(latList))
+        centerlng = sum(lngList)/float(len(lngList))
+        return (centerlat,centerlng)
+
+    unique_municipality = Case.query.group_by(Case.region)
+    municipality_list = []
+    for j in unique_municipality:
+        print str(j.region)
+        countM = Case.query.filter_by(region = j.region).count()
+        temp = Case.query.filter_by(region = j.region)
+        coor_list = []
+        for k in temp:
+            coor_list.append((k.lat,k.lng))
+        geoCenter = getGeoCenter(coor_list)
+        municipality_list.append((geoCenter,countM,j.region))
+    print municipality_list
+
     location = "Philippines"
     cases_this_week = 13
     cases_last_week = 14
@@ -245,7 +268,7 @@ def monitoring():
     zoom = 6
     lat = 11.3333
     lng = 123.0167
-    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user)
+    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, municipality_list = municipality_list,  bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user)
     
 @app.route('/timeline/')
 @login_required

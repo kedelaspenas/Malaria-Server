@@ -140,7 +140,7 @@
                     return img;
                 }
                 barImage.onload = function(){
-                    {% for i in bar_list %}
+                    {% for i in municipality_list %}
                         addMarker(
                             new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
                             new google.maps.MarkerImage(
