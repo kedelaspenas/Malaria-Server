@@ -118,22 +118,23 @@
                 return marker;
                 }
                 var barImage = new Image();
+                var bar_space = 2;
                 barImage.src = '/static/images/bar.png';
                 function makeIcon(size){
                     var c = document.getElementById("myCanvas");
                     var ctx = c.getContext("2d");
-                    c.height = (size*20)+20+(size*2);
-                    c.width = 20;
+                    c.height = (size*20)+20+((size-1)*bar_space);
+                    c.width = 10;
                     
                     for (var i=0; i<size; i++) {
-                        ctx.drawImage(barImage, 0,(i*20)+(i*2), 20, (i*20)+20+(i*2));
+                        ctx.drawImage(barImage, 0,(i*20)+(i*bar_space), 10, 20);
                     }
                     var img = c.toDataURL("image/png");
                     var image = {
                         url: img,
-                        size: new google.maps.Size(10,((size-1)*20)+20+((size-1)*2)),
+                        size: new google.maps.Size(10,((size-1)*20)+20+((size-1)*bar_space)),
                         origin: new google.maps.Point(0,0),
-                        anchor: new google.maps.Point(0,0)
+                        anchor: new google.maps.Size(5,((size-1)*20)+20+((size-1)*bar_space))
                     };
                     
                     return img;
@@ -144,11 +145,10 @@
                             new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
                             new google.maps.MarkerImage(
                                 makeIcon({{i[1]}}),
-                                new google.maps.Size(10,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*2)),
+                                new google.maps.Size(10,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*bar_space)),
                                 new google.maps.Point(0,0),
-                                new google.maps.Point(5,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*2)) 
+                                new google.maps.Point(5,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*bar_space)) 
                             ),
-                            
                             "{{i[2]}}" + " : "+{{i[1]}}
                         )
                     {% endfor %}
