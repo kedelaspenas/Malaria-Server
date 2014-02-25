@@ -711,6 +711,7 @@ def fetch_image(picture_id):
 @app.route('/api/chunk/', methods=['GET','POST'])
 def upload_chunk():
 	if request.method == 'POST':
+		print 'CHUNK'
 		# get chunk from form
 		f = request.files['file']
 		# if form is not empty
@@ -742,13 +743,14 @@ def upload_chunk():
 					# store chunk data in list and concatenate to file
 					# assumption: chunklist filenames are sortable (correct order)
 					for chunk_filename in sorted([chunk.filename for chunk in chunks]):
-						with open(chunk_filename, 'r') as f:
+						with open(os.path.join(folder, chunk_filename), 'r') as f:
 							chunk_data.append(f.read())
 					data = ''.join(chunk_data)
 					with open(os.path.join(folder, chunk.chunklist.filename), 'w') as f:
 						f.write(data)
 
 					# read concatenated archive and extract content
+					print os.path.join(folder, filename)
 					with open(os.path.join(folder, filename), 'r') as f:
 						z = zipfile.ZipFile(f)
 						z.extractall(folder)
@@ -843,6 +845,7 @@ def upload_chunk():
 @app.route('/api/init/', methods=['GET','POST'])
 def upload_start_file():
 	if request.method == 'POST':
+		print 'INIT'
 		# get file from form
 		f = request.files['file']
 		# if form is not empty
@@ -872,7 +875,7 @@ def upload_start_file():
 			aes_key = private_key.decrypt(enc_aes_key)
 
 			# decrypt image archive using decrypted AES key
-			with open(os.path.join(folder, 'cipherZipFile.zip'), 'r') as f:
+			with open(os.path.join(folder, 'cipher_listahan'), 'r') as f:
 				enc_list = f.read()
 				cipher = AES.new(aes_key, AES.MODE_ECB, 'dummy_parameter')
 				msg = cipher.decrypt(enc_list)
@@ -881,20 +884,21 @@ def upload_start_file():
 			with open(os.path.join(folder, 'decrypted.txt'), 'w') as f:
 				f.write(msg)
 			if REMOVE_TEMP:
-				os.remove(os.path.join(folder, 'cipherZipFile.zip'))
+				os.remove(os.path.join(folder, 'cipher_listahan'))
 
 			# store chunks in list
 			chunks = []
+			user = User.query.filter(User.username == username).first()
 			with open(os.path.join(folder, 'decrypted.txt'), 'r') as f:
 				for line in f.readlines():
-					filename, checksum = line.split(' ')
-					chunks.append(Chunk(filename=filename,checksum=checksum,user=user))
+					if ' ' in line:
+						chunk_filename, checksum = line.split(' ')
+						chunks.append(Chunk(filename=chunk_filename,checksum=checksum,user=user))
 
-			user = User.query.filter(User.username == username).first()
 			hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
 			if hex_aes_key == user.password[:32]:
 				# append chunks to new chunklist
-				chunklist = Chunklist()
+				chunklist = Chunklist(filename=filename.replace('.zip',''), date=datetime.datetime.now())
 				for chunk in chunks:
 					db.session.add(chunk)
 					chunklist.chunks.append(chunk)
@@ -902,8 +906,8 @@ def upload_start_file():
 				db.session.commit()
 				return 'OK'
 			else:
-				# {'username': (tries, chunks, folder)
-				upload_cache[username] = (0, chunks, folder)
+				# {'username': (tries, filename, chunks, folder)
+				upload_cache[username] = (0, filename.replace('.zip',''), chunks, folder)
 				return 'RETYPE 0'
 
 
@@ -940,7 +944,7 @@ def retype():
 		user = User.query.filter(User.username == username).first()
 		if password_hash == user.password[:32]:
 			# append chunks to new chunklist
-			chunklist = Chunklist()
+			chunklist = Chunklist(filename=filename, date=datetime.datetime.now())
 			for chunk in chunks:
 				db.session.add(chunk)
 				chunklist.chunks.append(chunk)
@@ -949,7 +953,7 @@ def retype():
 			return 'OK'
 		else:
 			if tries != 4:
-				upload_cache[username] = (tries + 1, chunks, folder)
+				upload_cache[username] = (tries + 1, filename, chunks, folder)
 			else:
 				upload_cache.pop(username)
 			return "RETYPE %s" % tries

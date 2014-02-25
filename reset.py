@@ -65,79 +65,79 @@ for i in x:
 
 # Cases
 
-x = Case(datetime.date(2010,5,15),'Vivax','Description',11.2,119.41,'Palawan')
+x = Case(datetime.date(2010,5,15),'Vivax','Description',11.2,119.41,'Palawan',False)
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2005,8,26),'Vivax','Description',11.2,119.41,'Palawan')
+x = Case(datetime.date(2005,8,26),'Vivax','Description',11.2,119.41,'Palawan',False)
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2010,5,15),'Falciparum','Description',10.49,119.31,'Palawan')
+x = Case(datetime.date(2010,5,15),'Falciparum','Description',10.49,119.31,'Palawan',False)
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2007,1,5),'Ovale','Description',9.17,118.25,'Palawan')
+x = Case(datetime.date(2007,1,5),'Ovale','Description',9.17,118.25,'Palawan',False)
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2009,9,9),'No Disease','Description',10.42,119.2,'Palawan')
+x = Case(datetime.date(2009,9,9),'No Disease','Description',10.42,119.2,'Palawan',False)
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2011,9,9),'Malariae','Description',8.4,117.2,'Palawan')
+x = Case(datetime.date(2011,9,9),'Malariae','Description',8.4,117.2,'Palawan',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2008,9,9),'No Disease','Description',9.25,118.05,'Palawan')
+x = Case(datetime.date(2008,9,9),'No Disease','Description',9.25,118.05,'Palawan',False)
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2012,9,9),'Malariae','Description',9.26,118.33,'Palawan')
+x = Case(datetime.date(2012,9,9),'Malariae','Description',9.26,118.33,'Palawan',False)
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2013,1,10),'Falciparum','Description',10.32,119.17,'Palawan')
+x = Case(datetime.date(2013,1,10),'Falciparum','Description',10.32,119.17,'Palawan',False)
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2013,9,10),'Ovale','Description',10.32,119.46,'Palawan')
+x = Case(datetime.date(2013,9,10),'Ovale','Description',10.32,119.46,'Palawan',False)
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2011,5,15),'No Disease','Description',8.47,117.5,'Palawan')
+x = Case(datetime.date(2011,5,15),'No Disease','Description',8.47,117.5,'Palawan',False)
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2012,5,9),'Vivax','Description',10.51,121.0, 'Palawan')
+x = Case(datetime.date(2012,5,9),'Vivax','Description',10.51,121.0, 'Palawan',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973, 'Manila')
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973, 'Manila',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973,'Manila')
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973,'Manila',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,10),'Malariae','Severe',14.565454,120.993973, 'Manila')
+x = Case(datetime.date(2014,2,10),'Malariae','Severe',14.565454,120.993973, 'Manila',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,17),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City')
+x = Case(datetime.date(2014,2,17),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,18),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City')
+x = Case(datetime.date(2014,2,18),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City')
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.64836399, 121.0684764, 'Quezon City',False)
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.639946,121.0781, 'Quezon City')
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.639946,121.0781, 'Quezon City',False)
 x.user_id = 6
 db.session.add(x)
 

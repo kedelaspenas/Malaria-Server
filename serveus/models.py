@@ -162,13 +162,15 @@ class Chunklist(db.Model):
 	__tablename__ = 'chunklist'
 
 	id = db.Column(db.Integer, primary_key=True)
+	filename = db.Column(db.String(100))
 	date = db.Column(db.DateTime())
 	chunks = db.relationship('Chunk', backref='chunklist', lazy='dynamic')
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-	def __init__(self, filename='', checksum='', user='', date=''):
+	def __init__(self, filename='', date='', user_id=''):
 		self.filename = filename
 		self.date = date
+		self.user_id = user_id
 	
 	def __repr__(self):
 		return self.filename
@@ -177,8 +179,8 @@ class Chunk(db.Model):
 	__tablename__ = 'chunk'
 
 	id = db.Column(db.Integer, primary_key=True)
-	filename = db.Column(db.String(50))
-	checksum = db.Column(db.String(20))
+	filename = db.Column(db.String(100))
+	checksum = db.Column(db.String(50))
 	done = db.Column(db.Boolean())
 	chunklist_id = db.Column(db.Integer, db.ForeignKey('chunklist.id'))
 
