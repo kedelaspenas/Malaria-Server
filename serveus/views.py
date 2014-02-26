@@ -66,22 +66,27 @@ def index():
 @app.route('/profilepage/', methods = ['GET', 'POST'])
 @login_required
 def profilepage():
-	changepass_form = ChangePassForm()
-	# Get old password, compare with form and change password
-	if changepass_form.validate_on_submit():
-		old_pass = changepass_form.oldpassword.data
-		new_pass = changepass_form.newpassword.data
-		changepass_form.oldpassword.data = changepass_form.newpassword.data = ""
-		if old_pass == current_user.password:
-			current_user.password = new_pass
-			db.session.commit()
-			message = 'Password successfuly changed.'
-			return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
-		# Error message if old password mismatches	
-		error = 'Old password mismatch.'
-		return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
-
-	return render_template("profilepage.html", user = current_user, changepass_form = changepass_form)
+    changepass_form = ChangePassForm()
+    # Get old password, compare with form and change password
+    if changepass_form.validate_on_submit():
+        old_pass = ""
+        new_pass = ""
+        old_pass = changepass_form.oldpassword.data
+        new_pass = changepass_form.newpassword.data
+        changepass_form.oldpassword.data = changepass_form.newpassword.data = ""
+        if len(new_pass) > 0 and len(old_pass) > 0 and old_pass == current_user.password:
+            current_user.password = new_pass
+            db.session.commit()
+            message = 'Password successfuly changed.'
+            return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
+        # Error message if old password mismatches	
+        if len(new_pass) <= 0 or len(old_pass) <= 0:
+            error = 'Please enter in both fields.'
+        else:
+            error = 'Old password mismatch.'
+        return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
+        
+    return render_template("profilepage.html", user = current_user, changepass_form = changepass_form)
 
 @app.route('/dashboard/')
 @login_required
@@ -188,11 +193,11 @@ def maps():
 	
 	case_list = Case.query.filter(Case.date>=dt,Case.date<=dte)
 	case_list = [i for i in case_list]
-	sorted_list = dict([(i, []) for i in parasiteList[0:]])
+	sorted_list = {'Any Disease': [], 'Test Data': []}
 	for i in case_list:
 		#sorted_list[i.parasite].append((str(i.id),str(i.lat)+','+str(i.lng)))
-		if i.parasite == "No Disease":
-			sorted_list["No Disease"].append((str(i.id),str(i.lat)+','+str(i.lng)))
+		if i.test:
+			sorted_list["Test Data"].append((str(i.id),str(i.lat)+','+str(i.lng)))
 		else:
 			sorted_list["Any Disease"].append((str(i.id),str(i.lat)+','+str(i.lng)))
 	
@@ -315,11 +320,11 @@ def timeline():
 	min_date = case_list[0].date
 	max_date = case_list[0].date
 	
-	sorted_list = dict([(i, []) for i in parasiteList[0:]])
+	sorted_list = {'Any Disease': [], 'Test Data': []}
 	for i in case_list:
 		#sorted_list[i.parasite].append((str(i.lat)+','+str(i.lng),i.date))
-		if i.parasite == "No Disease":
-			sorted_list["No Disease"].append((str(i.lat)+','+str(i.lng),i.date))
+		if i.test:
+			sorted_list["Test Data"].append((str(i.lat)+','+str(i.lng),i.date))
 		else:
 			sorted_list["Any Disease"].append((str(i.lat)+','+str(i.lng),i.date))
 		
