@@ -139,7 +139,7 @@
 										<input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" checked>
 										<p>&nbsp;Image #{{j}}</p>
 										<a title="{{i}}" href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked; $('span#modalImageNumber').text('{{j}}');">
-                                          <img src="/{{i}}" alt="">
+                                          <img src="/thumb/{{i}}" alt="">
                                         </a>
                                     </div>
                                      {% if loop.index0 == (loop.length-1) %}

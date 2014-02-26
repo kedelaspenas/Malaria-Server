@@ -17,6 +17,9 @@ from misc import Pagination
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
+from PIL import Image as PILImage
+from cStringIO import StringIO
+from flask import send_file
 
 from sqlalchemy import distinct
 # Default to Pillow and fallback to PIL
@@ -711,6 +714,15 @@ def fetch_image(picture_id):
     response = make_response(x.im)
     response.headers['Content-Type'] = 'image/jpeg'
     return response
+    
+@app.route('/thumb/pic/<int:picture_id>/', methods=['GET'])
+def fetch_thumbnail(picture_id):
+    x = Image.query.get(picture_id)
+    img = PILImage.open(StringIO(x.im))
+    img = img.resize((320,240), PILImage.ANTIALIAS)
+    a = StringIO()
+    img.save(a, 'JPEG', quality=85)
+    return send_file(a.seek(0), mimetype='image/jpeg')
 
 """."""
 @app.route('/api/chunk/', methods=['GET','POST'])
