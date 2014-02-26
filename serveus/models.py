@@ -18,6 +18,10 @@ class UserType(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(80), unique=True)
 	users = db.relationship('User', backref='usertype', lazy='dynamic')
+
+	@staticmethod
+	def get_microscopist():
+		return UserType.query.filter(name='Microscopist').first()
 	
 	def __init__(self, name=""):
 		self.name = name
@@ -63,6 +67,9 @@ class User(db.Model, UserMixin):
 	def hash_password(password):
 		return hashlib.sha1(password).hexdigest()
 
+	def is_microscopist(self):
+		return usertype == UserType.get_microscopist()
+
 	def __init__(self, firstname="", lastname="", username="", password="", contact="", email=""):
 		self.firstname = firstname
 		self.lastname = lastname
@@ -87,18 +94,33 @@ class Case(db.Model):
 	comment = db.Column(db.String(1000))
 	lat = db.Column(db.Float)
 	lng = db.Column(db.Float)
-	region = db.Column(db.String(1000))
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	images = db.relationship('Image', backref='case', lazy='dynamic')
 	test = db.Column(db.Boolean)
+	region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
+	province_id = db.Column(db.Integer, db.ForeignKey('province.id'))
+	municipality_id = db.Column(db.Integer, db.ForeignKey('municipality.id'))
+	parasite_validator = db.Column(db.String(100))
+	description_validator = db.Column(db.String(1000))
 
-	def __init__(self, date="", parasite="", description="", lat="", lng="", region="", test=""):
+	def __init__(self, date="", parasite="", description="", lat="", lng="", test="", region="", province="", municipality=""):
 		self.date = date
 		self.parasite = parasite
 		self.description = description
 		self.lat = lat
 		self.lng = lng
-		self.region = region
+		if region == '':
+			self.region = None
+		else:
+			self.region = region
+		if province == '':
+			self.province = None
+		else:
+			self.province = province
+		if municipality == '':
+			self.municipality = None
+		else:
+			self.municipality = municipality
 		self.test = test
 
 	def __repr__(self):
@@ -195,3 +217,50 @@ class Chunk(db.Model):
 	
 	def __repr__(self):
 		return self.filename
+
+class Region(db.Model):
+	__tablename__ = 'region'
+
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(50))
+	code = db.Column(db.String(10))
+	cases = db.relationship('Case', backref='region', lazy='dynamic')
+	provinces = db.relationship('Province', backref='region', lazy='dynamic')
+
+	def __init__(self, name='', code=''):
+		self.name = name
+		self.code = code
+	
+	def __repr__(self):
+		return self.name
+
+class Province(db.Model):
+	__tablename__ = 'province'
+
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(50))
+	code = db.Column(db.String(10))
+	cases = db.relationship('Case', backref='province', lazy='dynamic')
+	municipalities = db.relationship('Municipality', backref='province', lazy='dynamic')
+	region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
+
+	def __init__(self, name='', code=''):
+		self.name = name
+		self.code = code
+	
+	def __repr__(self):
+		return self.name
+
+class Municipality(db.Model):
+	__tablename__ = 'municipality'
+
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(50))
+	cases = db.relationship('Case', backref='municipality', lazy='dynamic')
+	province_id = db.Column(db.Integer, db.ForeignKey('province.id'))
+
+	def __init__(self, name=''):
+		self.name = name
+	
+	def __repr__(self):
+		return self.name

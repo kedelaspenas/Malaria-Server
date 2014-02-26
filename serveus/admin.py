@@ -8,7 +8,7 @@ from flask.ext.login import current_user
 from flask import request
 from jinja2 import Markup
 
-from models import db, User, UserType, Case, Image, Chunk, Chunklist
+from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality
 from views import dashboard
 
 # Custom admin links on navbar
@@ -85,6 +85,9 @@ admin.add_view(MyModelView(Case, db.session))
 admin.add_view(ImageView(Image, db.session))
 admin.add_view(MyModelView(Chunklist, db.session))
 admin.add_view(MyModelView(Chunk, db.session))
+admin.add_view(MyModelView(Region, db.session))
+admin.add_view(MyModelView(Province, db.session))
+admin.add_view(MyModelView(Municipality, db.session))
 
 # Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='monitoring'))

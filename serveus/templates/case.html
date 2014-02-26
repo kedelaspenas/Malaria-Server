@@ -78,9 +78,14 @@
                         <h4 class="pull-right">{{case.date}}</h4>
                         <table class="table table-condensed table-bordered" style="width: 100%">
                         <tr><th class="span2">Case ID.<td class="span10">Region code, pt number {{case.id}}
-                        <tr><th>Address<td>Address
-                        <tr><th>Diagnosis<td>{{case.parasite}}
-                        <tr><th>Remarks<td>{{case.description}}
+						<tr><th>Location<td>{{case.region}}, {{case.province}}, {{case.municipality}}
+						<tr><th>Region<td>{{case.region}}
+						<tr><th>Province<td>{{case.province}}
+						<tr><th>Municipality<td>{{case.municipality}}
+                        <tr><th>Microscopist diagnosis<td>{{case.parasite}}
+                        <tr><th>Microscopist remarks<td>{{case.description}}
+                        <tr><th>Validator diagnosis<td>{{case.parasite_validator}}
+                        <tr><th>Validator remarks<td>{{case.description_validator}}
                         <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
                         <tr><th>Microscopist<td>{{case.user}}
                         <tr><th>Contact details<td>{{case.user.contact}}

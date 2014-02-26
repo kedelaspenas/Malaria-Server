@@ -92,10 +92,10 @@
                         <ul class="nav pull-left">
                             <li>&nbsp</li>
                             <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
-                            <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
+							{% if not user.is_microscopist %}<li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>{% endif %}
                             <li class="active"><a href="#"><i class="icon-book"></i> Records</a></li>
-                            <li><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
-                            <li><a href="/timeline/"><i class="icon-globe"></i> Timeline</a></li>
+                            {% if not user.is_microscopist %}<li><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>{% endif %}
+                            {% if not user.is_microscopist %}<li><a href="/timeline/"><i class="icon-globe"></i> Timeline</a></li>{% endif %}
                             <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
                         </ul>
                     </div>
@@ -160,11 +160,13 @@
 					<tr>
                     <th class="span1">ID</div>
                     <th class="span2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class="" id="date_chevron"></i></div>
+                    <th class="span3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class="" id="parasite_chevron"></i></div>
                     <th class="span3" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class="" id="parasite_chevron"></i></div>
                     <th class="span3" onclick="sort('description');" style="cursor: pointer;">Remarks <div class="pull-left"><i class="" id="description_chevron"></i></div>
+                    <th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class="" id="description_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
-					<tr><td>{{i.id}}<td>{{i.date}}<td>{{i.parasite}}<td>{{i.description}}<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
+					<tr><td {%if i.test %}style="color:red;"{%endif%}>{{i.id}}<td>{{i.date}}<td>{{i.region}}, {{i.province}}, {{i.municipality}}<td>{{i.parasite}}<td>{{i.description}}<td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
                     {% if not caseList %}
                     <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results</a>
