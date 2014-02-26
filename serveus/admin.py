@@ -39,6 +39,7 @@ admin = Admin(app, index_view=MyAdminIndexView())
 class UserView(MyModelView):
     can_create = True
     column_list = ('username', 'usertype')
+    form_excluded_columns = ('case', 'chunklists')
     column_excluded_list = ('password')
     
     def scaffold_form(self):
