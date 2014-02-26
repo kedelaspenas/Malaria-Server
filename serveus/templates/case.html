@@ -72,8 +72,8 @@
         
 		<div class="container-fluid" style="background-color: white; position: relative; height: 100%; padding-bottom: 0; padding-right: 0">
 			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
-                <div class="span9">
-                    <div class="well container" style="background-color: white; padding-top: 0;" >
+                <div class="span9 row">
+                    <div class="well container span12" style="background-color: white; padding-top: 0;">
                         <h4 class="pull-left">Patient Information</h4>
                         <h4 class="pull-right">{{case.date}}</h4>
                         <table class="table table-condensed table-bordered" style="width: 100%">
@@ -91,7 +91,8 @@
                         </div>
                         
                     </div>
-                    <div class="well container" style="background-color: white; padding-top: 10px;">
+                    <br><br><br>
+                    <div class="well container span12" style="background-color: white; padding-top: 10px; margin-left: 0">
                         <h4>Validator Form: </h4>
                         <input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite}}">
                         <br />
