@@ -29,7 +29,7 @@ except ImportError:
     import PIL
 from flask_mail import Message
 
-from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk
+from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality
 from serveus import mail
 
 login_manager = LoginManager()
@@ -63,7 +63,10 @@ def allowed(types=[]):
 @app.route('/index/')
 def index():
     if current_user.is_authenticated():
-        return redirect('/monitoring/')
+		if current_user.is_microscopist():
+			return redirect('/records/')
+		else:
+			return redirect('/monitoring/')
     return render_template("index.html",login_form = LoginForm(), recovery_form = RecoveryForm())
     
 @app.route('/profilepage/', methods = ['GET', 'POST'])
@@ -80,7 +83,7 @@ def profilepage():
         if len(new_pass) > 0 and len(old_pass) > 0 and old_pass == current_user.password:
             current_user.password = new_pass
             db.session.commit()
-            message = 'Password successfuly changed.'
+            message = 'Password successfully changed.'
             return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
         # Error message if old password mismatches    
         if len(new_pass) <= 0 or len(old_pass) <= 0:
@@ -161,7 +164,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user)
+    return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records')
 
     
 @app.route('/map/')
@@ -229,7 +232,7 @@ def maps():
             zoom = 7
             lat = 10.422988
             lng = 120.629883
-    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user)
+    return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user, menu_active='map')
 
 @app.route('/monitoring/')
 @login_required
@@ -256,7 +259,8 @@ def monitoring():
         centerlng = sum(lngList)/float(len(lngList))
         return (centerlat,centerlng)
 
-    unique_municipality = Case.query.group_by(Case.region)
+    unique_municipality = Case.query.group_by(Case.region_id)
+    print unique_municipality
     municipality_list = []
     for j in unique_municipality:
         print str(j.region)
@@ -276,7 +280,7 @@ def monitoring():
     zoom = 6
     lat = 11.3333
     lng = 123.0167
-    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, municipality_list = municipality_list,  bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user)
+    return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, municipality_list = municipality_list,  bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user, menu_active='monitoring')
     
 @app.route('/timeline/')
 @login_required
@@ -375,7 +379,7 @@ def timeline():
             zoom = 7
             lat = 10.422988
             lng = 120.629883
-    return render_template("timeline.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user, bound_end=bound_end, bound_start = bound_start)
+    return render_template("timeline.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user, bound_end=bound_end, bound_start = bound_start, menu_active='timeline')
 
 @app.route('/case/<int:id>/',  methods = ['GET', 'POST'])
 def case(id):
@@ -389,10 +393,10 @@ def case(id):
     if request.method == 'POST':
         if request.form['validator_diagnosis'] or request.form['validator_remarks']:
             if request.form['validator_diagnosis']:
-                case.parasite = request.form['validator_diagnosis']
+                case.parasite_validator = request.form['validator_diagnosis']
                 
             if request.form['validator_remarks']:
-                case.description = request.form['validator_remarks']
+                case.description_validator = request.form['validator_remarks']
                 
             db.session.commit();
         else:

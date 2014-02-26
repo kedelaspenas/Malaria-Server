@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Visualization</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-        <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
-        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% extends "layout.html" %}
+{% block title %}Visualization{% endblock %}
+
+{% block script %}
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&components=country:Philippines"></script>
+{% endblock %}
         
+{% block style %}
 		<style>
 		html, body {
 			height: 100%;
@@ -82,42 +79,9 @@
             z-index:99;
         }
 		</style>
-	</head>
-	<body>
-		<div class="navbar" style="width: 100%;">
-			<div class="navbar-inner">
-				<a class="btn btn-navbar pull-right" data-toggle="collapse" data-target=".nav-collapse" style="padding: 4px 10px 4px; font-size: 14px; font-weight: bold">
-				Menu
-				</a>
-                <ul class="nav pull-right">
-                    <div class="btn-group">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        {{user.usertype.name}} {{ user.username }}
-                        <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                        <li><a href="/profilepage/">Profile</a></li>
-                        {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
-                        <li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
-                        </ul>
-                    </div>
-                </ul>
-                <div class="nav-collapse collapse">
-                    <div>
-                        <ul class="nav pull-left">
-                            <li>&nbsp;</li>
-                            <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
-                            <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
-                            <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
-                            <li class="active"><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
-                            <li><a href="/timeline/"><i class="icon-globe"></i> Timeline</a></li>
-                            <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
-                        </ul>
-                    </div>
-                </div>
-			</div>
-		</div>
-        
+{% endblock %}
+
+{% block content %}
         <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center; z-index:100;"><img src="/static/images/loading.gif"/></div>
         
         <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: "></div>
@@ -353,5 +317,4 @@
         <script>
         
         </script>
-	</body>
-</html>
+{% endblock %}

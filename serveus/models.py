@@ -20,12 +20,16 @@ class UserType(db.Model):
 	users = db.relationship('User', backref='usertype', lazy='dynamic')
 
 	@staticmethod
+	def get_administrator():
+		return UserType.query.filter(UserType.name=='Administrator').first()
+
+	@staticmethod
 	def get_microscopist():
-		return UserType.query.filter(name='Medical Technician').first()
+		return UserType.query.filter(UserType.name=='Medical Technician').first()
 
 	@staticmethod
 	def get_doctor():
-		return UserType.query.filter(name='Validator').first()
+		return UserType.query.filter(UserType.name=='Validator').first()
 	
 	def __init__(self, name=""):
 		self.name = name
@@ -71,11 +75,14 @@ class User(db.Model, UserMixin):
 	def hash_password(password):
 		return hashlib.sha1(password).hexdigest()
 
+	def is_administrator(self):
+		return self.usertype == UserType.get_administrator()
+
 	def is_microscopist(self):
-		return usertype == UserType.get_microscopist()
+		return self.usertype == UserType.get_microscopist()
 
 	def is_doctor(self):
-		return usertype == UserType.get_doctor()
+		return self.usertype == UserType.get_doctor()
 
 	def __init__(self, firstname="", lastname="", username="", password="", contact="", email=""):
 		self.firstname = firstname

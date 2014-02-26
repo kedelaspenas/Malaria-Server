@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Profile</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- Bootstrap -->
-		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-		<!-- Responsive -->
-		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+{% extends "layout.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block script %}
 		<script src="/static/js/sha1.js"></script>
 		<script>
 			function hash() {
@@ -20,6 +14,9 @@
                 }
 			}
 		</script>
+{% endblock %}
+
+{% block style %}
         <style>
             html,
             body {
@@ -28,41 +25,9 @@
                height:100%;
             }
         </style>
-	</head>
-	<body>
-    <div class="navbar" style="width: 100%;">
-        <div class="navbar-inner">
-            <a class="btn btn-navbar pull-right" data-toggle="collapse" data-target=".nav-collapse" style="padding: 4px 10px 4px; font-size: 14px; font-weight: bold">
-            Menu
-            </a>
-            <ul class="nav pull-right">
-                <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    {{user.usertype.name}} {{ user.username }}
-                    <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                    <li><a href="/profilepage/">Profile</a></li>
-                    {% if user.usertype.name == "Administrator" %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
-                    <li><a href="/logout/">Logout <i class="icon-off"></i></a></li>
-                    </ul>
-                </div>
-            </ul>
-            <div class="nav-collapse collapse">
-                <div>
-                    <ul class="nav pull-left">
-                        <li>&nbsp</li>
-                        <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
-                        <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
-                        <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
-                        <li><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
-                        <li><a href="/timeline/"><i class="icon-globe"></i> Timeline</a></li>
-                        <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+{% endblock %}
+
+{% block content %}
         <div class="well" style="max-width: 370px; margin-left: auto; margin-right: auto">
 			<h4>Change Password</h4>
             {% if message %}
@@ -86,5 +51,4 @@
         </div>
     <script src="/static/js/jquery.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
-	</body>
-</html>
+{% endblock %}
