@@ -828,9 +828,15 @@ def upload_chunk():
 					parasite = mapping['species'].replace('Plasmodium ', '').capitalize()
 					description = mapping['description']
 					test = mapping['flags'] == 'true'
+					region = mapping['region']
+					province = mapping['province']
+					municipality = mapping['municipality']
 
 					dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-					case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test)
+					region = Region.query.filter(Region.name == region).first()
+					province = Province.query.filter(Province.name == province).first()
+					municipality = Municipality.query.filter(Municipality.name == municipality).first()
+					case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=Municipality)
 
 					user = User.query.filter(User.username == username).first()
 					case.user = user
