@@ -722,7 +722,8 @@ def fetch_thumbnail(picture_id):
     img = img.resize((320,240), PILImage.ANTIALIAS)
     a = StringIO()
     img.save(a, 'JPEG', quality=85)
-    return send_file(a.seek(0), mimetype='image/jpeg')
+    a.seek(0)
+    return send_file(a, mimetype='image/jpeg')
 
 """."""
 @app.route('/api/chunk/', methods=['GET','POST'])
