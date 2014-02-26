@@ -160,10 +160,10 @@
 					<tr>
                     <th class="span1">ID</div>
                     <th class="span2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class="" id="date_chevron"></i></div>
-                    <th class="span3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class="" id="parasite_chevron"></i></div>
+                    <th class="span3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class="" id="location_chevron"></i></div>
                     <th class="span3" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class="" id="parasite_chevron"></i></div>
                     <th class="span3" onclick="sort('description');" style="cursor: pointer;">Remarks <div class="pull-left"><i class="" id="description_chevron"></i></div>
-                    <th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class="" id="description_chevron"></i></div>
+                    <th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class="" id="microscopist_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
 					<tr><td {%if i.test %}style="color:red;"{%endif%}>{{i.id}}<td>{{i.date}}<td>{{i.region}}, {{i.province}}, {{i.municipality}}<td>{{i.parasite}}<td>{{i.description}}<td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>

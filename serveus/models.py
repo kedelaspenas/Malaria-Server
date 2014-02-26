@@ -21,7 +21,11 @@ class UserType(db.Model):
 
 	@staticmethod
 	def get_microscopist():
-		return UserType.query.filter(name='Microscopist').first()
+		return UserType.query.filter(name='Medical Technician').first()
+
+	@staticmethod
+	def get_doctor():
+		return UserType.query.filter(name='Validator').first()
 	
 	def __init__(self, name=""):
 		self.name = name
@@ -69,6 +73,9 @@ class User(db.Model, UserMixin):
 
 	def is_microscopist(self):
 		return usertype == UserType.get_microscopist()
+
+	def is_doctor(self):
+		return usertype == UserType.get_doctor()
 
 	def __init__(self, firstname="", lastname="", username="", password="", contact="", email=""):
 		self.firstname = firstname
