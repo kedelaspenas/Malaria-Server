@@ -161,7 +161,7 @@
         <p>This page shows the distribution of recorded cases all over the country. <br> Cases from the last 30 days are shown by default. <br><br> Use the filters to narrow down the results. <br><br> <span style="font-weight: bold">Legend: </span><br>
         &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Any Disease &nbsp;&nbsp;&nbsp; 
        
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Disease</p>
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> Test Data</p>
         </div>
         </div>
         <script>
@@ -170,7 +170,7 @@
             
             var infectedPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
-            var noDiseasePin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var testDataPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
             function MarkerList(name, list, ids, markerImage) {
                 this.name = name;
@@ -188,7 +188,7 @@
             }
             var markers = [
                 new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}],infectedPin),
-                new MarkerList("No Disease", [{% for i in case_list['No Disease'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Disease'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noDiseasePin)
+                new MarkerList("Test Data", [{% for i in case_list['Test Data'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Test Data'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], testDataPin)
             ]
             
             function initialize() {

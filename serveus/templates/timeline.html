@@ -131,7 +131,7 @@
                             <li><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>
                             <li><a href="/records/"><i class="icon-book"></i> Records</a></li>
                             <li><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>
-                            <li class="active"><a href="#"><i class="icon-globe"></i> Timeline</a></li>
+                            <li class="active"><a href="/timeline/"><i class="icon-globe"></i> Timeline</a></li>
                             <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
                         </ul>
                     </div>
@@ -185,7 +185,7 @@
         <span style="font-weight: bold">Legend: </span><br>
         &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Any Disease &nbsp;&nbsp;&nbsp;
         
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> No Disease</p>
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> Test Data</p>
         </div>
         </div>
         <script src="/static/js/jquery.js"></script>
@@ -199,7 +199,7 @@
             
             var infectedPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
                        
-            var noDiseasePin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var testDataPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
             var min_date = new Date({{date_start.year}}, {{date_start.month}}-1, {{date_start.day}});
             var max_date = new Date({{date_end.year}}, {{date_end.month}}-1, {{date_end.day}});
@@ -237,7 +237,7 @@
             }
             var markers = [
                 new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %} new google.maps.LatLng({{i[0]}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], infectedPin),
-                new MarkerList("No Disease", [{% for i in case_list['No Disease'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['No Disease'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], noDiseasePin)
+                new MarkerList("Test Data", [{% for i in case_list['Test Data'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Test Data'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], testDataPin)
             ]
             
             function initialize() {

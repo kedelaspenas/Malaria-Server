@@ -72,8 +72,8 @@
         
 		<div class="container-fluid" style="background-color: white; position: relative; height: 100%; padding-bottom: 0; padding-right: 0">
 			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
-                <div class="span9">
-                    <div class="well container" style="background-color: white; padding-top: 0;" >
+                <div class="span9 row">
+                    <div class="well container span12" style="background-color: white; padding-top: 0;">
                         <h4 class="pull-left">Patient Information</h4>
                         <h4 class="pull-right">{{case.date}}</h4>
                         <table class="table table-condensed table-bordered" style="width: 100%">
@@ -96,7 +96,8 @@
                         </div>
                         
                     </div>
-                    <div class="well container" style="background-color: white; padding-top: 10px;">
+                    <br><br><br>
+                    <div class="well container span12" style="background-color: white; padding-top: 10px; margin-left: 0">
                         <h4>Validator Form: </h4>
                         <input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite}}">
                         <br />
@@ -142,8 +143,8 @@
                                     <div class="container span12">
 										<input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" checked>
 										<p>&nbsp;Image #{{j}}</p>
-										<a title="{{i}}" href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked; $('span#modalImageNumber').text('{{j}}');">
-                                          <img src="/{{i}}" alt="">
+										<a href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked; $('span#modalImageNumber').text('{{j}}');">
+                                          <img src="/thumb/{{i}}" alt="">
                                         </a>
                                     </div>
                                      {% if loop.index0 == (loop.length-1) %}
