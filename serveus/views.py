@@ -122,8 +122,6 @@ def records():
 		page = int(request.args.get('page'))
 
 	regionList = ['All Regions'] + Region.query.all()
-	provinceList = ['All Provinces']
-	municipalityList = ['All Municipalities']
 	
 	if request.args:
 		parasiteSelected = request.args.get('parasite_selection')
@@ -132,6 +130,11 @@ def records():
 		regionIndex = int(request.args.get('region_selection'))
 		provinceIndex = int(request.args.get('province_selection'))
 		municipalityIndex = int(request.args.get('municipality_selection'))
+
+		region = Region.query.get(regionIndex)
+		provinceList = ['All Provinces'] + Province.query.filter(Province.region==region).all()
+		province = Region.query.get(provinceIndex)
+		municipalityList = ['All Municipalities'] + Municipality.query.filter(Municipality.province==province).all()
 		
 		date_start = request.args.get('date_start')
 		date_end = request.args.get('date_end')
@@ -175,6 +178,8 @@ def records():
 			caseList = caseList.filter(Case.municipality==Municipality.query.get(municipalityIndex))
 	else:
 		# Default values
+		provinceList = ['All Provinces']
+		municipalityList = ['All Municipalities']
 		parasiteIndex = 0
 		regionIndex = 0
 		provinceIndex = 0
