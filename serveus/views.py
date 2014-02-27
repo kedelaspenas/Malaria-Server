@@ -15,7 +15,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
 from misc import Pagination
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
 from PIL import Image as PILImage
 from cStringIO import StringIO
@@ -428,7 +428,7 @@ def case(id):
 	images = sorted(images)
 	# Print out of case
 	if request.method == 'POST':
-		if request.form['validator_diagnosis'] or request.form['validator_remarks']:
+		if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
 			if request.form['validator_diagnosis']:
 				case.parasite_validator = request.form['validator_diagnosis']
 				
@@ -437,14 +437,26 @@ def case(id):
 				
 			db.session.commit();
 		else:
-			c = canvas.Canvas('malaria.pdf', pagesize=letter)
+			def t(x, y):
+				return {'x': x + 20, 'y': 580 - y}
+			c = canvas.Canvas('malaria.pdf', pagesize=landscape(letter))
+			"""
+			560 bottom
+			for i in xrange(70):
+				x = 10 * i
+				y = 10 * i
+				temp = t(x,y)
+				c.drawString(temp['x'], temp['y'], "(%s,%s)" % (str(x), str(y)))
+			"""
 			width, height = letter
-			reportString = 'Patient ID: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') +  '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
+			reportString = 'Location: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') +  '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
+			reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y'), case.region, case.province, case.municipality, case.parasite, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
 		
-			x = reportString.split('<br>')
-			for i, s in enumerate(x):
-				c.drawString(100, 750 - i * 15, s)
-			c.drawString(459, 750, '1')
+			for i, s in enumerate(reportString.split('\n')):
+				z = t(0,i*15)
+				c.drawString(z['x'], z['y'], s)
+			z = t(700,0)
+			c.drawString(z['x'], z['y'], '1')
 			c.showPage()
 
 			counter = 0
@@ -457,12 +469,14 @@ def case(id):
 						with open('image%s.jpg' % id,'w') as f:
 							f.write(x)
 						im = PIL.open('image%s.jpg' % id)
-						im2 = im.resize((200, 200), PIL.NEAREST).rotate(-90)
+						im2 = im.resize((320, 240), PIL.NEAREST)
 						im2.save('image%s.jpg' % id)
-						c.drawImage('image%s.jpg' % id, 100, 500 - counter * 300)
+						z = t(500 * counter, 400)
+						c.drawImage('image%s.jpg' % id, z['x'], z['y'])
 						counter += 1
 						if counter == 1:
-							c.drawString(459, 750, str(page))
+							z = t(700,0)
+							c.drawString(z['x'], z['y'], str(page))
 					if counter == 2:
 						counter = 0
 						page += 1
