@@ -33,7 +33,7 @@ conn.commit()
 conn.close()
 
 # User types
-user_types = ['Administrator', 'Validator', 'Medical Technician']
+user_types = ['Administrator', 'Validator', 'Medical Technologist']
 for user_type in user_types:
 	temp = UserType(user_type)
 	db.session.add(temp)
@@ -1879,86 +1879,95 @@ for i in x:
 
 # Cases
 
-x = Case(datetime.date(2010,5,15),'Vivax','Description',11.2,119.41,True)
+a = db.session.query(Region).filter(Region.name == 'Region IV-B (Mimaropa)').first()
+b = db.session.query(Province).filter(Province.name=='Palawan').first()
+
+x = Case(datetime.date(2010,5,15),'Vivax','Description',11.2,119.41,True, a, b, db.session.query(Municipality).filter(Municipality.name=='El Nido (Bacuit)').first())
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2005,8,26),'Vivax','Description',11.2,119.41,True)
+x = Case(datetime.date(2005,8,26),'Vivax','Description',11.25,119.49,True,  a, b, db.session.query(Municipality).filter(Municipality.name=='El Nido (Bacuit)').first())
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2010,5,15),'Falciparum','Description',10.49,119.31,True)
+x = Case(datetime.date(2010,5,15),'Falciparum','Description',10.49,119.31,True, a, b, db.session.query(Municipality).filter(Municipality.name=='San Vicente').first())
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2007,1,5),'Ovale','Description',9.17,118.25,True)
+x = Case(datetime.date(2007,1,5),'Ovale','Description',9.17,118.25,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Narra').first())
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2009,9,9),'No Disease','Description',10.42,119.2,True)
+x = Case(datetime.date(2009,9,9),'No Disease','Description',10.42,119.2,True, a, b, db.session.query(Municipality).filter(Municipality.name=='San Vicente').first())
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2011,9,9),'Malariae','Description',8.4,117.2,True)
+x = Case(datetime.date(2011,9,9),'Malariae','Description',8.693,117.621,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Bataraza').first())
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2008,9,9),'No Disease','Description',9.25,118.05,True)
+x = Case(datetime.date(2008,9,9),'No Disease','Description',9.25,118.05,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Quezon').first())
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2012,9,9),'Malariae','Description',9.26,118.33,True)
+x = Case(datetime.date(2012,9,9),'Malariae','Description',9.26,118.33,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Narra').first())
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2013,1,10),'Falciparum','Description',10.32,119.17,True)
+x = Case(datetime.date(2013,1,10),'Falciparum','Description',10.32,119.17,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Roxas').first())
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2013,9,10),'Ovale','Description',10.32,119.46,True)
+x = Case(datetime.date(2013,9,10),'Ovale','Description',10.08,119.46,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Taytay').first())
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2011,5,15),'No Disease','Description',8.47,117.5,True)
+x = Case(datetime.date(2011,5,15),'No Disease','Description',7.95316,117.018,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Balabac').first())
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2012,5,9),'Vivax','Description',10.51,121.0, True)
+x = Case(datetime.date(2012,5,9),'Vivax','Description',10.82,121.04, True, a, b, db.session.query(Municipality).filter(Municipality.name=='Cuyo').first())
+x.user_id = 6
+db.session.add(x)
+
+a = db.session.query(Region).filter(Region.name == 'NCR - National Capital Region (Metro Manila)').first()
+b = db.session.query(Province).filter(Province.name=='First District').first()
+c = db.session.query(Municipality).filter(Municipality.name=='Malate').first()
+
+# Manila
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
 # Manila
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973, True)
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.569454,120.990973,True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
 # Manila
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.565454,120.993973,True)
+x = Case(datetime.date(2014,2,10),'Malariae','Severe',14.561454,120.998973, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
-# Manila
-x = Case(datetime.date(2014,2,10),'Malariae','Severe',14.565454,120.993973, True)
+c = db.session.query(Municipality).filter(Municipality.name=='Quezon City').first()
+
+# QC
+x = Case(datetime.date(2014,2,17),'Malariae','Severe',14.64236399, 121.0684764, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
 # QC
-x = Case(datetime.date(2014,2,17),'Malariae','Severe',14.64836399, 121.0684764, True)
+x = Case(datetime.date(2014,2,18),'Malariae','Severe',14.64836399, 121.0634764, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
 # QC
-x = Case(datetime.date(2014,2,18),'Malariae','Severe',14.64836399, 121.0684764, True)
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.64636399, 121.0704764, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
 # QC
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.64836399, 121.0684764, True)
-x.user_id = 6
-db.session.add(x)
-
-# QC
-x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.639946,121.0781, True)
+x = Case(datetime.date(2014,2,19),'Malariae','Severe',14.639946,121.0781, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
