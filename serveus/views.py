@@ -99,6 +99,19 @@ def profilepage():
 def dashboard():
 	return render_template("dashboard.html", user = current_user, date=datetime.datetime.now().strftime('%B %d, %Y'))
 
+@app.route('/ajax/provinces')
+def ajax_provinces():
+	#region = Region.query.filter(Region.name==request.args.get('region')).first()
+	region = Region.query.get(request.args.get('region'))
+	provinces = Province.query.filter(Province.region==region)
+	return jsonify(data=[i.serialize for i in provinces])
+
+@app.route('/ajax/municipalities')
+def ajax_municipalities():
+	province = Province.query.get(request.args.get('province'))
+	municipalities = Municipality.query.filter(Municipality.province==province)
+	return jsonify(data=[i.serialize for i in municipalities])
+
 @app.route('/records/')
 @login_required
 def records():
@@ -107,10 +120,18 @@ def records():
 		page = 1
 	else:
 		page = int(request.args.get('page'))
+
+	regionList = ['All Regions'] + Region.query.all()
+	provinceList = ['All Provinces']
+	municipalityList = ['All Municipalities']
 	
 	if request.args:
 		parasiteSelected = request.args.get('parasite_selection')
 		parasiteIndex = parasiteList.index(parasiteSelected)
+
+		regionIndex = int(request.args.get('region_selection'))
+		provinceIndex = int(request.args.get('province_selection'))
+		municipalityIndex = int(request.args.get('municipality_selection'))
 		
 		date_start = request.args.get('date_start')
 		date_end = request.args.get('date_end')
@@ -136,24 +157,35 @@ def records():
 			sortby='parasite'
 		elif sort_by== 'description':
 			sortby='description'
+		elif sort_by== 'microscopist':
+			sortby='microscopist'
 		else:
 			sortby='id'
 		param= "\"case\"."+sortby+" "+order
-		print param
-		if parasiteIndex == 0: # Display all
-			caseList= Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
-		else:
-			caseList = Case.query.filter(Case.parasite==parasiteList[parasiteIndex],Case.date>=dt,Case.date<=dte).order_by(param)
+
+		# chain queries based on filters (clean branching)
+		caseList = Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
+		if parasiteIndex != 0:
+			caseList = caseList.filter(Case.parasite==parasiteList[parasiteIndex])
+		if regionIndex != 0:
+			caseList = caseList.filter(Case.region==regionList[regionIndex])
+		if provinceIndex != 0:
+			caseList = caseList.filter(Case.province==Province.query.get(provinceIndex))
+		if municipalityIndex != 0:
+			caseList = caseList.filter(Case.municipality==Municipality.query.get(municipalityIndex))
 	else:
 		# Default values
 		parasiteIndex = 0
+		regionIndex = 0
+		provinceIndex = 0
+		municipalityIndex = 0
 		date_start = "The Beginning"
 		date_end = "This Day"
 		sort_by = "date"
 		order = "desc"
 		caseList = Case.query.order_by(Case.date.desc())
 	# filter allowed records to view if not admin or validator   
-	if (str(current_user.usertype)=='Medical Technician'):
+	if current_user.is_microscopist():
 		templist=[]
 		for i in caseList:
 			if(i.user == current_user):
@@ -164,7 +196,7 @@ def records():
 	pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
 	caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
 	
-	return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records')
+	return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records', regionList = regionList, regionIndex = regionIndex, provinceList = provinceList, provinceIndex = provinceIndex, municipalityList = municipalityList, municipalityIndex = municipalityIndex)
 
 	
 @app.route('/map/')

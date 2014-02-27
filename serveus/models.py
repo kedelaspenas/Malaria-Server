@@ -265,6 +265,10 @@ class Province(db.Model):
 	def __repr__(self):
 		return self.name
 
+	@property
+	def serialize(self):
+		return {'id': self.id, 'name': self.name}
+
 class Municipality(db.Model):
 	__tablename__ = 'municipality'
 
@@ -278,3 +282,7 @@ class Municipality(db.Model):
 	
 	def __repr__(self):
 		return self.name
+
+	@property
+	def serialize(self):
+		return {'id': self.id, 'name': self.name}
