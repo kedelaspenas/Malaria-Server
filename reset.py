@@ -33,7 +33,7 @@ conn.commit()
 conn.close()
 
 # User types
-user_types = ['Administrator', 'Validator', 'Medical Technician']
+user_types = ['Administrator', 'Validator', 'Medical Technologists']
 for user_type in user_types:
 	temp = UserType(user_type)
 	db.session.add(temp)
