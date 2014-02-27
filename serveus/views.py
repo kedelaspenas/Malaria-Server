@@ -307,7 +307,7 @@ def monitoring():
 		for k in temp:
 			coor_list.append((k.lat,k.lng))
 		geoCenter = getGeoCenter(coor_list)
-		municipality_list.append((geoCenter,countM,j.region))
+		municipality_list.append((geoCenter,countM,j.municipality))
 	print municipality_list
 
 	location = "Philippines"
