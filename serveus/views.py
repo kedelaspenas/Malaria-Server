@@ -1018,7 +1018,7 @@ def retype():
 	if request.method == 'POST':
 		# get username and encrypted password
 		x = request.form['message'].split('\n')
-		username = x[0]
+		username = x[0].lower()
 		password_cipher = base64.b64decode(x[1])
 
 		# decrypt encrypted password using RSA
