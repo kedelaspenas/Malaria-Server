@@ -805,9 +805,12 @@ def upload_chunk():
 			with open(os.path.join(folder, filename), 'r') as f:
 				m = hashlib.md5()
 				m.update(f.read())
-			md5 = m.digest()
+			md5 = m.hexdigest()
 
-			chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
+			print 'TAB', filename, md5
+			#chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
+			chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False).first()
+			print chunk
 			if chunk:
 				with open(os.path.join(folder, filename), 'r') as f:
 					chunk.data = f.read()
@@ -893,7 +896,7 @@ def upload_chunk():
 					region = Region.query.filter(Region.name == region).first()
 					province = Province.query.filter(Province.name == province).first()
 					municipality = Municipality.query.filter(Municipality.name == municipality).first()
-					case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=Municipality)
+					case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
 
 					user = User.query.filter(User.username == username).first()
 					case.user = user
@@ -960,6 +963,7 @@ def upload_start_file():
 
 			root = ET.fromstring(g)
 			username = root.find('user').text
+			print 'USER:', username
 			enc_aes_key = root.find('pass').text.replace('\n','')
 			enc_aes_key = base64.b64decode(enc_aes_key)
 			private_key = RSA.importKey(Key.query.first().private_key)
@@ -980,6 +984,7 @@ def upload_start_file():
 			# store chunks in list
 			chunks = []
 			user = User.query.filter(User.username == username).first()
+			print 'NEXT:', user
 			with open(os.path.join(folder, 'decrypted.txt'), 'r') as f:
 				for line in f.readlines():
 					if ' ' in line:

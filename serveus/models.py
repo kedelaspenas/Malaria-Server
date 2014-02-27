@@ -127,14 +127,17 @@ class Case(db.Model):
 			self.region = None
 		else:
 			self.region = region
+			#self.region = Region.query.filter(Region.name==region).first()
 		if province == '':
 			self.province = None
 		else:
 			self.province = province
+			#self.province = Province.query.filter(Province.name==province).first()
 		if municipality == '':
 			self.municipality = None
 		else:
 			self.municipality = municipality
+			#self.municipality = Municipality.query.filter(Municipality.name==municipality).first()
 		self.test = test
 
 	def __repr__(self):
