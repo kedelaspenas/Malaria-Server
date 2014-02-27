@@ -16,6 +16,7 @@
         {
             var text = $('#password').val();
             var hash = CryptoJS.SHA1(text);
+            $('#username').val($('#username').val().toLowerCase());
             $('#password').val(hash);
         }
         </script>
@@ -56,7 +57,7 @@
                     <form action="/login/" method="post" name="login" class="well container-fluid" style="padding: 5%" onsubmit="return hash();">
                     {{ login_form.hidden_tag() }}
                     {{ login_form.username(placeholder="Username", class="span12") }}<br />
-                    {{login_form.password(placeholder="Password", class="span12")}}<br />
+                    {{ login_form.password(placeholder="Password", class="span12")}}<br />
                     <!-- <a href="#" data-toggle="collapse" data-target="#recovery" style="color: grey">Forgot your password?</a>  -->
                     <input class="btn pull-right" type="submit" value="Sign In" style="height: 30px" />
                     </form>
