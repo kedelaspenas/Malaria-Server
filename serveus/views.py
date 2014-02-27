@@ -296,13 +296,13 @@ def monitoring():
 		centerlng = sum(lngList)/float(len(lngList))
 		return (centerlat,centerlng)
 
-	unique_municipality = Case.query.group_by(Case.region_id)
+	unique_municipality = Case.query.group_by(Case.municipality_id)
 	print unique_municipality
 	municipality_list = []
 	for j in unique_municipality:
 		print str(j.region)
-		countM = Case.query.filter_by(region = j.region).count()
-		temp = Case.query.filter_by(region = j.region)
+		countM = Case.query.filter_by(municipality = j.municipality).count()
+		temp = Case.query.filter_by(municipality = j.municipality)
 		coor_list = []
 		for k in temp:
 			coor_list.append((k.lat,k.lng))
