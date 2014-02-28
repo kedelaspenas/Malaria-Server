@@ -60,12 +60,12 @@
                 }
                 var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                                
-                function addMarker(latLng, markerType,label) {
+                function addMarker(latLng, markerType,label, region, province, municipality) {
                     var marker = new google.maps.Marker({
                         position: latLng,
                         icon: markerType,
                         map: map,
-                        url: "/records/"
+                        url: "/records/?" + "region_selection=" + region + "&province_selection=" + province + "&municipality_selection=" + municipality
                     });
                     var infowindow = new google.maps.InfoWindow({
                       content: label
@@ -113,7 +113,7 @@
                                 new google.maps.Point(0,0),
                                 new google.maps.Point(5,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*bar_space)) 
                             ),
-                            "{{i[2]}} : {{i[1]}} &nbsp;"
+                            "{{i[2]}} : {{i[1]}} &nbsp;","{{i[3]}}","{{i[4]}}","{{i[5]}}"
                         )
                     {% endfor %}
                 }
