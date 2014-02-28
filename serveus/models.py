@@ -25,7 +25,7 @@ class UserType(db.Model):
 
 	@staticmethod
 	def get_microscopist():
-		return UserType.query.filter(UserType.name=='Medical Technician').first()
+		return UserType.query.filter(UserType.name=='Medical Technologist').first()
 
 	@staticmethod
 	def get_doctor():
