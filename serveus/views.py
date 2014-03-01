@@ -216,14 +216,8 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records', regionList = regionList, regionIndex = regionIndex, provinceList = provinceList, provinceIndex = provinceIndex, municipalityList = municipalityList, municipalityIndex = municipalityIndex)
+    parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
 
-    
-    tempList2 =  ParType.query.all()
-    #parasiteList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
-    parasiteList = ['Any Malaria Species']
-    for i in tempList2:
-        parasiteList.append(str(i))
     print request.args.get('page')
     if not request.args.get('page'):
         page = 1
