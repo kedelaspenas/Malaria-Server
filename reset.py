@@ -32,6 +32,12 @@ c.execute('''CREATE TABLE user (id INTEGER NOT NULL, username VARCHAR(80), passw
 conn.commit()
 conn.close()
 
+parasite_types = ['Falciparum', 'Vivax', 'Ovale', 'Malariae']
+for i in parasite_types:
+	temp = ParType(i)
+	db.session.add(temp)
+	log(temp)
+
 # User types
 user_types = ['Administrator', 'Validator', 'Medical Technologist']
 for user_type in user_types:
