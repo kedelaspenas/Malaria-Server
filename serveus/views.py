@@ -41,10 +41,10 @@ def get_admin():
     return UserType.query.filter(UserType.name == 'Administrator').first()
 
 def get_doctor():
-    return UserType.query.filter(UserType.name == 'Doctor').first()
+    return UserType.query.filter(UserType.name == 'Validator').first()
 
 def get_microscopist():
-    return UserType.query.filter(UserType.name == 'Microscopist').first()
+    return UserType.query.filter(UserType.name == 'Medical Technologist').first()
 
 """Allows only UserTypes in list parameter."""
 def allowed(types=[]):
@@ -221,6 +221,7 @@ def records():
 
     
 @app.route('/map/')
+@allowed([get_admin, get_doctor])
 @login_required
 def maps():
     # Filter arguments
@@ -288,6 +289,7 @@ def maps():
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user, menu_active='map')
 
 @app.route('/monitoring/')
+@allowed([get_admin, get_doctor])
 @login_required
 def monitoring():
     # Build bar list for map
@@ -336,6 +338,7 @@ def monitoring():
     return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, municipality_list = municipality_list,  bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user, menu_active='monitoring')
     
 @app.route('/timeline/')
+@allowed([get_admin, get_doctor])
 @login_required
 def timeline():
     # Filter arguments
@@ -438,6 +441,9 @@ def timeline():
 def case(id):
     # Get case and corresponding images
     case = Case.query.get(id)
+    if current_user.usertype == get_microscopist():
+        if case.user != current_user:
+            abort(401)
     images = []
     for img in case.images:
         images.append((img.id, 'pic/' + str(img.id)))
@@ -544,6 +550,8 @@ def login():
         user = User.query.filter_by(username=username,password=password).first()
         if user:
             login_user(user)
+            if user.usertype == get_microscopist():
+                return redirect('/records/')
             return redirect("/monitoring")
         else:
             error = True
