@@ -29,13 +29,12 @@ except ImportError:
     import PIL
 from flask_mail import Message
 
-from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality
+from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality, ParType
 from serveus import mail
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-parasiteList = ['Any Disease', 'Falciparum', 'Vivax', 'Ovale', 'Malariae', 'No Disease']
 
 def get_admin():
     return UserType.query.filter(UserType.name == 'Administrator').first()
@@ -115,6 +114,11 @@ def ajax_municipalities():
 @app.route('/records/')
 @login_required
 def records():
+    tempList2 =  ParType.query.all()
+    #parasiteList = ['Any Malaria Species','Falciparum','Vivax','Ovale','Malariae','No Malaria']
+    parasiteList = ['Any Malaria Species']
+    for i in tempList2:
+        parasiteList.append(str(i))
     print request.args.get('page')
     if not request.args.get('page'):
         page = 1
@@ -150,7 +154,7 @@ def records():
             sort_by = "date"
         if not request.args.get('order'):
             order = "desc"
-            
+        
         parasiteIndex = parasiteList.index(parasiteSelected)
         region = Region.query.get(regionIndex)
         provinceList = ['All Provinces'] + Province.query.filter(Province.region==region).all()

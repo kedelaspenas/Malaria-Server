@@ -111,6 +111,7 @@ class Case(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	images = db.relationship('Image', backref='case', lazy='dynamic')
 	test = db.Column(db.Boolean)
+	partype_id = db.Column(db.Integer, db.ForeignKey('partype.id'))
 	region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
 	province_id = db.Column(db.Integer, db.ForeignKey('province.id'))
 	municipality_id = db.Column(db.Integer, db.ForeignKey('municipality.id'))
@@ -184,6 +185,22 @@ class Database(db.Model):
 
 	def __repr__(self):
 		return '<Database %r>' % self.id
+
+class ParType(db.Model):
+    __tablename__ = 'partype'
+
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(80))
+    cases = db.relationship('Case', backref='partype', lazy='dynamic')
+
+    def __init__(self, type=""):
+        self.type = type.encode('ascii', 'ignore')
+    
+    def __repr__(self):
+        return '%r' % (self.type).encode('ascii', 'ignore')
+    
+    def __str__(self):
+		return self.type
 
 class Key(db.Model):
 	__tablename__ = 'key'
