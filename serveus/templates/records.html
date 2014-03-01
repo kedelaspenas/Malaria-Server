@@ -70,7 +70,7 @@
                     <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)" name="parasite_selection">
                     {% for i in parasiteList %}
-                        <option {% if loop.index0 == parasiteIndex %}selected{% endif %}>{{ i }}</option>
+                        <option {% if i.id == parasiteIndex %}selected{% endif %}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -79,25 +79,25 @@
                     <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select id="sel_region" style="width: calc(100% - 34px)" name="region_selection">
 					{% for i in regionList %}
-						<option {% if loop.index0 == regionIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
+						<option {% if i.id == regionIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
 
-					<div id="province" class="input-prepend" style="width: 100%">
+					<div id="province" class="input-prepend" style="width: 100%; display: none">
                     <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select id="sel_province" style="width: calc(100% - 34px)" name="province_selection">
 					{% for i in provinceList %}
-						<option {% if loop.index0 == provinceIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
+						<option {% if i.id == provinceIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
 
-					<div id="municipality" class="input-prepend" style="width: 100%">
+					<div id="municipality" class="input-prepend" style="width: 100%; display: none">
                     <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select id="sel_municipality" style="width: calc(100% - 34px)" name="municipality_selection">
 					{% for i in municipalityList %}
-						<option {% if loop.index0 == municipalityIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
+						<option {% if i.id == municipalityIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -268,11 +268,11 @@
             });
 
             $(document).ready(function() {
-				{% if regionIndex == 0 %}
-					$('div#province').hide();
+				{% if regionIndex != 0 %}
+					$('div#province').show();
 				{% endif %}
-				{% if provinceIndex == 0 %}
-					$('div#municipality').hide();
+				{% if provinceIndex != 0 %}
+					$('div#municipality').show();
 				{% endif %}
             });
 
