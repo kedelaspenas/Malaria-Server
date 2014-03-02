@@ -21,10 +21,9 @@
                 <div class="span9 row">
                     <div class="well container span12" style="background-color: white; padding-top: 0;">
                         <h4 class="pull-left">Patient Information</h4>
-                        <h4 class="pull-right">{{case.date}}</h4>
+                        <h4 class="pull-right">{{case.date.strftime('%B %d, %Y %I:%M %p')}}</h4>
                         <table class="table table-condensed table-bordered" style="width: 100%">
-                        <tr><th class="span2">Case ID<td class="span10"> {{case.id}}
-						<tr><th>Location<td>{{case.region}}, {{case.province}}, {{case.municipality}}
+                        <tr><th class="span2">Case ID<td class="span10"> {{case.code}}
 						<tr><th>Region<td>{{case.region}}
 						<tr><th>Province<td>{{case.province}}
 						<tr><th>Municipality<td>{{case.municipality}}
@@ -33,7 +32,7 @@
                         <tr><th>Validator diagnosis<td>{{case.parasite_validator}}
                         <tr><th>Validator remarks<td>{{case.description_validator}}
                         <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
-						<tr><th>Microscopist<td>{{case.user}} ({{case.user.firstname}} {{case.user.lastname}})
+						<tr><th>Microscopist<td>{{case.user.username}} ({{case.user.firstname}} {{case.user.lastname}})
 									<tr><th>Contact details<td>{{case.user.contact}} / {{case.user.email}}
                         </table>
                         <div class="pull-right">

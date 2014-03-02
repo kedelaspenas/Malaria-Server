@@ -216,7 +216,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
+    parasiteList = ['Any Disease'] + [str(i) for i in ParType.query.all()]
 
     print request.args.get('page')
     if not request.args.get('page'):
@@ -576,13 +576,16 @@ def case(id):
             """
             width, height = letter
             reportString = 'Location: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') +  '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
-            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y'), case.region, case.province, case.municipality, case.parasite, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
+            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y %I:%M %p'), case.region, case.province, case.municipality, case.parasite, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
         
             for i, s in enumerate(reportString.split('\n')):
-                z = t(0,i*15)
+                z = t(25,(i+2)*15)
                 c.drawString(z['x'], z['y'], s)
             z = t(700,0)
             c.drawString(z['x'], z['y'], '1')
+
+            z = t(0, 0)
+            c.drawString(z['x'], z['y'], str(case.code))
             c.showPage()
 
             counter = 0
@@ -607,6 +610,8 @@ def case(id):
                         counter = 0
                         page += 1
                         c.showPage()
+                    z = t(0, 0)
+                    c.drawString(z['x'], z['y'], str(case.code))
             c.save()
             with open('malaria.pdf','r') as f:
                 pdf = f.read()
