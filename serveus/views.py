@@ -556,6 +556,7 @@ def case(id):
         if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
             if request.form['validator_diagnosis']:
                 case.parasite_validator = request.form['validator_diagnosis']
+                db.session.add(ParType(case.parasite_validator))
                 
             if request.form['validator_remarks']:
                 case.description_validator = request.form['validator_remarks']
