@@ -497,21 +497,28 @@ def case(id):
                         im = PIL.open('image%s.jpg' % id)
                         im2 = im.resize((320, 240), PIL.NEAREST)
                         im2.save('image%s.jpg' % id)
-                        z = t(500 * counter, 400)
+                        z = t(350 * counter + 40, 400)
                         c.drawImage('image%s.jpg' % id, z['x'], z['y'])
                         counter += 1
                         if counter == 1:
                             z = t(700,0)
                             c.drawString(z['x'], z['y'], str(page))
+                            z = t(0, 0)
+                            c.drawString(z['x'], z['y'], str(case.code))
                     if counter == 2:
                         counter = 0
                         page += 1
+                        z = t(0, 0)
+                        c.drawString(z['x'], z['y'], str(case.code))
                         c.showPage()
-                    z = t(0, 0)
-                    c.drawString(z['x'], z['y'], str(case.code))
             c.save()
             with open('malaria.pdf','r') as f:
                 pdf = f.read()
+            for i in range (0, len(images)):
+                if str('checkbox_' + str(i)) in request.form:
+                    id = str(images[i][1]).split('/')[1]
+                    os.remove('image%s.jpg' % id)
+            os.remove('malaria.pdf')
             response = make_response(pdf)
             response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
             return response
