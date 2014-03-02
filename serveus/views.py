@@ -918,13 +918,13 @@ def fetch_thumbnail(picture_id):
 @app.route('/api/chunk/', methods=['GET','POST'])
 def upload_chunk():
     if request.method == 'POST':
-        print 'CHUNK'
         # get chunk from form
         f = request.files['file']
         # if form is not empty
         if f:
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
+            print 'CHUNK:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).split('.zip')[0]
             #TODO: check if folder exists
             f.save(os.path.join(folder, filename))
@@ -935,10 +935,7 @@ def upload_chunk():
                 m.update(f.read())
             md5 = m.hexdigest()
 
-            print 'TAB', filename, md5
-            #chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
-            chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False).first()
-            print chunk
+            chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5.encode('utf-8')).first()
             if chunk:
                 with open(os.path.join(folder, filename), 'r') as f:
                     chunk.data = f.read()
@@ -1067,13 +1064,13 @@ def upload_chunk():
 @app.route('/api/init/', methods=['GET','POST'])
 def upload_start_file():
     if request.method == 'POST':
-        print 'INIT'
         # get file from form
         f = request.files['file']
         # if form is not empty
         if f:
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
+            print 'INIT:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).replace('.zip', '')
             os.makedirs(folder)
             f.save(os.path.join(folder, filename))
@@ -1091,7 +1088,6 @@ def upload_start_file():
 
             root = ET.fromstring(g)
             username = root.find('user').text
-            print 'USER:', username
             enc_aes_key = root.find('pass').text.replace('\n','')
             enc_aes_key = base64.b64decode(enc_aes_key)
             private_key = RSA.importKey(Key.query.first().private_key)
@@ -1112,11 +1108,11 @@ def upload_start_file():
             # store chunks in list
             chunks = []
             user = User.query.filter(User.username == username).first()
-            print 'NEXT:', user
             with open(os.path.join(folder, 'decrypted.txt'), 'r') as f:
                 for line in f.readlines():
                     if ' ' in line:
                         chunk_filename, checksum = line.split(' ')
+                        checksum = checksum.strip()
                         chunks.append(Chunk(filename=chunk_filename,checksum=checksum,user=user))
 
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
