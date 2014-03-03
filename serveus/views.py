@@ -17,14 +17,13 @@ from misc import Pagination
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
-from PIL import Image as PILImage
 from cStringIO import StringIO
 from flask import send_file
 
 from sqlalchemy import distinct
 # Default to Pillow and fallback to PIL
 try: 
-    import Image as PIL
+    from PIL import Image as PIL
 except ImportError:
     import PIL
 from flask_mail import Message
@@ -596,9 +595,13 @@ def case(id):
                     if str('checkbox_' + str(i)) in request.form:
                         id = str(images[i][1]).split('/')[1]
                         x = Image.query.get(id).im
+                        '''
                         with open('image%s.jpg' % id,'w') as f:
                             f.write(x)
                         im = PIL.open('image%s.jpg' % id)
+                        '''
+                        im = PIL.open(StringIO(x))
+                        
                         im2 = im.resize((320, 240), PIL.NEAREST)
                         im2.save('image%s.jpg' % id)
                         z = t(350 * counter + 40, 400)
@@ -621,7 +624,7 @@ def case(id):
             for i in range (0, len(images)):
                 if str('checkbox_' + str(i)) in request.form:
                     id = str(images[i][1]).split('/')[1]
-                    os.remove('image%s.jpg' % id)
+                    # os.remove('image%s.jpg' % id)
             os.remove('malaria.pdf')
             response = make_response(pdf)
             response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
@@ -920,8 +923,8 @@ def fetch_image(picture_id):
 @app.route('/thumb/pic/<int:picture_id>/', methods=['GET'])
 def fetch_thumbnail(picture_id):
     x = Image.query.get(picture_id)
-    img = PILImage.open(StringIO(x.im))
-    img = img.resize((320,240), PILImage.ANTIALIAS)
+    img = PIL.open(StringIO(x.im))
+    img = img.resize((320,240), PIL.ANTIALIAS)
     a = StringIO()
     img.save(a, 'JPEG', quality=85)
     a.seek(0)

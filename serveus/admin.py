@@ -53,8 +53,8 @@ class UserView(MyModelView):
             
 class ImageView(MyModelView):
     can_create = True
-    can_edit = False
-    column_list = ('id', 'case_id')
+    can_edit = True
+    column_list = ('id', 'case_id', 'number')
     column_labels = dict(id='ID', case_id='Case')
     column_exclude_list = ('im')
     
