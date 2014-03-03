@@ -624,7 +624,7 @@ def case(id):
             for i in range (0, len(images)):
                 if str('checkbox_' + str(i)) in request.form:
                     id = str(images[i][1]).split('/')[1]
-                    # os.remove('image%s.jpg' % id)
+                    os.remove('image%s.jpg' % id)
             os.remove('malaria.pdf')
             response = make_response(pdf)
             response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"

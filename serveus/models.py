@@ -7,10 +7,7 @@ from flask.ext.sqlalchemy import SQLAlchemy, models_committed
 from flask.ext.login import UserMixin
 from flask_mail import Message
 
-from serveus import app, mail
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.getcwd().replace('\\','/')+ '/cs198pythontest.db'
-db = SQLAlchemy(app)
+from serveus import app, mail, db
 
 class UserType(db.Model):
 	__tablename__ = 'usertype'
