@@ -38,7 +38,7 @@ admin = Admin(app, index_view=MyAdminIndexView())
 # More info in https://github.com/mrjoes/flask-admin/issues/173
 class UserView(MyModelView):
     can_create = True
-    column_list = ('username', 'usertype')
+    column_list = ('username', 'usertype', 'Download Images')
     form_excluded_columns = ('case', 'chunklists')
     column_excluded_list = ('password')
     
@@ -50,6 +50,19 @@ class UserView(MyModelView):
     def on_model_change(self, form, model):
         if len(model.password):
             model.password = User.hash_password(form.password.data)
+            
+    def _download_column(view, context, model, name):
+        hasImages = False;
+        for c in User.query.get(model.id).case:
+            for i in c.images:
+                hasImages = True
+                break
+            if hasImages:
+                break
+        return Markup(
+            '<a href="/download/?user=%s">Download</a>' % model.id
+        ) if hasImages else "No images"
+    column_formatters = { 'Download Images': _download_column }
             
 class ImageView(MyModelView):
     can_create = True
