@@ -78,6 +78,18 @@
             height: 100%;
             z-index:99;
         }
+        .labels {
+         color: black;
+         background-color: white;
+         font-family: "Lucida Grande", "Arial", sans-serif;
+         font-size: 10px;
+         font-weight: bold;
+         text-align: center;
+         height: 16px;
+         padding-top: -10px;
+         border: 1px solid black;
+         white-space: nowrap;
+       }
 		</style>
 {% endblock %}
 
@@ -173,11 +185,15 @@
             
               
               function addMarker(latLng, markerType, id) {
-                    var marker = new google.maps.Marker({
+                    var marker = new MarkerWithLabel({
                     position: latLng,
                     icon: markerType,
                     map: map,
-                    url: '/case/' + id
+                    url: '/case/' + id,
+                    labelContent: id,
+                    labelAnchor: new google.maps.Point(id.length*3, 51),
+                    labelClass: "labels", // the CSS class for the label
+                    labelStyle: {opacity: 0.75}
                   });
                   google.maps.event.addListener(marker, 'click', function() {
                         window.location.href = marker.url;
@@ -186,7 +202,7 @@
               }
              
               for (var j=0;j<markers.length;j++) {
-                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage,marker_category.ids[i])}
+                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage,marker_category.ids[i].toString())}
               }
               
               var filter = document.getElementById('filter')
@@ -254,7 +270,7 @@
         </script>
         <script>
             var markerFilters = document.getElementById("filter_container");
-            for (var i=0;i<markers.length;i++) {
+            for (var i=0;i<markers.length;i++) 
                 var tmpdiv = document.createElement("div");
                 var colorbox = document.createElement("span");
                 colorbox.style.backgroundColor = "#"+markerColors[i];
@@ -287,6 +303,7 @@
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/eyecon-datepicker.js"></script>
+        <script src="/static/js/markerwithlabel.js"></script>
         <script>
             var clicked = false;
             var checkin = $('#dpd1').datepicker({
