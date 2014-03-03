@@ -122,7 +122,11 @@ def records():
 
     regionList = ['All Regions'] + Region.query.all()
 <<<<<<< HEAD
+<<<<<<< HEAD
     parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
+=======
+    parasiteList = ['Any Disease'] + [str(i) for i in ParType.query.all()]
+>>>>>>> 7223aa52552f48d5f7541ed06ec0212bb010b86e
 =======
     parasiteList = ['Any Disease'] + [str(i) for i in ParType.query.all()]
 >>>>>>> 7223aa52552f48d5f7541ed06ec0212bb010b86e
@@ -221,6 +225,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
+<<<<<<< HEAD
 <<<<<<< HEAD
     #parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
 
@@ -326,6 +331,8 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
+=======
+>>>>>>> 7223aa52552f48d5f7541ed06ec0212bb010b86e
 =======
 >>>>>>> 7223aa52552f48d5f7541ed06ec0212bb010b86e
     return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records', regionList = regionList, regionIndex = regionIndex, provinceList = provinceList, provinceIndex = provinceIndex, municipalityList = municipalityList, municipalityIndex = municipalityIndex)
