@@ -1986,6 +1986,12 @@ for i in xrange(1,9):
     tmp = Image()
     tmp.create_image('reset_images/' + str(i) + '.jpg', None)
     tmp.case_id = i
+    tmp.number = 1
+for i in xrange(1,9):
+    tmp = Image()
+    tmp.create_image('reset_images/' + str(i) + '.jpg', None)
+    tmp.case_id = 1
+    tmp.number = i
     db.session.add(tmp)
 log('images')    
 

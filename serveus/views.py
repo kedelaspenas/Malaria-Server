@@ -121,7 +121,11 @@ def records():
         page = int(request.args.get('page'))
 
     regionList = ['All Regions'] + Region.query.all()
+<<<<<<< HEAD
     parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
+=======
+    parasiteList = ['Any Disease'] + [str(i) for i in ParType.query.all()]
+>>>>>>> 7223aa52552f48d5f7541ed06ec0212bb010b86e
     
     if request.args:
         parasiteSelected = request.args.get('parasite_selection')
@@ -217,6 +221,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
+<<<<<<< HEAD
     #parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
 
     print request.args.get('page')
@@ -321,6 +326,8 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
+=======
+>>>>>>> 7223aa52552f48d5f7541ed06ec0212bb010b86e
     return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records', regionList = regionList, regionIndex = regionIndex, provinceList = provinceList, provinceIndex = provinceIndex, municipalityList = municipalityList, municipalityIndex = municipalityIndex)
 
     
@@ -550,7 +557,7 @@ def case(id):
             abort(401)
     images = []
     for img in case.images:
-        images.append((img.id, 'pic/' + str(img.id)))
+        images.append((img.number, 'pic/' + str(img.id)))
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
@@ -577,13 +584,16 @@ def case(id):
             """
             width, height = letter
             reportString = 'Location: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') +  '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
-            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y'), case.region, case.province, case.municipality, case.parasite, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
+            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y %I:%M %p'), case.region, case.province, case.municipality, case.parasite, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
         
             for i, s in enumerate(reportString.split('\n')):
-                z = t(0,i*15)
+                z = t(25,(i+2)*15)
                 c.drawString(z['x'], z['y'], s)
             z = t(700,0)
             c.drawString(z['x'], z['y'], '1')
+
+            z = t(0, 0)
+            c.drawString(z['x'], z['y'], str(case.code))
             c.showPage()
 
             counter = 0
@@ -598,19 +608,28 @@ def case(id):
                         im = PIL.open('image%s.jpg' % id)
                         im2 = im.resize((320, 240), PIL.NEAREST)
                         im2.save('image%s.jpg' % id)
-                        z = t(500 * counter, 400)
+                        z = t(350 * counter + 40, 400)
                         c.drawImage('image%s.jpg' % id, z['x'], z['y'])
                         counter += 1
                         if counter == 1:
                             z = t(700,0)
                             c.drawString(z['x'], z['y'], str(page))
+                            z = t(0, 0)
+                            c.drawString(z['x'], z['y'], str(case.code))
                     if counter == 2:
                         counter = 0
                         page += 1
+                        z = t(0, 0)
+                        c.drawString(z['x'], z['y'], str(case.code))
                         c.showPage()
             c.save()
             with open('malaria.pdf','r') as f:
                 pdf = f.read()
+            for i in range (0, len(images)):
+                if str('checkbox_' + str(i)) in request.form:
+                    id = str(images[i][1]).split('/')[1]
+                    os.remove('image%s.jpg' % id)
+            os.remove('malaria.pdf')
             response = make_response(pdf)
             response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
             return response
@@ -919,13 +938,13 @@ def fetch_thumbnail(picture_id):
 @app.route('/api/chunk/', methods=['GET','POST'])
 def upload_chunk():
     if request.method == 'POST':
-        print 'CHUNK'
         # get chunk from form
         f = request.files['file']
         # if form is not empty
         if f:
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
+            print 'CHUNK:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).split('.zip')[0]
             #TODO: check if folder exists
             f.save(os.path.join(folder, filename))
@@ -936,10 +955,7 @@ def upload_chunk():
                 m.update(f.read())
             md5 = m.hexdigest()
 
-            print 'TAB', filename, md5
-            #chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
-            chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False).first()
-            print chunk
+            chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5.encode('utf-8')).first()
             if chunk:
                 with open(os.path.join(folder, filename), 'r') as f:
                     chunk.data = f.read()
@@ -1068,13 +1084,13 @@ def upload_chunk():
 @app.route('/api/init/', methods=['GET','POST'])
 def upload_start_file():
     if request.method == 'POST':
-        print 'INIT'
         # get file from form
         f = request.files['file']
         # if form is not empty
         if f:
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
+            print 'INIT:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).replace('.zip', '')
             os.makedirs(folder)
             f.save(os.path.join(folder, filename))
@@ -1092,7 +1108,6 @@ def upload_start_file():
 
             root = ET.fromstring(g)
             username = root.find('user').text
-            print 'USER:', username
             enc_aes_key = root.find('pass').text.replace('\n','')
             enc_aes_key = base64.b64decode(enc_aes_key)
             private_key = RSA.importKey(Key.query.first().private_key)
@@ -1113,11 +1128,11 @@ def upload_start_file():
             # store chunks in list
             chunks = []
             user = User.query.filter(User.username == username).first()
-            print 'NEXT:', user
             with open(os.path.join(folder, 'decrypted.txt'), 'r') as f:
                 for line in f.readlines():
                     if ' ' in line:
                         chunk_filename, checksum = line.split(' ')
+                        checksum = checksum.strip()
                         chunks.append(Chunk(filename=chunk_filename,checksum=checksum,user=user))
 
             hex_aes_key = ''.join(x.encode('hex') for x in aes_key)

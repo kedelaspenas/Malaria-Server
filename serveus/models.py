@@ -147,6 +147,10 @@ class Case(db.Model):
 	def __str__(self):
 		return str(self.id)
 
+	@property
+	def code(self):
+		return "%s-%s-%s" % (self.region.code, self.province.code, self.id)
+
 class Image(db.Model):
 	__tablename__ = 'image'
 
