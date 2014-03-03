@@ -46,10 +46,10 @@
 					{% if user.is_doctor() %}
                     <div class="well container span12" style="background-color: white; padding-top: 10px; margin-left: 0">
                         <h4>Validator Form: </h4>
-                        <input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">
+                        <input type="text" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here">
                         <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
                         <br />
-                        <textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>
+                        <textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks"  placeholder="Enter your remarks here"></textarea>
                         <!--<textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>-->
                         <br />
                         <input class="btn btn-medium" type="submit" value="Submit" style="height: 30px">

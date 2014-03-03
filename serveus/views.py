@@ -121,6 +121,7 @@ def records():
         page = int(request.args.get('page'))
 
     regionList = ['All Regions'] + Region.query.all()
+    parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
     
     if request.args:
         parasiteSelected = request.args.get('parasite_selection')
@@ -216,7 +217,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
+    #parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
 
     print request.args.get('page')
     if not request.args.get('page'):

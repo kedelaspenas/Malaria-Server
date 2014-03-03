@@ -48,7 +48,7 @@ for user_type in user_types:
 # Locations
 
 locations = """Region I (Ilocos Region)
-	Ilocos Norte
+	Ilocos Norte|ILN
 		Adams
 		Bacarra
 		Badoc
@@ -72,7 +72,7 @@ locations = """Region I (Ilocos Region)
 		Sarrat
 		Solsona
 		Vintar
-	Ilocos Sur
+	Ilocos Sur|ILS
 		Alilem
 		Banayoyo
 		Bantay
@@ -107,7 +107,7 @@ locations = """Region I (Ilocos Region)
 		Sugpon
 		Suyo
 		Tagudin
-	La Union
+	La Union|LUN
 		Agoo
 		Aringay
 		Bacnotan
@@ -128,7 +128,7 @@ locations = """Region I (Ilocos Region)
 		Santol
 		Sudipen
 		Tubao
-	Pangasinan
+	Pangasinan|PAN
 		Agno
 		Aguilar
 		Alcala
@@ -178,14 +178,14 @@ locations = """Region I (Ilocos Region)
 		Urbiztondo
 		Villasis
 Region II (Cagayan Valley)
-	Batanes
+	Batanes|BTN
 		Basco
 		Itbayat
 		Ivana
 		Mahatao
 		Sabtang
 		Uyugan
-	Cagayan
+	Cagayan|CAG
 		Abulug
 		Alcala
 		Allacapan
@@ -215,7 +215,7 @@ Region II (Cagayan Valley)
 		Solana
 		Tuao
 		Tuguegarao City
-	Isabela
+	Isabela|ISA
 		Alicia
 		Angadanan
 		Aurora
@@ -253,7 +253,7 @@ Region II (Cagayan Valley)
 		Santa Maria
 		Santo Tomas
 		Tumauini
-	Nueva Vizcaya
+	Nueva Vizcaya|NUV
 		Alfonso Castaneda
 		Ambaguio
 		Aritao
@@ -269,7 +269,7 @@ Region II (Cagayan Valley)
 		Santa Fe
 		Solano
 		Villaverde
-	Quirino
+	Quirino|QUI
 		Aglipay
 		Cabarroguis
 		Diffun
@@ -277,9 +277,9 @@ Region II (Cagayan Valley)
 		Nagtipunan
 		Saguday
 Region III (Central Luzon)
-	Angeles City
+	Angeles City|
 		Angeles City
-	Aurora
+	Aurora|AUR
 		Baler
 		Casiguran
 		Dilasag
@@ -288,7 +288,7 @@ Region III (Central Luzon)
 		Dipaculao
 		Maria Aurora
 		San Luis
-	Bataan
+	Bataan|BAN
 		Abucay
 		Bagac
 		City Of Balanga
@@ -301,7 +301,7 @@ Region III (Central Luzon)
 		Orion
 		Pilar
 		Samal
-	Bulacan
+	Bulacan|BUL
 		Angat
 		Balagtas (Bigaa)
 		Baliuag
@@ -326,7 +326,7 @@ Region III (Central Luzon)
 		San Miguel
 		San Rafael
 		Santa Maria
-	Nueva Ecija
+	Nueva Ecija|NUE
 		Aliaga
 		Bongabon
 		Cabanatuan City
@@ -359,9 +359,9 @@ Region III (Central Luzon)
 		Talavera
 		Talugtug
 		Zaragoza
-	Olangapo City
+	Olangapo City|
 		Olongapo City
-	Pampanga
+	Pampanga|PAM
 		Apalit
 		Arayat
 		Bacolor
@@ -383,7 +383,7 @@ Region III (Central Luzon)
 		Santa Rita
 		Santo Tomas
 		Sasmuan (Sexmoan)
-	Tarlac
+	Tarlac|TAR
 		Anao
 		Bamban
 		Camiling
@@ -402,7 +402,7 @@ Region III (Central Luzon)
 		San Manuel
 		Santa Ignacia
 		Victoria
-	Zambales
+	Zambales|ZMB
 		Botolan
 		Cabangan
 		Candelaria
@@ -417,7 +417,7 @@ Region III (Central Luzon)
 		Santa Cruz
 		Subic
 Region IV-A (Calabarzon)
-	Batangas
+	Batangas|BTG
 		Agoncillo
 		Alitagtag
 		Balayan
@@ -452,7 +452,7 @@ Region IV-A (Calabarzon)
 		Taysan
 		Tingloy
 		Tuy
-	Cavite
+	Cavite|CAV
 		Alfonso
 		Amadeo
 		Bacoor
@@ -476,7 +476,7 @@ Region IV-A (Calabarzon)
 		Tanza
 		Ternate
 		Trece Martires City
-	Laguna
+	Laguna|LAG
 		Alaminos
 		Bay
 		Cabuyao
@@ -507,9 +507,9 @@ Region IV-A (Calabarzon)
 		Santa Maria
 		Siniloan
 		Victoria
-	Lucena City
+	Lucena City|
 		Lucena City
-	Quezon
+	Quezon|QUE
 		Agdangan
 		Alabat
 		Atimonan
@@ -550,7 +550,7 @@ Region IV-A (Calabarzon)
 		Tagkawayan
 		Tiaong
 		Unisan
-	Rizal
+	Rizal|RIZ
 		Angono
 		Baras
 		Binangonan
@@ -566,14 +566,14 @@ Region IV-A (Calabarzon)
 		Taytay
 		Teresa
 Region IV-B (Mimaropa)
-	Marinduque
+	Marinduque|MAD
 		Boac
 		Buenavista
 		Gasan
 		Mogpog
 		Santa Cruz
 		Torrijos
-	Occidental Mindoro
+	Occidental Mindoro|MDC
 		Abra De Ilog
 		Calintaan
 		Looc
@@ -585,7 +585,7 @@ Region IV-B (Mimaropa)
 		Sablayan
 		San Jose
 		Santa Cruz
-	Oriental Mindoro
+	Oriental Mindoro|MDR
 		Baco
 		Bansud
 		Bongabong
@@ -601,7 +601,7 @@ Region IV-B (Mimaropa)
 		San Teodoro
 		Socorro
 		Victoria
-	Palawan
+	Palawan|PLW
 		Aborlan
 		Agutaya
 		Araceli
@@ -625,9 +625,9 @@ Region IV-B (Mimaropa)
 		San Vicente
 		Sofronio Espanola
 		Taytay
-	Puerto Princesa City
+	Puerto Princesa City|
 		Puerto Princesa City
-	Romblon
+	Romblon|ROM
 		Alcantara
 		Banton
 		Cajidiocan
@@ -646,7 +646,7 @@ Region IV-B (Mimaropa)
 		Santa Fe
 		Santa Maria (Imelda)
 Region V (Bicol)
-	Albay
+	Albay|ALB
 		Bacacay
 		Camalig
 		City Of Ligao
@@ -665,7 +665,7 @@ Region V (Bicol)
 		Rapu-Rapu
 		Santo Domingo (Libog)
 		Tiwi
-	Camarines Norte
+	Camarines Norte|CAN
 		Basud
 		Capalonga
 		Daet
@@ -678,7 +678,7 @@ Region V (Bicol)
 		Santa Elena
 		Talisay
 		Vinzons
-	Camarines Sur
+	Camarines Sur|CAS
 		Baao
 		Balatan
 		Bato
@@ -716,7 +716,7 @@ Region V (Bicol)
 		Siruma
 		Tigaon
 		Tinambac
-	Catanduanes
+	Catanduanes|CAT
 		Bagamanoc
 		Baras
 		Bato
@@ -728,7 +728,7 @@ Region V (Bicol)
 		San Miguel
 		Viga
 		Virac
-	Masbate
+	Masbate|MAS
 		Aroroy
 		Baleno
 		Balud
@@ -750,7 +750,7 @@ Region V (Bicol)
 		San Jacinto
 		San Pascual
 		Uson
-	Sorsogon
+	Sorsogon|SOR
 		Barcelona
 		Bulan
 		Bulusan
@@ -767,7 +767,7 @@ Region V (Bicol)
 		Prieto Diaz
 		Santa Magdalena
 Region VI (Western Visayas)
-	Aklan
+	Aklan|AKL
 		Altavas
 		Balete
 		Banga
@@ -785,7 +785,7 @@ Region VI (Western Visayas)
 		New Washington
 		Numancia
 		Tangalan
-	Antique
+	Antique|ANT
 		Anini-Y
 		Barbaza
 		Belison
@@ -804,9 +804,9 @@ Region VI (Western Visayas)
 		Tibiao
 		Tobias Fornier (Dao)
 		Valderrama
-	Bacolod City
+	Bacolod City|
 		Bacolod City
-	Capiz
+	Capiz|CAP
 		Cuartero
 		Dao
 		Dumalag
@@ -824,13 +824,13 @@ Region VI (Western Visayas)
 		Sapi-An
 		Sigma
 		Tapaz
-	Guimaras
+	Guimaras|GUI
 		Buenavista
 		Jordan
 		Nueva Valencia
 		San Lorenzo
 		Sibunag
-	Iloilo
+	Iloilo|ILI
 		Ajuy
 		Alimodian
 		Anilao
@@ -874,9 +874,9 @@ Region VI (Western Visayas)
 		Tigbauan
 		Tubungan
 		Zarraga
-	Iloilo City
+	Iloilo City|
 		Iloilo City
-	Negros Occidental
+	Negros Occidental|NEC
 		Bago City
 		Binalbagan
 		Cadiz City
@@ -909,7 +909,7 @@ Region VI (Western Visayas)
 		Toboso
 		Valladolid
 Region VII (Central Visayas)
-	Bohol
+	Bohol|BOH
 		Alburquerque
 		Alicia
 		Anda
@@ -958,7 +958,7 @@ Region VII (Central Visayas)
 		Tubigon
 		Ubay
 		Valencia
-	Cebu
+	Cebu|CEB
 		Alcantara
 		Alcoy
 		Alegria
@@ -1009,13 +1009,13 @@ Region VII (Central Visayas)
 		Toledo City
 		Tuburan
 		Tudela
-	Cebu City
+	Cebu City|
 		Cebu City
-	Lapu-Lapu City
+	Lapu-Lapu City|
 		Lapu-Lapu City (Opon)
-	Mandaue City
+	Mandaue City|
 		Mandaue City
-	Negros Oriental
+	Negros Oriental|NER
 		Amlan (Ayuquitan)
 		Ayungon
 		Bacong
@@ -1041,7 +1041,7 @@ Region VII (Central Visayas)
 		Valencia (Luzurriaga)
 		Vallehermoso
 		Zamboanguita
-	Siquijor
+	Siquijor|SIG
 		Enrique Villanueva
 		Larena
 		Lazi
@@ -1049,7 +1049,7 @@ Region VII (Central Visayas)
 		San Juan
 		Siquijor
 Region VIII (Eastern Visayas)
-	Biliran
+	Biliran|BIL
 		Almeria
 		Biliran
 		Cabucgayan
@@ -1058,7 +1058,7 @@ Region VIII (Eastern Visayas)
 		Kawayan
 		Maripipi
 		Naval
-	Eastern Samar
+	Eastern Samar|EAS
 		Arteche
 		Balangiga
 		Balangkayan
@@ -1082,7 +1082,7 @@ Region VIII (Eastern Visayas)
 		San Policarpo
 		Sulat
 		Taft
-	Leyte
+	Leyte|LEY
 		Abuyog
 		Alangalang
 		Albuera
@@ -1126,7 +1126,7 @@ Region VIII (Eastern Visayas)
 		Tolosa
 		Tunga
 		Villaba
-	Northern Samar
+	Northern Samar|NSA
 		Allen
 		Biri
 		Bobon
@@ -1151,7 +1151,7 @@ Region VIII (Eastern Visayas)
 		San Vicente
 		Silvino Lobos
 		Victoria
-	Samar (Western)
+	Samar (Western)|WSA
 		Almagro
 		Basey
 		Calbayog City
@@ -1178,7 +1178,7 @@ Region VIII (Eastern Visayas)
 		Tarangnan
 		Villareal
 		Zumarraga
-	Southern Leyte
+	Southern Leyte|SLE
 		Anahawan
 		Bontoc
 		City Of Maasin
@@ -1199,11 +1199,11 @@ Region VIII (Eastern Visayas)
 		Sogod
 		Tomas Oppus
 Region IX (Zamboanga Peninsula)
-	Basilan
+	Basilan|BAS
 		City Of Isabela
-	Zamboanga City
+	Zamboanga City|
 		Zamboanga City
-	Zamboanga Sibugay
+	Zamboanga Sibugay|ZSI
 		Alicia
 		Buug
 		Diplahan
@@ -1220,7 +1220,7 @@ Region IX (Zamboanga Peninsula)
 		Talusan
 		Titay
 		Tungawan
-	Zamboanga del Norte
+	Zamboanga del Norte|ZAN
 		Bacungan (Leon T. Postigo)
 		Baliguian
 		Dapitan City
@@ -1248,7 +1248,7 @@ Region IX (Zamboanga Peninsula)
 		Siocon
 		Sirawai
 		Tampilisan
-	Zamboanga del Sur
+	Zamboanga del Sur|ZAS
 		Aurora
 		Bayog
 		Dimataling
@@ -1277,7 +1277,7 @@ Region IX (Zamboanga Peninsula)
 		Tukuran
 		Vincenzo A. Sagun
 Region X (Northern Mindanao)
-	Bukidnon
+	Bukidnon|BUK
 		Baungon
 		Cabanglasan
 		City Of Malaybalay
@@ -1300,17 +1300,17 @@ Region X (Northern Mindanao)
 		San Fernando
 		Sumilao
 		Talakag
-	Cagayan de Oro City
+	Cagayan de Oro City|
 		Cagayan De Oro City
-	Camiguin
+	Camiguin|CAM
 		Catarman
 		Guinsiliban
 		Mahinog
 		Mambajao
 		Sagay
-	Iligan City
+	Iligan City|
 		Iligan City
-	Lanao del Norte
+	Lanao del Norte|LAN
 		Bacolod
 		Baloi
 		Baroy
@@ -1333,7 +1333,7 @@ Region X (Northern Mindanao)
 		Tagoloan
 		Tangcal
 		Tubod
-	Misamis Occidental
+	Misamis Occidental|MSC
 		Aloran
 		Baliangao
 		Bonifacio
@@ -1351,7 +1351,7 @@ Region X (Northern Mindanao)
 		Sinacaban
 		Tangub City
 		Tudela
-	Misamis Oriental
+	Misamis Oriental|MSR
 		Alubijid
 		Balingasag
 		Balingoan
@@ -1378,7 +1378,7 @@ Region X (Northern Mindanao)
 		Talisayan
 		Villanueva
 Region XI (Davao Region)
-	Compostela Valley
+	Compostela Valley|COM
 		Compostela
 		Laak (San Vicente)
 		Mabini (Dona Alicia)
@@ -1390,9 +1390,9 @@ Region XI (Davao Region)
 		Nabunturan
 		New Bataan
 		Pantukan
-	Davao City
+	Davao City|
 		Davao City
-	Davao Oriental
+	Davao Oriental|DAO
 		Baganga
 		Banaybanay
 		Boston
@@ -1404,7 +1404,7 @@ Region XI (Davao Region)
 		Manay
 		San Isidro
 		Tarragona
-	Davao del Norte
+	Davao del Norte|DAV
 		Asuncion (Saug)
 		Braulio E. Dujali
 		Carmen
@@ -1416,7 +1416,7 @@ Region XI (Davao Region)
 		San Isidro
 		Santo Tomas
 		Talaingod
-	Davao del Sur
+	Davao del Sur|DAS
 		Bansalan
 		City Of Digos
 		Don Marcelino
@@ -1433,7 +1433,7 @@ Region XI (Davao Region)
 		Sarangani
 		Sulop
 Region XII (Soccsksargen)
-	Cotabato (North C.)
+	Cotabato (North C.)|NCO
 		Alamada
 		Aleosan
 		Antipas
@@ -1452,11 +1452,11 @@ Region XII (Soccsksargen)
 		Pikit
 		President Roxas
 		Tulunan
-	Cotabato City
+	Cotabato City|
 		Cotabato City
-	General Santos City
+	General Santos City|
 		General Santos City (Dadiangas)
-	Sarangani
+	Sarangani|SAR
 		Alabel
 		Glan
 		Kiamba
@@ -1464,7 +1464,7 @@ Region XII (Soccsksargen)
 		Maitum
 		Malapatan
 		Malungon
-	South Cotabato
+	South Cotabato|SCO
 		Banga
 		City Of Koronadal
 		Lake Sebu
@@ -1476,7 +1476,7 @@ Region XII (Soccsksargen)
 		Tampakan
 		Tantangan
 		Tupi
-	Sultan Kudarat
+	Sultan Kudarat|SUK
 		Bagumbayan
 		City Of Tacurong
 		Columbio
@@ -1490,7 +1490,7 @@ Region XII (Soccsksargen)
 		President Quirino
 		Sen. Ninoy Aquino
 Region XIII (Caraga)
-	Agusan del Norte
+	Agusan del Norte|AGN
 		Buenavista
 		Carmen
 		City Of Cabadbaran
@@ -1502,7 +1502,7 @@ Region XIII (Caraga)
 		Remedios T. Romualdez
 		Santiago
 		Tubay
-	Agusan del Sur
+	Agusan del Sur|AGS
 		Bunawan
 		City Of Bayugan
 		Esperanza
@@ -1517,9 +1517,9 @@ Region XIII (Caraga)
 		Talacogon
 		Trento
 		Veruela
-	Butuan City
+	Butuan City|
 		Butuan City
-	Dinagat Islands
+	Dinagat Islands|DIN
 		Basilisa (Rizal)
 		Cagdianao
 		Dinagat
@@ -1527,7 +1527,7 @@ Region XIII (Caraga)
 		Loreto
 		San Jose
 		Tubajon
-	Surigao del Norte
+	Surigao del Norte|SUN
 		Alegria
 		Bacuag
 		Burgos
@@ -1549,7 +1549,7 @@ Region XIII (Caraga)
 		Surigao City
 		Tagana-An
 		Tubod
-	Surigao del Sur
+	Surigao del Sur|SUR
 		Barobo
 		Bayabas
 		Cagwait
@@ -1570,7 +1570,7 @@ Region XIII (Caraga)
 		Tagbina
 		Tago
 ARMM - Autonomous Region of Muslim Mindanao
-	Basilan
+	Basilan|BAS
 		Akbar
 		Al-Barka
 		City Of Lamitan
@@ -1582,7 +1582,7 @@ ARMM - Autonomous Region of Muslim Mindanao
 		Tipo-Tipo
 		Tuburan
 		Ungkaya Pukan
-	Lanao del Sur
+	Lanao del Sur|LAS
 		Bacolod-Kalawi (Bacolod Grande)
 		Balabagan
 		Balindong (Watu)
@@ -1623,7 +1623,7 @@ ARMM - Autonomous Region of Muslim Mindanao
 		Tubaran
 		Tugaya
 		Wao
-	Maguindanao
+	Maguindanao|MAG
 		Ampatuan
 		Barira
 		Buldon
@@ -1657,7 +1657,7 @@ ARMM - Autonomous Region of Muslim Mindanao
 		Talayan
 		Talitay
 		Upi
-	Sulu
+	Sulu|SLU
 		Hadji Panglima Tahil (Marunggas)
 		Indanan
 		Jolo
@@ -1677,7 +1677,7 @@ ARMM - Autonomous Region of Muslim Mindanao
 		Talipao
 		Tapul
 		Tongkil
-	Tawi-tawi
+	Tawi-tawi|TAW
 		Bongao
 		Languyan
 		Mapun (Cagayan De Tawi-Tawi)
@@ -1690,7 +1690,7 @@ ARMM - Autonomous Region of Muslim Mindanao
 		Tandubas
 		Turtle Islands
 CAR - Cordillera Administrative Region
-	Abra
+	Abra|ABR
 		Bangued
 		Boliney
 		Bucay
@@ -1718,7 +1718,7 @@ CAR - Cordillera Administrative Region
 		Tineg
 		Tubo
 		Villaviciosa
-	Apayao
+	Apayao|APA
 		Calanasan (Bayag)
 		Conner
 		Flora
@@ -1726,9 +1726,9 @@ CAR - Cordillera Administrative Region
 		Luna
 		Pudtol
 		Santa Marcela
-	Baguio City
+	Baguio City|
 		Baguio City
-	Benguet
+	Benguet|BEN
 		Atok
 		Bakun
 		Bokod
@@ -1742,7 +1742,7 @@ CAR - Cordillera Administrative Region
 		Sablan
 		Tuba
 		Tublay
-	Ifugao
+	Ifugao|IFU
 		Aguinaldo
 		Alfonso Lista (Potia)
 		Asipulo
@@ -1754,7 +1754,7 @@ CAR - Cordillera Administrative Region
 		Lamut
 		Mayoyao
 		Tinoc
-	Kalinga
+	Kalinga|KAL
 		Balbalan
 		City Of Tabuk
 		Lubuagan
@@ -1763,7 +1763,7 @@ CAR - Cordillera Administrative Region
 		Rizal (Liwan)
 		Tanudan
 		Tinglayan
-	Mountain Province
+	Mountain Province|MOU
 		Barlig
 		Bauko
 		Besao
@@ -1823,13 +1823,13 @@ order_string = """010000000	Region I (Ilocos Region)	San Fernando City	13,012.60
 100000000	Region X (Northern Mindanao)	Cagayan de Oro City	20,496.02	2,811,646	3,505,708	4,297,323
 110000000	Region XI (Davao Region)	Davao City	20,357.42	2,933,743	3,676,163	4,468,563
 120000000	Region XII (Soccsksargen)	Koronadal City	22,513.30	2,399,953	3,222,169	4,109,571
-160000000	Region XIII (Caraga)	Butuan City	21,478.35	1,764,297	2,095,367	2,429,224
-150000000	ARMM - Autonomous Region of Muslim Mindanao	Cotabato City	21,065.30	2,108,061	2,803,045	3,256,140
-140000000	CAR - Cordillera Administrative Region	Baguio City	19,422.03	1,146,191	1,365,412	1,616,867
-130000000	NCR - National Capital Region (Metro Manila)	Manila	633.11	7,948,392	9,932,560	11,855,975"""
+130000000	Region XIII (Caraga)	Butuan City	21,478.35	1,764,297	2,095,367	2,429,224
+ARMM00000	ARMM - Autonomous Region of Muslim Mindanao	Cotabato City	21,065.30	2,108,061	2,803,045	3,256,140
+CAR000000	CAR - Cordillera Administrative Region	Baguio City	19,422.03	1,146,191	1,365,412	1,616,867
+NCR000000	NCR - National Capital Region (Metro Manila)	Manila	633.11	7,948,392	9,932,560	11,855,975"""
 
 order = [line.split('\t')[1] for line in order_string.split('\n')]
-
+cdorder = [line.split('\t')[0] for line in order_string.split('\n')]
 d = {}
 for line in locations.split('\n'):
 	count = line.count('\t')
@@ -1843,20 +1843,24 @@ for line in locations.split('\n'):
 	else:
 		municipality = data
 		d[region][province].append(municipality)
-
+counter = 0
 for region in order:
 	provinces = d[region]
-	db_region = Region(name=region)
+	db_region = Region(name=region,code= cdorder[counter])
 	db.session.add(db_region)
 	for province, municipalities in sorted(provinces.iteritems()):
-		db_province = Province(name=province)
+		if(region != "NCR - National Capital Region (Metro Manila)"):
+			db_province = Province(name=province.split('|')[0],code=province.split('|')[1])
+		else:
+			db_province = Province(name=province.split('|')[0])
+		print db_province.code
 		db_province.region = db_region
 		db.session.add(db_province)
 		for municipality in sorted(municipalities):
 			db_municipality = Municipality(name=municipality)
 			db_municipality.province = db_province
 			db.session.add(db_municipality)
-
+	counter=counter+1
 db.session.commit()
 
 
