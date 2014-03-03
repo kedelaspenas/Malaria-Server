@@ -631,6 +631,42 @@ def case(id):
             return response
     return render_template("case.html", case = case, user = current_user, images=images)
 
+import tempfile, shutil, zipfile
+
+@app.route('/download/',  methods = ['GET', 'POST'])
+@allowed([get_admin])
+def download_images():
+    if request.args.get('user'):
+        id = request.args.get('user')
+        if not id.isnumeric():
+            abort(404)
+        user = User.query.get(int(id))
+        if not user:
+            abort(404)
+        path = tempfile.mkdtemp(prefix="user")
+        zip = zipfile.ZipFile(path + '\images.zip', 'w')
+        images = []
+        for c in user.case:
+            for i in c.images:
+                images.append(path + '\image%s.jpg' % i.id)
+                im = PIL.open(StringIO(i.im))
+                im.save(images[-1], 'jpeg')
+                zip.write(images[-1])
+                
+        zip.close()
+        if len(images) == 0:
+            return "<html><head><title>No Images</title></head><body>User has no images.</body></html>"
+        with open(path + '\images.zip','rb') as f:
+            zip = f.read()
+        shutil.rmtree(path)
+        response = make_response(zip)
+        response.headers['Cache-Control'] = 'no-cache'
+        response.headers['Content-Type'] = 'application/zip'
+        response.headers["Content-Disposition"] = "attachment; filename=images.zip"
+        return response
+        
+    abort(404)    
+        
 @app.route('/logout/')
 def logout():
     logout_user()
