@@ -1775,7 +1775,7 @@ CAR - Cordillera Administrative Region
 		Sagada
 		Tadian
 NCR - National Capital Region (Metro Manila)
-	First District
+	First District|001
 		Binondo
 		Ermita
 		Intramuros
@@ -1790,7 +1790,7 @@ NCR - National Capital Region (Metro Manila)
 		Santa Ana
 		Santa Cruz
 		Tondo I / II
-	Fourth District
+	Fourth District|004
 		Las Pinas, City of
 		Makati, City of
 		Muntinlupa, City of
@@ -1798,35 +1798,35 @@ NCR - National Capital Region (Metro Manila)
 		Pasay City
 		Pateros
 		Taguig City
-	Second District
+	Second District|002
 		Mandaluyong, City of
 		Marikina, City of
 		Pasig, City of
 		Quezon City
 		San Juan, City of
-	Third District
+	Third District|003
 		Caloocan City
 		Malabon, City of
 		Navotas, City of
 		Valenzuela, City of"""
 
-order_string = """010000000	Region I (Ilocos Region)	San Fernando City	13,012.60	3,550,642	4,200,478	4,748,372
-020000000	Region II (Cagayan Valley)	Tuguegarao City	28,228.83	2,340,545	2,813,159	3,229,163
-030000000	Region III (Central Luzon)	City of San Fernando	22,014.63	6,338,590	8,204,742	10,137,737
-040000000	Region IV-A (Calabarzon)	Calamba City	16,873.31	6,349,452	9,320,629	12,609,803
-170000000	Region IV-B (Mimaropa)	Calapan City	29,620.87	1,774,074	2,299,229	2,744,671
-050000000	Region V (Bicol)	Legazpi City	18,155.82	3,910,001	4,686,669	5,420,411
-060000000	Region VI (Western Visayas)	Iloilo City	20,794.18	5,393,333	6,211,038	7,102,438
-070000000	Region VII (Central Visayas)	Cebu City	15,885.97	4,594,124	5,706,953	6,800,180
-080000000	Region VIII (Eastern Visayas)	Tacloban City	23,251.10	3,054,490	3,610,355	4,101,322
-090000000	Region IX (Zamboanga Peninsula)	Pagadian City	17,046.64	2,281,064	2,831,412	3,407,353
-100000000	Region X (Northern Mindanao)	Cagayan de Oro City	20,496.02	2,811,646	3,505,708	4,297,323
-110000000	Region XI (Davao Region)	Davao City	20,357.42	2,933,743	3,676,163	4,468,563
-120000000	Region XII (Soccsksargen)	Koronadal City	22,513.30	2,399,953	3,222,169	4,109,571
-130000000	Region XIII (Caraga)	Butuan City	21,478.35	1,764,297	2,095,367	2,429,224
-ARMM00000	ARMM - Autonomous Region of Muslim Mindanao	Cotabato City	21,065.30	2,108,061	2,803,045	3,256,140
-CAR000000	CAR - Cordillera Administrative Region	Baguio City	19,422.03	1,146,191	1,365,412	1,616,867
-NCR000000	NCR - National Capital Region (Metro Manila)	Manila	633.11	7,948,392	9,932,560	11,855,975"""
+order_string = """0001	Region I (Ilocos Region)	San Fernando City	13,012.60	3,550,642	4,200,478	4,748,372
+0002	Region II (Cagayan Valley)	Tuguegarao City	28,228.83	2,340,545	2,813,159	3,229,163
+0003	Region III (Central Luzon)	City of San Fernando	22,014.63	6,338,590	8,204,742	10,137,737
+0004	Region IV-A (Calabarzon)	Calamba City	16,873.31	6,349,452	9,320,629	12,609,803
+0017	Region IV-B (Mimaropa)	Calapan City	29,620.87	1,774,074	2,299,229	2,744,671
+0005	Region V (Bicol)	Legazpi City	18,155.82	3,910,001	4,686,669	5,420,411
+0006	Region VI (Western Visayas)	Iloilo City	20,794.18	5,393,333	6,211,038	7,102,438
+0007	Region VII (Central Visayas)	Cebu City	15,885.97	4,594,124	5,706,953	6,800,180
+0008	Region VIII (Eastern Visayas)	Tacloban City	23,251.10	3,054,490	3,610,355	4,101,322
+0009	Region IX (Zamboanga Peninsula)	Pagadian City	17,046.64	2,281,064	2,831,412	3,407,353
+0010	Region X (Northern Mindanao)	Cagayan de Oro City	20,496.02	2,811,646	3,505,708	4,297,323
+0011	Region XI (Davao Region)	Davao City	20,357.42	2,933,743	3,676,163	4,468,563
+0012	Region XII (Soccsksargen)	Koronadal City	22,513.30	2,399,953	3,222,169	4,109,571
+0013	Region XIII (Caraga)	Butuan City	21,478.35	1,764,297	2,095,367	2,429,224
+ARMM	ARMM - Autonomous Region of Muslim Mindanao	Cotabato City	21,065.30	2,108,061	2,803,045	3,256,140
+0CAR	CAR - Cordillera Administrative Region	Baguio City	19,422.03	1,146,191	1,365,412	1,616,867
+0NCR	NCR - National Capital Region (Metro Manila)	Manila	633.11	7,948,392	9,932,560	11,855,975"""
 
 order = [line.split('\t')[1] for line in order_string.split('\n')]
 cdorder = [line.split('\t')[0] for line in order_string.split('\n')]
@@ -1849,10 +1849,10 @@ for region in order:
 	db_region = Region(name=region,code= cdorder[counter])
 	db.session.add(db_region)
 	for province, municipalities in sorted(provinces.iteritems()):
-		if(region != "NCR - National Capital Region (Metro Manila)"):
-			db_province = Province(name=province.split('|')[0],code=province.split('|')[1])
-		else:
-			db_province = Province(name=province.split('|')[0])
+	#	if(region != "NCR - National Capital Region (Metro Manila)"):
+		db_province = Province(name=province.split('|')[0],code=province.split('|')[1])
+	#	else:
+	#		db_province = Province(name=province.split('|')[0])
 		print db_province.code
 		db_province.region = db_region
 		db.session.add(db_province)

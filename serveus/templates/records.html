@@ -153,7 +153,7 @@
                     <th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class="" id="microscopist_chevron"></i></div>
                     <th class="span1">
                     {% for i in caseList %}
-					<tr><td {%if i.test %}style="color:red;"{%endif%}>{{i.id}}<td>{{i.date}}<td>{{i.region}}, {{i.province}}, {{i.municipality}}<td>{{i.parasite}}<td>{{i.description}}<td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
+					<tr><td {%if i.test %}style="color:red;"{%endif%}>{{i.code}}<td>{{i.date}}<td>{{i.region}}, {{i.province}}, {{i.municipality}}<td>{{i.parasite}}<td>{{i.description}}<td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
                     {% endfor %}
                     {% if not caseList %}
                     <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results</a>
