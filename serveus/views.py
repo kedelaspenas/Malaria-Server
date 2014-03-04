@@ -986,18 +986,16 @@ def upload_chunk():
                 m.update(f.read())
             md5 = m.hexdigest()
 
-            chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5.encode('utf-8')).first()
+            chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
             if chunk:
                 with open(os.path.join(folder, filename), 'r') as f:
                     chunk.data = f.read()
-                    chunk.done = True
                     db.session.add(chunk)
                     db.session.commit()
                 if REMOVE_TEMP:
                     os.remove(f.name)
 
-                #pending_chunks = Chunk.query.filter(Chunk.chunklist == chunk.chunklist, Chunk.done == False).first()
-                pending_chunks = chunk.chunklist.chunks.filter(Chunk.done == False).first()
+                pending_chunks = chunk.chunklist.chunks.filter(Chunk.id != chunk.id, Chunk.done == False).first()
                 if not pending_chunks:
                     # get all chunks in chunklist
                     chunks = chunk.chunklist.chunks
@@ -1094,11 +1092,24 @@ def upload_chunk():
                         # {'username': (tries, case, folder)
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
+                chunk.done = True
+                db.session.add(chunk)
+                db.session.commit()
+                print 'OK'
                 return 'OK'
             else:
                 if REMOVE_TEMP:
                     os.remove(f.name)
-                return 'NO'
+
+                chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False).first()
+                if chunk:
+                    print 'CHECKSUM'
+                    return 'CHECKSUM'
+
+                chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.checksum == md5).first()
+                if chunk:
+                    print 'EXISTS'
+                    return 'EXISTS'
 
 
     return '''
