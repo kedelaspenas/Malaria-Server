@@ -1,4 +1,4 @@
-import os, math, time, datetime, zipfile, base64, hashlib, glob, sqlite3
+import os, math, time, datetime, zipfile, base64, hashlib, glob, sqlite3, tempfile, shutil
 import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import render_template, flash, redirect, request, url_for, make_response, abort, jsonify
@@ -18,6 +18,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
 from cStringIO import StringIO
+
 from flask import send_file
 
 from sqlalchemy import distinct
@@ -631,8 +632,6 @@ def case(id):
             return response
     return render_template("case.html", case = case, user = current_user, images=images)
 
-import tempfile, shutil, zipfile
-
 @app.route('/download/',  methods = ['GET', 'POST'])
 @allowed([get_admin])
 def download_images():
@@ -643,7 +642,7 @@ def download_images():
         user = User.query.get(int(id))
         if not user:
             abort(404)
-        path = tempfile.mkdtemp(prefix="user")
+        path = tempfile.mkdtemp()
         zip = zipfile.ZipFile(path + '\images.zip', 'w')
         images = []
         for c in user.case:
