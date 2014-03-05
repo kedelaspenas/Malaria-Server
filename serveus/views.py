@@ -665,7 +665,37 @@ def download_images():
         return response
         
     abort(404)    
+
+@app.route('/downloadselected/',  methods = ['GET', 'POST'])
+@allowed([get_admin])
+def download_selected():
+    templen = len(request.args.get('ids'))
+    templist = request.args.get('ids')
+    templist = templist[:templen-1]
+    imlist = templist.split('|')
+    print imlist
+    path = tempfile.mkdtemp()
+    zip = zipfile.ZipFile(path + '\images.zip', 'w')
+    images = []
+    for i in imlist:
+        images.append(path + '\image%s.jpg' % Image.query.get(i).id)
+        im = PIL.open(StringIO(Image.query.get(i).im))
+        im.save(images[-1], 'jpeg')
+        zip.write(images[-1])
+    zip.close()
+    if len(images) == 0:
+        return "<html><head><title>No Images</title></head><body>User has no images.</body></html>"
+    with open(path + '\images.zip','rb') as f:
+        zip = f.read()
+    shutil.rmtree(path)
+    response = make_response(zip)
+    response.headers['Cache-Control'] = 'no-cache'
+    response.headers['Content-Type'] = 'application/zip'
+    response.headers["Content-Disposition"] = "attachment; filename=images.zip"
+    return response
         
+    abort(404)    
+    
 @app.route('/logout/')
 def logout():
     logout_user()
