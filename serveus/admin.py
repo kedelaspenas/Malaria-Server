@@ -7,6 +7,8 @@ from wtforms import PasswordField, FileField
 from flask.ext.login import current_user
 from flask import request
 from jinja2 import Markup
+from flask.ext.admin.actions import action
+from flask import redirect, url_for
 
 from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality, ParType
 from views import dashboard
@@ -70,6 +72,13 @@ class ImageView(MyModelView):
     column_list = ('id', 'case_id', 'number')
     column_labels = dict(id='ID', case_id='Case')
     column_exclude_list = ('im')
+    
+    @action('download','Download')
+    def action_download(self,ids):
+        tempids=""
+        for i in ids:
+            tempids= tempids + str(Image.query.get(i).id)+'|'
+        return redirect('/downloadselected?ids=' + tempids)
     
     def scaffold_form(self):
         form_class = super(ImageView, self).scaffold_form()
