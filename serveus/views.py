@@ -185,7 +185,7 @@ def records():
         # chain queries based on filters (clean branching)
         caseList = Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
         if parasiteIndex != 0:
-            caseList = caseList.filter(Case.parasite==parasiteList[parasiteIndex])
+            caseList = caseList.filter(Case.partype==parasiteList[parasiteIndex])
         if regionIndex != 0:
             caseList = caseList.filter(Case.region==regionList[regionIndex])
         if provinceIndex != 0:
@@ -217,8 +217,6 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    #parasiteList = ['Any Malaria Species'] + [str(i) for i in ParType.query.all()]
-
     print request.args.get('page')
     if not request.args.get('page'):
         page = 1
@@ -289,7 +287,7 @@ def records():
         # chain queries based on filters (clean branching)
         caseList = Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
         if parasiteIndex != 0:
-            caseList = caseList.filter(Case.parasite==parasiteList[parasiteIndex])
+            caseList = caseList.filter(Case.partype==parasiteList[parasiteIndex])
         if regionIndex != 0:
             caseList = caseList.filter(Case.region==regionList[regionIndex])
         if provinceIndex != 0:
@@ -576,8 +574,7 @@ def case(id):
                 c.drawString(temp['x'], temp['y'], "(%s,%s)" % (str(x), str(y)))
             """
             width, height = letter
-            reportString = 'Location: ' + str(case.id) + '<br>' + 'Date: ' + case.date.strftime('%B %d, %Y') +  '<br>' + 'Parasite: ' + case.parasite + '<br>' + 'Description: ' + case.description + '<br>'
-            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y %I:%M %p'), case.region, case.province, case.municipality, case.parasite, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
+            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y %I:%M %p'), case.region, case.province, case.municipality, case.partype, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
         
             for i, s in enumerate(reportString.split('\n')):
                 z = t(25,(i+2)*15)
@@ -752,7 +749,7 @@ def login():
 def csv():
     x = ['date,parasite,description,latitude,longitude']
     for case in Case.query.all():
-        y = [case.date, case.parasite, case.description, case.lat, case.lng]
+        y = [case.date, case.partype, case.description, case.lat, case.lng]
         y = map(str, y)
         x.append(','.join(y))
     csv = '\n'.join(x)
@@ -829,7 +826,11 @@ def upload_file():
             hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
             latitude = float(mapping['latitude'])
             longitude = float(mapping['longitude'])
-            parasite = mapping['species'].replace('Plasmodium ', '').capitalize()
+            partype = mapping['species'].capitalize()
+            parasite = ParType.query.filter(ParType.type==partype).first()
+            if not parasite:
+                db.session.add(ParType(type=partype))
+                db.session.commit()
             description = mapping['description']
             test = mapping['flags'] == 'true'
             region = mapping['region']
@@ -1089,7 +1090,11 @@ def upload_chunk():
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
-                    parasite = mapping['species'].replace('Plasmodium ', '').capitalize()
+                    partype = mapping['species'].capitalize()
+                    parasite = ParType.query.filter(ParType.type==partype).first()
+                    if not parasite:
+                        db.session.add(ParType(type=partype))
+                        db.session.commit()
                     description = mapping['description']
                     test = mapping['flags'] == 'true'
                     region = mapping['region']
