@@ -1245,6 +1245,7 @@ def upload_start_file():
             if hex_aes_key == user.password[:32]:
                 # append chunks to new chunklist
                 chunklist = Chunklist(filename=filename.replace('.zip',''), date=datetime.datetime.now())
+                chunklist.user = user
                 for chunk in chunks:
                     db.session.add(chunk)
                     chunklist.chunks.append(chunk)
@@ -1291,6 +1292,7 @@ def retype():
         if password_hash == user.password[:32]:
             # append chunks to new chunklist
             chunklist = Chunklist(filename=filename, date=datetime.datetime.now())
+            chunklist.user = user
             for chunk in chunks:
                 db.session.add(chunk)
                 chunklist.chunks.append(chunk)
