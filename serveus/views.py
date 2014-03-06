@@ -1164,7 +1164,7 @@ def upload_chunk():
                         try:
                             db.session.commit()
                         except Exception, e:
-                            print 'ex:', e 
+                            print 'ex:', e, 'kirong'
                         print 'right password 3'
 
                         # store images in database
