@@ -1151,16 +1151,15 @@ def upload_chunk():
                             db.session.add(img)
                             db.session.commit()
 
+                        chunk.done = True
+                        db.session.add(chunk)
+                        db.session.commit()
+                        print 'OK'
                         return 'OK'
                     else:
                         # {'username': (tries, case, folder)
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
-                chunk.done = True
-                db.session.add(chunk)
-                db.session.commit()
-                print 'OK'
-                return 'OK'
             else:
                 if REMOVE_TEMP:
                     os.remove(f.name)
