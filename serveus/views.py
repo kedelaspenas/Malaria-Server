@@ -1151,17 +1151,20 @@ def upload_chunk():
                     hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
                     print 'CHECKPOINT'
                     if hex_aes_key == user.password[:32]:
+                        print 'right password'
                         db.session.add(case)
                         db.session.commit()
 
                         # store images in database
                         for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
+                            print 'loop'
                             img = Image()
                             img.create_image(img_file, case)
                             img.number = i + 1
                             db.session.add(img)
                             db.session.commit()
 
+                        print 'chunk done'
                         chunk.done = True
                         db.session.add(chunk)
                         db.session.commit()
