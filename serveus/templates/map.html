@@ -78,16 +78,32 @@
             height: 100%;
             z-index:99;
         }
-        .labels {
+        .infectedLabel {
+         color: black;
+         background-color: red;
+         font-family: "Lucida Grande", "Arial", sans-serif;
+         font-size: 10px;
+         font-weight: bold;
+         text-align: center;
+         padding-top: -10px;
+         padding-left: 3px;
+         padding-right: 3px;
+         border: 1px solid black;
+         border-radius: 50%;
+         white-space: nowrap;
+       }
+       .testDataLabel {
          color: black;
          background-color: white;
          font-family: "Lucida Grande", "Arial", sans-serif;
          font-size: 10px;
          font-weight: bold;
          text-align: center;
-         height: 16px;
          padding-top: -10px;
+         padding-left: 3px;
+         padding-right: 3px;
          border: 1px solid black;
+         border-radius: 50%;
          white-space: nowrap;
        }
 		</style>
@@ -144,15 +160,16 @@
             var markerColors = ["FF0000","FFFFFF"]
             var pinImage = ["http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[0] + "|000000","http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|" + markerColors[1] + "|000000"]
             
-            var infectedPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var infectedPin = new google.maps.MarkerImage(pinImage[0], new google.maps.Size(0, 0), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
-            var testDataPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(21, 34), new google.maps.Point(0,0), new google.maps.Point(10, 34));
+            var testDataPin = new google.maps.MarkerImage(pinImage[1], new google.maps.Size(0, 0), new google.maps.Point(0,0), new google.maps.Point(10, 34));
             
-            function MarkerList(name, list, ids, markerImage) {
+            function MarkerList(name, list, ids, markerImage, labelClass) {
                 this.name = name;
                 this.list = list;
                 this.ids = ids;
                 this.markerImage = markerImage;
+                this.labelClass = labelClass;
                 this.show = true;
                 this.setVisible = function(b) {
                     this.show = b;
@@ -163,8 +180,8 @@
                 }
             }
             var markers = [
-                new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}],infectedPin),
-                new MarkerList("Test Data", [{% for i in case_list['Test Data'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Test Data'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], testDataPin)
+                new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}],infectedPin, "infectedLabel"),
+                new MarkerList("Test Data", [{% for i in case_list['Test Data'] %}new google.maps.LatLng({{i[1]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Test Data'] %}{{i[0]}}{% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], testDataPin, "testDataLabel")
             ]
             
             function initialize() {
@@ -184,15 +201,15 @@
                 });
             
               
-              function addMarker(latLng, markerType, id) {
+              function addMarker(latLng, markerType, id, labelClass) {
                     var marker = new MarkerWithLabel({
                     position: latLng,
                     icon: markerType,
                     map: map,
                     url: '/case/' + id,
                     labelContent: id,
-                    labelAnchor: new google.maps.Point(id.length*3, 51),
-                    labelClass: "labels", // the CSS class for the label
+                    labelAnchor: new google.maps.Point(id.length*3, 0),
+                    labelClass: labelClass, // the CSS class for the label
                     labelStyle: {opacity: 0.75}
                   });
                   google.maps.event.addListener(marker, 'click', function() {
@@ -202,9 +219,11 @@
               }
              
               for (var j=0;j<markers.length;j++) {
-                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){marker_category.list[i] = addMarker(marker_category.list[i], marker_category.markerImage,marker_category.ids[i].toString())}
+                    for (var i=0, marker_category=markers[j]; i<marker_category.list.length; i++){
+                        marker_category.list[i] = addMarker(marker_category.list[i], infectedPin,marker_category.ids[i], marker_category.labelClass)
+                    }
+                    
               }
-              
               var filter = document.getElementById('filter')
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
               var total = document.getElementById('total_container')
@@ -248,7 +267,6 @@
                     document.getElementById('coordinates_container').style.display = '';
                     document.getElementById('extra_controls').style.display = '';
                 });
-              
             }
             google.maps.event.addDomListener(window, 'load', initialize);
             var show1 = true, show2 = true, show3 = true, show4 = true, show5 = true
@@ -270,7 +288,7 @@
         </script>
         <script>
             var markerFilters = document.getElementById("filter_container");
-            for (var i=0;i<markers.length;i++) 
+            for (var i=0;i<markers.length;i++) {
                 var tmpdiv = document.createElement("div");
                 var colorbox = document.createElement("span");
                 colorbox.style.backgroundColor = "#"+markerColors[i];
