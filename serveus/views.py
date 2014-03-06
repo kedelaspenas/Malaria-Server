@@ -35,7 +35,6 @@ from serveus import mail
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 def get_admin():
     return UserType.query.filter(UserType.name == 'Administrator').first()
 
@@ -757,6 +756,17 @@ def csv():
     response.headers["Content-Disposition"] = "attachment; filename=malaria.csv"
     return response
 
+"""Returns the most recent APK for download."""
+@app.route('/apk/', methods = ['GET'])
+@login_required
+def apk():
+    return redirect(url_for('static', filename='ReMiDi-Pathogen.apk'))
+
+"""Returns the most recent APK for download."""
+@app.route('/log/', methods = ['GET'])
+@allowed([get_admin])
+def log():
+    return 'haha'
 
 # API
 
