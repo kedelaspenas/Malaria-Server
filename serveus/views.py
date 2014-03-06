@@ -1047,6 +1047,7 @@ def upload_chunk():
                     os.remove(f.name)
 
                 pending_chunks = chunk.chunklist.chunks.filter(Chunk.id != chunk.id, Chunk.done == False).first()
+                print '1'
                 if not pending_chunks:
                     # get all chunks in chunklist
                     chunks = chunk.chunklist.chunks
@@ -1171,6 +1172,8 @@ def upload_chunk():
                         # {'username': (tries, case, folder)
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
+                print 'OK'
+                return 'OK'
             else:
                 if REMOVE_TEMP:
                     os.remove(f.name)
