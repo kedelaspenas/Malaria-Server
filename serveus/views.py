@@ -1148,15 +1148,24 @@ def upload_chunk():
                         db.session.commit()
                     print 'kirong9'
                     description = mapping['description']
+                    print 'kirong10'
                     test = mapping['flags'] == 'true'
+                    print 'kirong11'
                     region = mapping['region']
+                    print 'kirong12'
                     province = mapping['province']
+                    print 'kirong13'
                     municipality = mapping['municipality']
+                    print 'kirong14'
 
                     dt = datetime.datetime(year, month, day, hours, minutes, seconds)
+                    print 'kirong15'
                     region = Region.query.filter(Region.name == region).first()
+                    print 'kirong16'
                     province = Province.query.filter(Province.name == province).first()
+                    print 'kirong17'
                     municipality = Municipality.query.filter(Municipality.name == municipality).first()
+                    print 'kirong18'
                     print dt, parasite, description, lat, lng, test, region, province, municipality
                     case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
                     print case
