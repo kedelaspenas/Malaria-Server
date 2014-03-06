@@ -1153,7 +1153,9 @@ def upload_chunk():
                     if hex_aes_key == user.password[:32]:
                         print 'right password'
                         db.session.add(case)
+                        print 'right password 2'
                         db.session.commit()
+                        print 'right password 3'
 
                         # store images in database
                         for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
