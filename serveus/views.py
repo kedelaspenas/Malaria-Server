@@ -1025,7 +1025,6 @@ def upload_chunk():
         if f:
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
-            print 'CHUNK:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).split('.zip')[0]
             #TODO: check if folder exists
             f.save(os.path.join(folder, filename))
@@ -1038,6 +1037,7 @@ def upload_chunk():
             print md5
 
             chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
+            print 'CHUNK', chunk
             if chunk:
                 with open(os.path.join(folder, filename), 'r') as f:
                     chunk.data = f.read()
