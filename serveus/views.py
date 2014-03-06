@@ -1138,6 +1138,7 @@ def upload_chunk():
                     if not parasite:
                         db.session.add(ParType(type=partype))
                         db.session.commit()
+                    print 'PARASITE', parasite
                     description = mapping['description']
                     test = mapping['flags'] == 'true'
                     region = mapping['region']
@@ -1157,15 +1158,8 @@ def upload_chunk():
                     hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
                     print 'CHECKPOINT'
                     if hex_aes_key == user.password[:32]:
-                        print 'right password'
                         db.session.add(case)
-                        print 'right password 2'
-                        print case
-                        try:
-                            db.session.commit()
-                        except Exception, e:
-                            print 'ex:', e, 'kirong'
-                        print 'right password 3'
+                        db.session.commit()
 
                         # store images in database
                         for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
