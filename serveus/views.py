@@ -1087,17 +1087,24 @@ def upload_chunk():
 
                     print 'kirong'
                     root = ET.fromstring(g)
+                    print 'kirong1'
                     username = root.find('user').text
+                    print 'kirong2'
                     enc_aes_key = root.find('pass').text.replace('\n','')
+                    print 'kirong3'
                     enc_aes_key = base64.b64decode(enc_aes_key)
+                    print 'kirong4'
                     private_key = RSA.importKey(Key.query.first().private_key)
+                    print 'kirong5'
                     aes_key = private_key.decrypt(enc_aes_key)
+                    print 'kirong6'
 
                     # decrypt image archive using decrypted AES key
                     with open(os.path.join(folder, 'cipherZipFile.zip'), 'rb') as f:
                         enc_img_zip = f.read()
                         cipher = AES.new(aes_key, AES.MODE_ECB, 'dummy_parameter')
                         msg = cipher.decrypt(enc_img_zip)
+                    print 'kirong7'
 
                     # store decrypted image archive on disk
                     with open(os.path.join(folder, 'decrypted.zip'), 'wb') as f:
@@ -1114,6 +1121,7 @@ def upload_chunk():
                             f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
                             f.truncate()  
                     """
+                    print 'kirong8'
 
                     # extract decrypted image archive and store in database
                     with open(os.path.join(folder, 'decrypted.zip'), 'rb') as f:
@@ -1121,6 +1129,7 @@ def upload_chunk():
                         z.extractall(folder)
                     if REMOVE_TEMP:
                         os.remove(f.name)
+                    print 'kirong9'
 
                     # make case using XML data
                     tree = ET.parse(os.path.join(folder, 'textData.xml'))
