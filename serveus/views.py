@@ -1181,7 +1181,9 @@ def upload_chunk():
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
                 chunk.done = True
+                print '12344'
                 db.session.add(chunk)
+                print 'qwer'
                 db.session.commit()
                 print 'OK'
                 return 'OK'
