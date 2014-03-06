@@ -1154,6 +1154,7 @@ def upload_chunk():
                         print 'right password'
                         db.session.add(case)
                         print 'right password 2'
+                        print case
                         db.session.commit()
                         print 'right password 3'
 
