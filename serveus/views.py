@@ -758,7 +758,6 @@ def csv():
 
 """Returns the most recent APK for download."""
 @app.route('/apk/', methods = ['GET'])
-@login_required
 def apk():
     return redirect(url_for('static', filename='ReMiDi-Pathogen.apk'))
 
