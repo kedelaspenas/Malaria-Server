@@ -780,7 +780,7 @@ def upload_file():
             f.save(os.path.join(folder, filename))
 
             # extract uploaded archive to folder and delete original archive
-            with open(os.path.join(folder, filename), 'r') as f:
+            with open(os.path.join(folder, filename), 'rb') as f:
                 z = zipfile.ZipFile(f)
                 z.extractall(folder)
             if REMOVE_TEMP:
@@ -798,7 +798,7 @@ def upload_file():
             aes_key = private_key.decrypt(enc_aes_key)
 
             # decrypt image archive using decrypted AES key
-            with open(os.path.join(folder, 'cipherZipFile.zip'), 'r') as f:
+            with open(os.path.join(folder, 'cipherZipFile.zip'), 'rb') as f:
                 enc_img_zip = f.read()
                 cipher = AES.new(aes_key, AES.MODE_ECB, 'dummy_parameter')
                 msg = cipher.decrypt(enc_img_zip)
@@ -809,8 +809,18 @@ def upload_file():
             if REMOVE_TEMP:
                 os.remove(os.path.join(folder, 'cipherZipFile.zip'))
 
+            """
+            with open(os.path.join(folder, 'decrypted.zip'), 'r+b') as f:
+                data = f.read()  
+                pos = data.find('\x50\x4b\x05\x06') # End of central directory signature  
+                if (pos > 0):  
+                    print "Truncating file at location " + str(pos + 22) + "." 
+                    f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
+                    f.truncate()  
+            """
+
             # extract decrypted image archive and store in database
-            with open(os.path.join(folder, 'decrypted.zip'), 'r') as f:
+            with open(os.path.join(folder, 'decrypted.zip'), 'rb') as f:
                 z = zipfile.ZipFile(f)
                 z.extractall(folder)
             if REMOVE_TEMP:
@@ -1016,6 +1026,7 @@ def upload_chunk():
                 m = hashlib.md5()
                 m.update(f.read())
             md5 = m.hexdigest()
+            print md5
 
             chunk = Chunk.query.filter(Chunk.filename == filename, Chunk.done == False, Chunk.checksum == md5).first()
             if chunk:
@@ -1042,9 +1053,17 @@ def upload_chunk():
                     with open(os.path.join(folder, chunk.chunklist.filename), 'w') as f:
                         f.write(data)
 
+                    with open(os.path.join(folder, filename), 'r+b') as f:
+                        data = f.read()  
+                        pos = data.find('\x50\x4b\x05\x06') # End of central directory signature  
+                        if (pos > 0):  
+                            print "Truncating file at location " + str(pos + 22) + "." 
+                            f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
+                            f.truncate()  
+
                     # read concatenated archive and extract content
                     print os.path.join(folder, filename)
-                    with open(os.path.join(folder, filename), 'r') as f:
+                    with open(os.path.join(folder, filename), 'rb') as f:
                         z = zipfile.ZipFile(f)
                         z.extractall(folder)
                     if REMOVE_TEMP:
@@ -1062,19 +1081,29 @@ def upload_chunk():
                     aes_key = private_key.decrypt(enc_aes_key)
 
                     # decrypt image archive using decrypted AES key
-                    with open(os.path.join(folder, 'cipherZipFile.zip'), 'r') as f:
+                    with open(os.path.join(folder, 'cipherZipFile.zip'), 'rb') as f:
                         enc_img_zip = f.read()
                         cipher = AES.new(aes_key, AES.MODE_ECB, 'dummy_parameter')
                         msg = cipher.decrypt(enc_img_zip)
 
                     # store decrypted image archive on disk
-                    with open(os.path.join(folder, 'decrypted.zip'), 'w') as f:
+                    with open(os.path.join(folder, 'decrypted.zip'), 'wb') as f:
                         f.write(msg)
                     if REMOVE_TEMP:
                         os.remove(os.path.join(folder, 'cipherZipFile.zip'))
 
+                    """
+                    with open(os.path.join(folder, 'decrypted.zip'), 'r+b') as f:
+                        data = f.read()  
+                        pos = data.find('\x50\x4b\x05\x06') # End of central directory signature  
+                        if (pos > 0):  
+                            print "Truncating file at location " + str(pos + 22) + "." 
+                            f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
+                            f.truncate()  
+                    """
+
                     # extract decrypted image archive and store in database
-                    with open(os.path.join(folder, 'decrypted.zip'), 'r') as f:
+                    with open(os.path.join(folder, 'decrypted.zip'), 'rb') as f:
                         z = zipfile.ZipFile(f)
                         z.extractall(folder)
                     if REMOVE_TEMP:
@@ -1173,7 +1202,7 @@ def upload_start_file():
             f.save(os.path.join(folder, filename))
 
             # extract uploaded archive to folder and delete original archive
-            with open(os.path.join(folder, filename), 'r') as f:
+            with open(os.path.join(folder, filename), 'rb') as f:
                 z = zipfile.ZipFile(f)
                 z.extractall(folder)
             if REMOVE_TEMP:
