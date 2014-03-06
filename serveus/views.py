@@ -1172,6 +1172,9 @@ def upload_chunk():
                         # {'username': (tries, case, folder)
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
+                chunk.done = True
+                db.session.add(chunk)
+                db.session.commit()
                 print 'OK'
                 return 'OK'
             else:
