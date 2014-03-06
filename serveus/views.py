@@ -1148,6 +1148,7 @@ def upload_chunk():
                     user = User.query.filter(User.username == username).first()
                     case.user = user
                     hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
+                    print 'CHECKPOINT'
                     if hex_aes_key == user.password[:32]:
                         db.session.add(case)
                         db.session.commit()
@@ -1166,6 +1167,7 @@ def upload_chunk():
                         print 'OK'
                         return 'OK'
                     else:
+                        print 'RETYPE'
                         # {'username': (tries, case, folder)
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
