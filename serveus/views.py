@@ -1123,49 +1123,31 @@ def upload_chunk():
                         os.remove(f.name)
 
                     # make case using XML data
-                    print 'kirong1'
                     tree = ET.parse(os.path.join(folder, 'textData.xml'))
                     root = tree.getroot()
                     mapping = {}
                     for child in root:
                         mapping[child.tag] = child.text
-                    print 'kirong2'
                     month, day, year = map(int, mapping['date-created'].split('/'))
-                    print 'kirong3'
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
-                    print 'kirong4'
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
                     partype = mapping['species'].capitalize()
-                    print 'kirong5'
                     latitude = float(mapping['latitude'])
-                    print 'kirong6'
                     parasite = ParType.query.filter(ParType.type==partype).first()
                     if not parasite:
-                        print 'kirong7'
                         db.session.add(ParType(type=partype))
-                        print 'kirong8'
                         db.session.commit()
-                    print 'kirong9'
                     description = mapping['description']
-                    print 'kirong10'
                     test = mapping['flags'] == 'true'
-                    print 'kirong11'
                     region = mapping['region']
-                    print 'kirong12'
                     province = mapping['province']
-                    print 'kirong13'
                     municipality = mapping['municipality']
-                    print 'kirong14'
 
                     dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-                    print 'kirong15'
                     region = Region.query.filter(Region.name == region).first()
-                    print 'kirong16'
                     province = Province.query.filter(Province.name == province).first()
-                    print 'kirong17'
                     municipality = Municipality.query.filter(Municipality.name == municipality).first()
-                    print 'kirong18'
                     print dt, parasite, description, latitude, longitude, test, region, province, municipality
                     case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
                     print case
@@ -1179,7 +1161,10 @@ def upload_chunk():
                         db.session.add(case)
                         print 'right password 2'
                         print case
-                        db.session.commit()
+                        try:
+                            db.session.commit()
+                        except Exception, e:
+                            print 'ex:', e 
                         print 'right password 3'
 
                         # store images in database
