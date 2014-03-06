@@ -1158,9 +1158,8 @@ def upload_chunk():
                     hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
                     print 'CHECKPOINT'
                     if hex_aes_key == user.password[:32]:
-                        #db.session.add(case)
-                        #db.session.commit()
-                        case.save()
+                        db.session.add(case)
+                        db.session.commit()
 
                         # store images in database
                         for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
