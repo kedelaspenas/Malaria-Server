@@ -1165,8 +1165,9 @@ def upload_chunk():
                     province = Province.query.filter(Province.name == province).first()
                     print 'kirong17'
                     municipality = Municipality.query.filter(Municipality.name == municipality).first()
+                    print lat, lng
                     print 'kirong18'
-                    print dt, parasite, description, lat, lng, test, region, province, municipality
+                    print dt, parasite, description, latitude, longitude, test, region, province, municipality
                     case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
                     print case
 
