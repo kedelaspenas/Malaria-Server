@@ -1201,6 +1201,14 @@ def upload_start_file():
             os.makedirs(folder)
             f.save(os.path.join(folder, filename))
 
+            with open(os.path.join(folder, filename), 'r+b') as f:
+                data = f.read()  
+                pos = data.find('\x50\x4b\x05\x06') # End of central directory signature  
+                if (pos > 0):  
+                    print "Truncating file at location " + str(pos + 22) + "." 
+                    f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
+                    f.truncate()  
+
             # extract uploaded archive to folder and delete original archive
             with open(os.path.join(folder, filename), 'rb') as f:
                 z = zipfile.ZipFile(f)
