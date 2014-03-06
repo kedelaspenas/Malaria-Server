@@ -1075,7 +1075,9 @@ def upload_chunk():
                     print os.path.join(folder, filename)
                     with open(os.path.join(folder, filename), 'rb') as f:
                         z = zipfile.ZipFile(f)
+                        print 'before extract'
                         z.extractall(folder)
+                        print 'after extract'
                     if REMOVE_TEMP:
                         os.remove(f.name)
 
@@ -1083,6 +1085,7 @@ def upload_chunk():
                     with open(os.path.join(folder, 'accountData.xml'), 'r') as f:
                         g = f.read()
 
+                    print 'kirong'
                     root = ET.fromstring(g)
                     username = root.find('user').text
                     enc_aes_key = root.find('pass').text.replace('\n','')
