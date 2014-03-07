@@ -1811,21 +1811,21 @@ NCR - National Capital Region (Metro Manila)
 		Valenzuela, City of"""
 
 order_string = """0001	Region I (Ilocos Region)	San Fernando City	13,012.60	3,550,642	4,200,478	4,748,372
-0002	Region II (Cagayan Valley)	Tuguegarao City	28,228.83	2,340,545	2,813,159	3,229,163
-0003	Region III (Central Luzon)	City of San Fernando	22,014.63	6,338,590	8,204,742	10,137,737
-0004	Region IV-A (Calabarzon)	Calamba City	16,873.31	6,349,452	9,320,629	12,609,803
-0017	Region IV-B (Mimaropa)	Calapan City	29,620.87	1,774,074	2,299,229	2,744,671
-0005	Region V (Bicol)	Legazpi City	18,155.82	3,910,001	4,686,669	5,420,411
-0006	Region VI (Western Visayas)	Iloilo City	20,794.18	5,393,333	6,211,038	7,102,438
-0007	Region VII (Central Visayas)	Cebu City	15,885.97	4,594,124	5,706,953	6,800,180
-0008	Region VIII (Eastern Visayas)	Tacloban City	23,251.10	3,054,490	3,610,355	4,101,322
-0009	Region IX (Zamboanga Peninsula)	Pagadian City	17,046.64	2,281,064	2,831,412	3,407,353
-0010	Region X (Northern Mindanao)	Cagayan de Oro City	20,496.02	2,811,646	3,505,708	4,297,323
-0011	Region XI (Davao Region)	Davao City	20,357.42	2,933,743	3,676,163	4,468,563
-0012	Region XII (Soccsksargen)	Koronadal City	22,513.30	2,399,953	3,222,169	4,109,571
-0013	Region XIII (Caraga)	Butuan City	21,478.35	1,764,297	2,095,367	2,429,224
+02	Region II (Cagayan Valley)	Tuguegarao City	28,228.83	2,340,545	2,813,159	3,229,163
+03	Region III (Central Luzon)	City of San Fernando	22,014.63	6,338,590	8,204,742	10,137,737
+04	Region IV-A (Calabarzon)	Calamba City	16,873.31	6,349,452	9,320,629	12,609,803
+17	Region IV-B (Mimaropa)	Calapan City	29,620.87	1,774,074	2,299,229	2,744,671
+05	Region V (Bicol)	Legazpi City	18,155.82	3,910,001	4,686,669	5,420,411
+06	Region VI (Western Visayas)	Iloilo City	20,794.18	5,393,333	6,211,038	7,102,438
+07	Region VII (Central Visayas)	Cebu City	15,885.97	4,594,124	5,706,953	6,800,180
+08	Region VIII (Eastern Visayas)	Tacloban City	23,251.10	3,054,490	3,610,355	4,101,322
+09	Region IX (Zamboanga Peninsula)	Pagadian City	17,046.64	2,281,064	2,831,412	3,407,353
+10	Region X (Northern Mindanao)	Cagayan de Oro City	20,496.02	2,811,646	3,505,708	4,297,323
+11	Region XI (Davao Region)	Davao City	20,357.42	2,933,743	3,676,163	4,468,563
+12	Region XII (Soccsksargen)	Koronadal City	22,513.30	2,399,953	3,222,169	4,109,571
+13	Region XIII (Caraga)	Butuan City	21,478.35	1,764,297	2,095,367	2,429,224
 ARMM	ARMM - Autonomous Region of Muslim Mindanao	Cotabato City	21,065.30	2,108,061	2,803,045	3,256,140
-0CAR	CAR - Cordillera Administrative Region	Baguio City	19,422.03	1,146,191	1,365,412	1,616,867
+CAR	CAR - Cordillera Administrative Region	Baguio City	19,422.03	1,146,191	1,365,412	1,616,867
 0NCR	NCR - National Capital Region (Metro Manila)	Manila	633.11	7,948,392	9,932,560	11,855,975"""
 
 order = [line.split('\t')[1] for line in order_string.split('\n')]
