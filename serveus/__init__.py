@@ -1,9 +1,11 @@
+import os, time
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
-import os
+
+LOG_FILE = "logs/" + time.strftime("%Y-%m-%d %H.%M.%S") + ".log"
 
 app = Flask(__name__)
 

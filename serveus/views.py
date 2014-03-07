@@ -30,7 +30,8 @@ except ImportError:
 from flask_mail import Message
 
 from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality, ParType
-from serveus import mail
+from serveus import mail, LOG_FILE
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -56,7 +57,7 @@ def allowed(types=[]):
                 abort(401)
         return returned
     return decorator
-
+    
 @app.route('/')
 @app.route('/index/')
 def index():
@@ -1004,6 +1005,16 @@ def fetch_image(picture_id):
     response = make_response(x.im)
     response.headers['Content-Type'] = 'image/jpeg'
     return response
+    
+@app.route('/logs/<string:name>/', methods=['GET'])
+def view_log(name):
+    
+    if name == "latest":
+        file = LOG_FILE
+    else:
+        file = "logs/" + name
+    return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + file + "<br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
+    
     
 @app.route('/thumb/pic/<int:picture_id>/', methods=['GET'])
 def fetch_thumbnail(picture_id):
