@@ -115,12 +115,12 @@ class Case(db.Model):
 	parasite_validator = db.Column(db.String(100))
 	description_validator = db.Column(db.String(1000))
 
-	def __init__(self, date="", parasite="", description="", lat="", lng="", test="", region="", province="", municipality=""):
+	def __init__(self, date="", partype="", description="", lat="", lng="", test="", region="", province="", municipality=""):
 		self.date = date
-		self.parasite = parasite
 		self.description = description
 		self.lat = lat
 		self.lng = lng
+		self.test = test
 		if region == '':
 			self.region = None
 		else:
@@ -136,7 +136,10 @@ class Case(db.Model):
 		else:
 			self.municipality = municipality
 			#self.municipality = Municipality.query.filter(Municipality.name==municipality).first()
-		self.test = test
+		if partype == '':
+			self.partype = None
+		else:
+			self.partype = partype
 
 	def __repr__(self):
 		return '<Case %r>' % self.id
@@ -194,14 +197,15 @@ class ParType(db.Model):
     type = db.Column(db.String(80))
     cases = db.relationship('Case', backref='partype', lazy='dynamic')
 
+
     def __init__(self, type=""):
-        self.type = type.encode('ascii', 'ignore')
+        self.type = type
     
     def __repr__(self):
-        return '%r' % (self.type).encode('ascii', 'ignore')
+        return self.type
     
     def __str__(self):
-		return self.type
+        return (self.type).encode('ascii', 'ignore')
 
 class Key(db.Model):
 	__tablename__ = 'key'
