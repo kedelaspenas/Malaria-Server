@@ -120,8 +120,9 @@ def records():
         page = int(request.args.get('page'))
 
     regionList = ['All Regions'] + Region.query.all()
-    parasiteList = ['Any Disease'] + [str(i) for i in ParType.query.all()]
-    
+    parasiteList = [str(i) for i in ParType.query.all()]
+    parasiteList2 = [i for i in ParType.query.all()]
+
     if request.args:
         parasiteSelected = request.args.get('parasite_selection')
         regionIndex = int(request.args.get('region_selection'))
@@ -149,7 +150,7 @@ def records():
             sort_by = "date"
         if not request.args.get('order'):
             order = "desc"
-            
+        
         parasiteIndex = parasiteList.index(parasiteSelected)
         region = Region.query.get(regionIndex)
         provinceList = ['All Provinces'] + Province.query.filter(Province.region==region).all()
@@ -180,113 +181,11 @@ def records():
         else:
             sortby='id'
         param= "\"case\"."+sortby+" "+order
-
         # chain queries based on filters (clean branching)
         caseList = Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
+        print parasiteIndex
         if parasiteIndex != 0:
-            caseList = caseList.filter(Case.partype==parasiteList[parasiteIndex])
-        if regionIndex != 0:
-            caseList = caseList.filter(Case.region==regionList[regionIndex])
-        if provinceIndex != 0:
-            caseList = caseList.filter(Case.province==Province.query.get(provinceIndex))
-        if municipalityIndex != 0:
-            caseList = caseList.filter(Case.municipality==Municipality.query.get(municipalityIndex))
-    else:
-        # Default values
-        provinceList = ['All Provinces']
-        municipalityList = ['All Municipalities']
-        parasiteIndex = 0
-        regionIndex = 0
-        provinceIndex = 0
-        municipalityIndex = 0
-        date_start = "The Beginning"
-        date_end = "Today"
-        sort_by = "date"
-        order = "desc"
-        caseList = Case.query.order_by(Case.date.desc())
-    # filter allowed records to view if not admin or validator   
-    if current_user.is_microscopist():
-        templist=[]
-        for i in caseList:
-            if(i.user == current_user):
-                templist.append(i)
-        caseList=templist
-    # Pagination
-    caseList = [i for i in caseList]
-    pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
-    caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
-    
-    print request.args.get('page')
-    if not request.args.get('page'):
-        page = 1
-    else:
-        page = int(request.args.get('page'))
-
-    regionList = ['All Regions'] + Region.query.all()
-    
-    if request.args:
-        parasiteSelected = request.args.get('parasite_selection')
-        regionIndex = int(request.args.get('region_selection'))
-        provinceIndex = int(request.args.get('province_selection'))
-        municipalityIndex = int(request.args.get('municipality_selection'))
-        date_start = request.args.get('date_start')
-        date_end = request.args.get('date_end')
-        sort_by = request.args.get('sort_by')
-        order = request.args.get('order')
-        
-        # Default Values
-        if not request.args.get('parasite_selection'):
-            parasiteSelected = parasiteList[0]
-        if not request.args.get('region_selection'):
-            regionIndex = 0
-        if not request.args.get('province_selection'):
-            provinceIndex = 0
-        if not request.args.get('municipality_selection'):
-            municipalityIndex = 0
-        if not request.args.get('date_start'):
-            date_start = 'The Beginning'
-        if not request.args.get('date_end'):
-            date_end = "Today"
-        if not request.args.get('sort_by'):
-            sort_by = "date"
-        if not request.args.get('order'):
-            order = "desc"
-        
-        parasiteIndex = parasiteList.index(parasiteSelected)
-        region = Region.query.get(regionIndex)
-        provinceList = ['All Provinces'] + Province.query.filter(Province.region==region).all()
-        province = Region.query.get(provinceIndex)
-        municipalityList = ['All Municipalities'] + Municipality.query.filter(Municipality.province==province).all()
-        
-        caseList=''
-        if date_start != 'The Beginning' :
-            a=request.args.get('date_start')
-            b=a.split('/')
-            dt=datetime.date(int(b[2]),int(b[0]),int(b[1]))
-            a=request.args.get('date_end')
-            b=a.split('/')
-            dte=datetime.date(int(b[2]),int(b[0]),int(b[1])) + datetime.timedelta(days=1)
-        else :
-            dt=datetime.date(1000,1,1)
-            dte=datetime.date(9000,12,31)
-            
-        sortby=''
-        if sort_by== 'date':
-            sortby='date'
-        elif sort_by== 'parasite':
-            sortby='parasite'
-        elif sort_by== 'description':
-            sortby='description'
-        elif sort_by== 'microscopist':
-            sortby='microscopist'
-        else:
-            sortby='id'
-        param= "\"case\"."+sortby+" "+order
-
-        # chain queries based on filters (clean branching)
-        caseList = Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
-        if parasiteIndex != 0:
-            caseList = caseList.filter(Case.partype==parasiteList[parasiteIndex])
+            caseList = caseList.filter(Case.partype==parasiteList2[parasiteIndex])
         if regionIndex != 0:
             caseList = caseList.filter(Case.region==regionList[regionIndex])
         if provinceIndex != 0:
