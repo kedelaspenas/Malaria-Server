@@ -9,6 +9,7 @@ from flask import request
 from jinja2 import Markup
 from flask.ext.admin.actions import action
 from flask import redirect, url_for
+import webbrowser
 
 
 from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality, ParType
@@ -74,6 +75,16 @@ class ImageView(MyModelView):
     column_labels = dict(id='ID', case_id='Case')
     column_exclude_list = ('im')
     
+    @action('open','Open')
+    def action_open(self,ids):
+        tempids=""
+        for i in ids:
+            tempids= tempids + "window.open(\"/pic/"+ str(Image.query.get(i).id) + ");"
+        #return Markup( ' <a href="/pic/%s" id = "imlink" target="_blank">%s</a> ' % (str(Image.query.get(ids[0]).id), str(Image.query.get(ids[0]).id)) 
+     #   return Markup( '  <a href="/pic/1" id = "imlink" target="_blank"></a> <script> document.getElementById("imlink").click(); alert("asd");</script> ')
+        return Markup( '  <a href="/pic/1" class= "imlink" target="_blank"></a>  <a href="/pic/2" class = "imlink" target="_blank"></a><script> var l= document.getElementsByClassName("imlink"); \
+        for (var i=0;i<l.length; i++) {l[i].click();}       </script>  ')
+        
     @action('download','Download')
     def action_download(self,ids):
         tempids=""

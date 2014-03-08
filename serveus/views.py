@@ -591,6 +591,12 @@ def download_selected():
     return response
         
     abort(404)    
+
+@app.route('/openim/',  methods = ['GET', 'POST'])
+@allowed([get_admin])
+def open_image():
+    response = ""
+    return response
     
 @app.route('/logout/')
 def logout():
