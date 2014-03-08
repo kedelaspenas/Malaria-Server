@@ -10,6 +10,7 @@ from jinja2 import Markup
 from flask.ext.admin.actions import action
 from flask import redirect, url_for
 
+
 from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality, ParType
 from views import dashboard
 
@@ -97,7 +98,7 @@ class ImageView(MyModelView):
 
     def _image_view(view, context, model, name):
         return Markup(
-            '<a href="/pic/%s/" class="thumbnail pull-left"><img src="/pic/%s/" style="width: 100px; height: 100px"/></a>' % (model.id, model.id)
+            '<a href="/pic/%s/" ><img src="/pic/%s/" class="thumbnail pull-left" style="width: 100px; height: 100px"/></a>' % (model.id, model.id)
         ) if model.im else ""
     column_formatters = { 'id': _image_view }
             
