@@ -37,7 +37,7 @@ class CommunicationTest(TestCase):
 	
 	def login_as_admin(self):
 		web = self.web
-		web.get('http://localhost:5000/')
+		web.get('http://localhost/')
 		elem = web.find_element_by_name('username')
 		elem.send_keys('rodolfo')
 		elem = web.find_element_by_name('password')
@@ -47,29 +47,40 @@ class CommunicationTest(TestCase):
 	def test_send(self):
 		self.aux_send_init()
 		self.aux_send_chunk()
+		self.aux_send_all_chunks()
+		raw_input()
 
 	def aux_send_init(self):
 		web = self.web
-		web.get('http://localhost:5000/api/init/')
+		web.get('http://localhost/api/init/')
 		elem = web.find_element_by_name('file')
 		# TODO: should be portable
 		elem.send_keys('/home/befreicafsan/files/199/Malaria-Server/upload/a02272014_151331_rodolfo/02272014_151331_rodolfo.zip')
 		web.find_element_by_css_selector('input[type="submit"]').click()
 
 		self.login_as_admin()
-		web.get('http://localhost:5000/admin/chunklistview/')
+		web.get('http://localhost/admin/chunklistview/')
 		assert '02272014_151331_rodolfo' in web.page_source
 
 	def aux_send_chunk(self):
 		web = self.web
-		web.get('http://localhost:5000/api/chunk/')
+		web.get('http://localhost/api/chunk/')
 		elem = web.find_element_by_name('file')
 		# TODO: should be portable
 		elem.send_keys('/home/befreicafsan/files/199/Malaria-Server/upload/a02272014_151331_rodolfo/02272014_151331_rodolfo.zip001.part')
 		web.find_element_by_css_selector('input[type="submit"]').click()
 
-		web.get('http://localhost:5000/admin/chunkview/')
+		web.get('http://localhost/admin/chunkview/')
 		assert '02272014_151331_rodolfo.zip001.part' in web.page_source
+
+	def aux_send_all_chunks(self):
+		web = self.web
+		for i in xrange(2, 18):
+			web.get('http://localhost/api/chunk/')
+			elem = web.find_element_by_name('file')
+			# TODO: should be portable
+			elem.send_keys('/home/befreicafsan/files/199/Malaria-Server/upload/a02272014_151331_rodolfo/02272014_151331_rodolfo.zip%s.part' % (str(i).zfill(3)))
+			web.find_element_by_css_selector('input[type="submit"]').click()
 
 if __name__ == "__main__":
 	unittest.main()
