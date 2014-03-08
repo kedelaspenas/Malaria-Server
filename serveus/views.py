@@ -1128,17 +1128,6 @@ def upload_start_file():
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
 
-            # calculate md5
-            m = hashlib.md5()
-            m.update(f.read())
-            md5 = m.hexdigest()
-            f.seek(0)
-            print md5
-            print g
-            print md5 == g
-            if md5 != g:
-                return 'CHECKSUM'
-
             print 'INIT:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).replace('.zip', '')
             os.makedirs(folder)
@@ -1151,6 +1140,19 @@ def upload_start_file():
                     print "Truncating file at location " + str(pos + 22) + "." 
                     f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
                     f.truncate()  
+
+            with open(os.path.join(folder, filename), 'rb') as f:
+                # calculate md5
+                m = hashlib.md5()
+                m.update(f.read())
+                md5 = m.hexdigest()
+                f.seek(0)
+                print md5
+                print g
+                print md5 == g
+            if md5 != g:
+                shutil.rmtree(os.path.join(folder, filename))
+                return 'CHECKSUM'
 
             # extract uploaded archive to folder and delete original archive
             with open(os.path.join(folder, filename), 'rb') as f:
