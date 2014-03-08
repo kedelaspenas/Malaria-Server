@@ -1141,9 +1141,7 @@ def upload_start_file():
             print md5
             print g
             print md5 == g
-            if md5 == g:
-                return 'OK'
-            else:
+            if md5 != g:
                 return 'CHECKSUM'
 
             print 'INIT:', filename
