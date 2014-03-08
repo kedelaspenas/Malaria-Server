@@ -1128,10 +1128,24 @@ def upload_start_file():
     if request.method == 'POST':
         # get file from form
         f = request.files['file']
+        g = request.form['checksum']
         # if form is not empty
-        if f:
+        if f and g:
             # temporarily save uploaded archive in folder with same name as archive filename
             filename = secure_filename(f.filename)
+
+            # calculate md5
+            m = hashlib.md5()
+            m.update(f.read())
+            md5 = m.hexdigest()
+            print md5
+            print g
+            print md5 == g
+            if md5 == g:
+                return 'OK'
+            else:
+                return 'CHECKSUM'
+
             print 'INIT:', filename
             folder = (app.config['UPLOAD_FOLDER'] + filename).replace('.zip', '')
             os.makedirs(folder)
@@ -1208,6 +1222,7 @@ def upload_start_file():
     <h1>Upload header file</h1>
     <form action="" method=post enctype=multipart/form-data>
       <p><input type=file name=file>
+         <input type=text name=checksum>
          <input type=submit value=Upload>
     </form>
     '''
