@@ -451,15 +451,17 @@ def case(id):
     images = sorted(images)
     # Print out of case
     if request.method == 'POST':
-        if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
-            if request.form['validator_diagnosis']:
-                case.parasite_validator = request.form['validator_diagnosis']
-                db.session.add(ParType(case.parasite_validator))
-                
-            if request.form['validator_remarks']:
-                case.description_validator = request.form['validator_remarks']
-                
-            db.session.commit();
+        if request.form['choice'] == 'Submit':
+            if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
+                if request.form['validator_diagnosis']:
+                    case.parasite_validator = request.form['validator_diagnosis']
+                    if(ParType.query.filter(ParType.type == case.parasite_validator ).first() == None):
+                        db.session.add(ParType(case.parasite_validator))
+                    
+                if request.form['validator_remarks']:
+                    case.description_validator = request.form['validator_remarks']
+                    
+                db.session.commit();
         else:
             def t(x, y):
                 return {'x': x + 20, 'y': 580 - y}
