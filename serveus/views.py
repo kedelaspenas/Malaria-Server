@@ -962,7 +962,6 @@ def upload_chunk():
                     os.remove(f.name)
 
                 pending_chunks = chunk.chunklist.chunks.filter(Chunk.id != chunk.id, Chunk.done == False).first()
-                print '1'
                 if not pending_chunks:
                     # get all chunks in chunklist
                     chunks = chunk.chunklist.chunks
@@ -990,9 +989,7 @@ def upload_chunk():
                     print os.path.join(folder, filename)
                     with open(os.path.join(folder, filename), 'rb') as f:
                         z = zipfile.ZipFile(f)
-                        print 'before extract'
                         z.extractall(folder)
-                        print 'after extract'
                     if REMOVE_TEMP:
                         os.remove(f.name)
 
@@ -1000,7 +997,6 @@ def upload_chunk():
                     with open(os.path.join(folder, 'accountData.xml'), 'r') as f:
                         g = f.read()
 
-                    print 'kirong'
                     root = ET.fromstring(g)
                     username = root.find('user').text
                     enc_aes_key = root.find('pass').text.replace('\n','')
@@ -1091,9 +1087,7 @@ def upload_chunk():
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
                 chunk.done = True
-                print '12344'
                 db.session.add(chunk)
-                print 'qwer'
                 db.session.commit()
                 print 'OK'
                 return 'OK'
@@ -1138,6 +1132,7 @@ def upload_start_file():
             m = hashlib.md5()
             m.update(f.read())
             md5 = m.hexdigest()
+            f.seek(0)
             print md5
             print g
             print md5 == g
