@@ -751,9 +751,8 @@ def upload_file():
             hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
             latitude = float(mapping['latitude'])
             longitude = float(mapping['longitude'])
-            partype = mapping['species'].capitalize()
-            parasite = ParType.query.filter(ParType.type==partype).first()
-            if not parasite:
+            partype = ParType.query.filter(ParType.type==mapping['species'].capitalize()).first()
+            if not partype:
                 db.session.add(ParType(type=partype))
                 db.session.commit()
             description = mapping['description']
@@ -766,7 +765,7 @@ def upload_file():
             region = Region.query.filter(Region.name == region).first()
             province = Province.query.filter(Province.name == province).first()
             municipality = Municipality.query.filter(Municipality.name == municipality).first()
-            case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=Municipality)
+            case = Case(date=dt,partype=partype,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=Municipality)
 
             user = User.query.filter(User.username == username).first()
             case.user = user
@@ -1050,11 +1049,10 @@ def upload_chunk():
                     longitude = float(mapping['longitude'])
                     partype = mapping['species'].capitalize()
                     latitude = float(mapping['latitude'])
-                    parasite = ParType.query.filter(ParType.type==partype).first()
-                    if not parasite:
+                    partype = ParType.query.filter(ParType.type==partype).first()
+                    if not partype:
                         db.session.add(ParType(type=partype))
                         db.session.commit()
-                    print 'PARASITE', parasite
                     description = mapping['description']
                     test = mapping['flags'] == 'true'
                     region = mapping['region']
@@ -1065,28 +1063,23 @@ def upload_chunk():
                     region = Region.query.filter(Region.name == region).first()
                     province = Province.query.filter(Province.name == province).first()
                     municipality = Municipality.query.filter(Municipality.name == municipality).first()
-                    print dt, parasite, description, latitude, longitude, test, region, province, municipality
-                    case = Case(date=dt,parasite=parasite,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
-                    print case
+                    case = Case(date=dt,partype=partype,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
 
                     user = User.query.filter(User.username == username).first()
                     case.user = user
                     hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
-                    print 'CHECKPOINT'
                     if hex_aes_key == user.password[:32]:
                         db.session.add(case)
                         db.session.commit()
 
                         # store images in database
                         for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
-                            print 'loop'
                             img = Image()
                             img.create_image(img_file, case)
                             img.number = i + 1
                             db.session.add(img)
                             db.session.commit()
 
-                        print 'chunk done'
                         chunk.done = True
                         db.session.add(chunk)
                         db.session.commit()
