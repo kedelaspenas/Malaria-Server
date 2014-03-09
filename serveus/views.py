@@ -667,13 +667,31 @@ def csv():
 """Returns the most recent APK for download."""
 @app.route('/apk/', methods = ['GET'])
 def apk():
-    return redirect(url_for('static', filename='ReMiDi-Pathogen.apk'))
+    latest = sorted(glob.glob(os.path.join(os.getcwd().replace('\\','/'), 'serveus/static/apk/') + '*.apk'))[-1]
+    latest = 'apk/' + os.path.basename(latest)
+    return redirect(url_for('static', filename=latest))
 
 """Returns the most recent APK for download."""
-@app.route('/log/', methods = ['GET'])
+@app.route('/apk/update/', methods = ['GET','POST'])
 @allowed([get_admin])
-def log():
-    return 'haha'
+def apk_update():
+    if request.method == 'POST':
+        f = request.files['apk']
+        # if form is not empty
+        if f:
+            filename = 'ReMiDi-Pathogen-%s.apk' % (datetime.datetime.now().strftime("%Y%m%d-%H%M%S"),)
+            folder = os.path.join(os.getcwd().replace('\\','/'), 'serveus/static/apk/')
+            f.save(os.path.join(folder, filename))
+            return 'OK'
+    return '''
+    <!doctype html>
+    <title>Upload latest APK</title>
+    <h1>Upload latest APK</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=apk>
+         <input type=submit value=Upload>
+    </form>
+    '''
 
 # API
 
