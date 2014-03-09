@@ -125,17 +125,14 @@ class Case(db.Model):
 			self.region = None
 		else:
 			self.region = region
-			#self.region = Region.query.filter(Region.name==region).first()
 		if province == '':
 			self.province = None
 		else:
 			self.province = province
-			#self.province = Province.query.filter(Province.name==province).first()
 		if municipality == '':
 			self.municipality = None
 		else:
 			self.municipality = municipality
-			#self.municipality = Municipality.query.filter(Municipality.name==municipality).first()
 		if partype == '':
 			self.partype = None
 		else:
@@ -227,13 +224,22 @@ class Chunklist(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	filename = db.Column(db.String(100))
 	date = db.Column(db.DateTime())
+	end_time = db.Column(db.DateTime())
 	chunks = db.relationship('Chunk', backref='chunklist', lazy='dynamic')
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 	def __init__(self, filename='', date='', user_id=''):
 		self.filename = filename
-		self.date = date
+		self.date = date.replace(microsecond=0)
 		self.user_id = user_id
+	
+	def set_done(self):
+		end_time = datetime.datetime.now().replace(microsecond=0)
+	
+	@property
+	def duration(self):
+		if self.end_time:
+			return str(self.date - self.end_time)
 	
 	def __repr__(self):
 		return self.filename

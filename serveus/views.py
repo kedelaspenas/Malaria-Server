@@ -1049,7 +1049,8 @@ def upload_chunk():
                     latitude = float(mapping['latitude'])
                     partype = ParType.query.filter(ParType.type==partype).first()
                     if not partype:
-                        db.session.add(ParType(type=partype))
+                        partype =  ParType(type=partype)
+                        db.session.add(partype)
                         db.session.commit()
                     description = mapping['description']
                     test = mapping['flags'] == 'true'
@@ -1148,7 +1149,6 @@ def upload_start_file():
                 m = hashlib.md5()
                 m.update(f.read())
                 md5 = m.hexdigest()
-                f.seek(0)
                 print md5
                 print g
                 print md5 == g
@@ -1206,9 +1206,11 @@ def upload_start_file():
                     chunklist.chunks.append(chunk)
                 db.session.add(chunklist)
                 db.session.commit()
+                print 'OK'
                 return 'OK'
             else:
                 # {'username': (tries, filename, chunks, folder)
+                print 'RETYPE'
                 upload_cache[username] = (0, filename.replace('.zip',''), chunks, folder)
                 return 'RETYPE 0'
 
