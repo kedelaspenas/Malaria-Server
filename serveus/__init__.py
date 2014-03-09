@@ -25,10 +25,10 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 # LOGGING
-LOG_FILE = os.path.join(app.config['BASE_DIR'], "logs\\" + time.strftime("%Y-%m-%d") + "\\" + time.strftime("%H.%M.%S") + ".log")
+LOG_FILE = os.path.join(app.config['BASE_DIR'], "logs", time.strftime("%Y-%m-%d"), time.strftime("%H.%M.%S") + ".log")
 
 try:
-    os.mkdir(os.path.join(app.config['BASE_DIR'], "logs\\" + time.strftime("%Y-%m-%d") + "\\"))
+    os.mkdir(os.path.join(app.config['BASE_DIR'], "logs", time.strftime("%Y-%m-%d")))
 except OSError:
     pass
     
@@ -41,6 +41,9 @@ class StreamToLogger(object):
    def write(self, buf):
       for line in buf.rstrip().splitlines():
          self.logger.log(self.log_level, line.rstrip())
+         
+    def flush(self):
+        pass
          
 
 logging.basicConfig(

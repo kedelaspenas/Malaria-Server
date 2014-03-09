@@ -822,12 +822,16 @@ def fetch_image(picture_id):
     
 @app.route('/logs/', methods=['GET'])
 def view_log():
-    name = request.args.get('name')
-    if name == "latest":
+    date = request.args.get('date')
+    time = request.args.get('time')
+    if date == "latest":
         file = LOG_FILE
+        # kasi katamad iparse date time
+        name = LOG_FILE
     else:
-        file = os.path.join(app.config['BASE_DIR'], "logs\\", name)
-    return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + file + "<br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
+        file = os.path.join(app.config['BASE_DIR'], "logs", date, time + ".log")
+        name = "%s %s" % (date, time)
+    return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + name + "<br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
     
     
 @app.route('/thumb/pic/<int:picture_id>/', methods=['GET'])
