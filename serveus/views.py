@@ -222,8 +222,8 @@ def records():
 
     
 @app.route('/map/')
-@allowed([get_admin, get_doctor])
 @login_required
+@allowed([get_admin, get_doctor])
 def maps():
     # Filter arguments
     lat = request.args.get('lat')
@@ -290,8 +290,8 @@ def maps():
     return render_template("map.html", lat = lat, lng = lng, zoom = zoom, case_list = sorted_list, date_start = date_start, date_end = date_end, user = current_user, menu_active='map')
 
 @app.route('/monitoring/')
-@allowed([get_admin, get_doctor])
 @login_required
+@allowed([get_admin, get_doctor])
 def monitoring():
     # Build bar list for map
     # Get all unique coordinates
@@ -339,8 +339,8 @@ def monitoring():
     return render_template("monitoring.html", lat = lat, lng = lng, zoom = zoom, municipality_list = municipality_list,  bar_list = bar_list, week_start = week_start, week_end = week_end, location = location, cases_this_week = cases_this_week, cases_last_week= cases_last_week, user = current_user, menu_active='monitoring')
     
 @app.route('/timeline/')
-@allowed([get_admin, get_doctor])
 @login_required
+@allowed([get_admin, get_doctor])
 def timeline():
     # Filter arguments
     lat = request.args.get('lat')
@@ -531,6 +531,7 @@ def case(id):
     return render_template("case.html", case = case, user = current_user, images=images)
 
 @app.route('/download/',  methods = ['GET', 'POST'])
+@login_required
 @allowed([get_admin])
 def download_images():
     if request.args.get('user'):
@@ -565,6 +566,7 @@ def download_images():
     abort(404)    
 
 @app.route('/downloadselected/',  methods = ['GET', 'POST'])
+@login_required
 @allowed([get_admin])
 def download_selected():
     templen = len(request.args.get('ids'))
@@ -595,6 +597,7 @@ def download_selected():
     abort(404)    
 
 @app.route('/openim/',  methods = ['GET', 'POST'])
+@login_required
 @allowed([get_admin])
 def open_image():
     response = ""
@@ -652,6 +655,7 @@ def login():
 
 """Returns a CSV file of the cases stored."""
 @app.route('/csv/', methods = ['GET'])
+@login_required
 @allowed([get_admin, get_doctor])
 def csv():
     x = ['date,parasite,description,latitude,longitude']
@@ -673,6 +677,7 @@ def apk():
 
 """Returns the most recent APK for download."""
 @app.route('/apk/update/', methods = ['GET','POST'])
+@login_required
 @allowed([get_admin])
 def apk_update():
     if request.method == 'POST':
