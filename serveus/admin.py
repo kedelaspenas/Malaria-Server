@@ -109,7 +109,7 @@ class ImageView(MyModelView):
 
     def _image_view(view, context, model, name):
         return Markup(
-            '<a href="/pic/%s/" ><img src="/pic/%s/" class="thumbnail pull-left" style="width: 100px; height: 100px"/></a>' % (model.id, model.id)
+            '<a href="/pic/%s/" ><img src="/thumb/pic/%s/" class="thumbnail pull-left" style="width: 160px; height: 120px"/></a>' % (model.id, model.id)
         ) if model.im else ""
     column_formatters = { 'id': _image_view }
             
