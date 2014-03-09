@@ -3,5 +3,5 @@
 twistd.pid
 upload/*/
 *.pdf
-cs198pythontest.db
-*log
+*.db
+*.log

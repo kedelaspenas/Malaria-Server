@@ -795,13 +795,13 @@ def fetch_image(picture_id):
     response.headers['Content-Type'] = 'image/jpeg'
     return response
     
-@app.route('/logs/<string:name>/', methods=['GET'])
-def view_log(name):
-    
+@app.route('/logs/', methods=['GET'])
+def view_log():
+    name = request.args.get('name')
     if name == "latest":
         file = LOG_FILE
     else:
-        file = "logs/" + name
+        file = os.path.join(app.config['BASE_DIR'], "logs\\", name)
     return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + file + "<br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
     
     
