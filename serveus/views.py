@@ -682,124 +682,6 @@ REMOVE_TEMP = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 upload_cache = {}
 
-"""Decrypts the encrypted archive, stores the data if authenticated, and returns OK if successful."""
-@app.route('/api/send/', methods=['GET','POST'])
-def upload_file():
-    if request.method == 'POST':
-        # get file from form
-        f = request.files['file']
-        # if form is not empty
-        if f:
-            # temporarily save uploaded archive in folder with same name as archive filename
-            filename = secure_filename(f.filename)
-            folder = (app.config['UPLOAD_FOLDER'] + filename).replace('.zip', '')
-            os.makedirs(folder)
-            f.save(os.path.join(folder, filename))
-
-            # extract uploaded archive to folder and delete original archive
-            with open(os.path.join(folder, filename), 'rb') as f:
-                z = zipfile.ZipFile(f)
-                z.extractall(folder)
-            if REMOVE_TEMP:
-                os.remove(f.name)
-
-            # get encrypted AES key (128-bit SHA-1 of plaintext password) from XML file and decrypt using RSA private key
-            with open(os.path.join(folder, 'accountData.xml'), 'r') as f:
-                g = f.read()
-
-            root = ET.fromstring(g)
-            username = root.find('user').text
-            enc_aes_key = root.find('pass').text.replace('\n','')
-            enc_aes_key = base64.b64decode(enc_aes_key)
-            private_key = RSA.importKey(Key.query.first().private_key)
-            aes_key = private_key.decrypt(enc_aes_key)
-
-            # decrypt image archive using decrypted AES key
-            with open(os.path.join(folder, 'cipherZipFile.zip'), 'rb') as f:
-                enc_img_zip = f.read()
-                cipher = AES.new(aes_key, AES.MODE_ECB, 'dummy_parameter')
-                msg = cipher.decrypt(enc_img_zip)
-
-            # store decrypted image archive on disk
-            with open(os.path.join(folder, 'decrypted.zip'), 'w') as f:
-                f.write(msg)
-            if REMOVE_TEMP:
-                os.remove(os.path.join(folder, 'cipherZipFile.zip'))
-
-            """
-            with open(os.path.join(folder, 'decrypted.zip'), 'r+b') as f:
-                data = f.read()  
-                pos = data.find('\x50\x4b\x05\x06') # End of central directory signature  
-                if (pos > 0):  
-                    print "Truncating file at location " + str(pos + 22) + "." 
-                    f.seek(pos + 22)   # size of 'ZIP end of central directory record' 
-                    f.truncate()  
-            """
-
-            # extract decrypted image archive and store in database
-            with open(os.path.join(folder, 'decrypted.zip'), 'rb') as f:
-                z = zipfile.ZipFile(f)
-                z.extractall(folder)
-            if REMOVE_TEMP:
-                os.remove(f.name)
-
-            # make case using XML data
-            tree = ET.parse(os.path.join(folder, 'textData.xml'))
-            root = tree.getroot()
-            mapping = {}
-            for child in root:
-                mapping[child.tag] = child.text
-            month, day, year = map(int, mapping['date-created'].split('/'))
-            hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
-            latitude = float(mapping['latitude'])
-            longitude = float(mapping['longitude'])
-            partype = ParType.query.filter(ParType.type==mapping['species'].capitalize()).first()
-            if not partype:
-                db.session.add(ParType(type=partype))
-                db.session.commit()
-            description = mapping['description']
-            test = mapping['flags'] == 'true'
-            region = mapping['region']
-            province = mapping['province']
-            municipality = mapping['municipality']
-
-            dt = datetime.datetime(year, month, day, hours, minutes, seconds)
-            region = Region.query.filter(Region.name == region).first()
-            province = Province.query.filter(Province.name == province).first()
-            municipality = Municipality.query.filter(Municipality.name == municipality).first()
-            case = Case(date=dt,partype=partype,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=Municipality)
-
-            user = User.query.filter(User.username == username).first()
-            case.user = user
-            hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
-            if hex_aes_key == user.password[:32]:
-                db.session.add(case)
-                db.session.commit()
-
-                # store images in database
-                for i, img_file in enumerate(sorted(glob.glob(os.path.join(folder, "*.jpg")))):
-                    img = Image()
-                    img.create_image(img_file, case)
-                    img.number = i + 1
-                    db.session.add(img)
-                    db.session.commit()
-
-                return 'OK'
-            else:
-                # {'username': (tries, case, folder)
-                upload_cache[username] = (0, case, folder)
-                return 'RETYPE 0'
-
-
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
 
 """Handles retyping of passwords from app."""
 @app.route('/api/retype2/', methods=['GET','POST'])
@@ -824,6 +706,7 @@ def retype2():
         case = entry[1]
         folder = entry[2]
         if hex_aes_key == user.password[:32]:
+            case.chunklist.set_done(case)
             db.session.add(case)
             db.session.commit()
 
@@ -1080,6 +963,9 @@ def upload_chunk():
                             db.session.commit()
 
                         chunk.done = True
+                        chunklist = chunk.chunklist
+                        chunklist.set_done(case)
+                        db.session.add(chunklist)
                         db.session.add(chunk)
                         db.session.commit()
                         print 'OK'
@@ -1087,6 +973,7 @@ def upload_chunk():
                     else:
                         print 'RETYPE'
                         # {'username': (tries, case, folder)
+                        case.chunklist = chunk.chunklist
                         upload_cache[username] = (0, case, folder)
                         return 'RETYPE 0'
                 chunk.done = True

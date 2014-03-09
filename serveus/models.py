@@ -112,6 +112,7 @@ class Case(db.Model):
 	region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
 	province_id = db.Column(db.Integer, db.ForeignKey('province.id'))
 	municipality_id = db.Column(db.Integer, db.ForeignKey('municipality.id'))
+	chunklist_id = db.Column(db.Integer, db.ForeignKey('chunklist.id'))
 	parasite_validator = db.Column(db.String(100))
 	description_validator = db.Column(db.String(1000))
 
@@ -147,6 +148,13 @@ class Case(db.Model):
 	@property
 	def code(self):
 		return "%s-%s-%s" % (self.region.code, self.province.code, self.id)
+	
+	@property
+	def duration(self):
+		if self.chunklist:
+			return self.chunklist.duration
+		else:
+			return 'Not recorded'
 
 class Image(db.Model):
 	__tablename__ = 'image'
@@ -227,19 +235,23 @@ class Chunklist(db.Model):
 	end_time = db.Column(db.DateTime())
 	chunks = db.relationship('Chunk', backref='chunklist', lazy='dynamic')
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	case = db.relationship('Case', backref='chunklist', lazy='dynamic', uselist=False)
 
 	def __init__(self, filename='', date='', user_id=''):
 		self.filename = filename
 		self.date = date.replace(microsecond=0)
 		self.user_id = user_id
 	
-	def set_done(self):
+	def set_done(self, case):
+		self.case = case
 		end_time = datetime.datetime.now().replace(microsecond=0)
 	
 	@property
 	def duration(self):
 		if self.end_time:
 			return str(self.date - self.end_time)
+		else:
+			return "Not done"
 	
 	def __repr__(self):
 		return self.filename
