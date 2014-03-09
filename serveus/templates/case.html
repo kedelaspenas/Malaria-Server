@@ -23,14 +23,12 @@
 						<tr><th>Contact details<td>{{case.user.contact}} / {{case.user.email}}
 						<tr><th>Sending duration<td>{{case.duration}} 
                         </table>
-                        <div class="pull-left">
-                            <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
-                        </div>
-                        <div class="pull-right">              
-                        <button class="btn btn-medium" name="choice" onclick=openSelectedImages(); style="height: 30px">Open selected images in new tabs</button>
-                        <input class="btn btn-medium" name="choice" type="submit" value="Download as PDF" style="height: 30px">
-                        </div>
-                        
+                        <table style="width: 100%">
+                            <tr>
+                            <td><input class="btn btn-medium pull-left" name="choice" type="submit" value="Download as PDF" style="height: 30px">
+                            <td align="center"><a style="text-align: center" class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
+                            <td><a class="btn btn-medium pull-right" name="choice" onclick=openSelectedImages();>View Image(s)</a>
+                        </table>
                     </div>
                     <br><br><br>
 					{% if user.is_doctor() %}
@@ -58,7 +56,7 @@
                             <tr>
                             <td style="width: 64%"><h5 class="pull-left">Select images:</h5>
                             <td style="width: 34%"><h5 class="pull-right">Select all</h5> 
-                            <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()" style="margin-bottom: 5px" checked>
+                            <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()" style="margin-bottom: 5px">
                             
                             </table>
                             <div class="row-fluid" id="gallery" style="padding: 0">
@@ -66,7 +64,7 @@
                                  {% for j, i in images %}
                                 <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
                                     <div class="container span12">
-										<input class="pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" checked>
+										<input class="pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})">
 										<p>&nbsp;Image #{{j}}</p>
 										<a href="/{{i}}" id="link_{{loop.index0}}" target="_blank" class="thumbnail" >
                                           <img src="/thumb/{{i}}" alt="">
