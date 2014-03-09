@@ -235,7 +235,7 @@ class Chunklist(db.Model):
 	end_time = db.Column(db.DateTime())
 	chunks = db.relationship('Chunk', backref='chunklist', lazy='dynamic')
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	case = db.relationship('Case', backref='chunklist', lazy='dynamic', uselist=False)
+	case = db.relationship('Case', backref='chunklist', uselist=False)
 
 	def __init__(self, filename='', date='', user_id=''):
 		self.filename = filename
