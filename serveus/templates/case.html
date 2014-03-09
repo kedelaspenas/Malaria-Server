@@ -3,20 +3,7 @@
 
 {% block content %}
     <form id="super" action="" method="post">
-        
-        <div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
-            <div class="modal-header">
-                <input type="checkbox" id="currentlyViewed_chkbox_printing" onchange="document.getElementById('chkbox_'+window.currentImageIndex).checked = this.checked;toggleSelectAll(window.currentImageIndex)"> Select image #<span id="modalImageNumber"> for printing</span>
-                <a class="close" data-dismiss="modal">&times;</a>
-            </div>
-            <div class="modal-body"><div class="modal-image" id="modal-image_currentlyViewed"></div></div>
-            <div class="modal-footer">
-                <a class="btn btn-info modal-prev pull-left" style="display: inline-block" onclick="checkGalleryImage(-1)"><i class="icon-arrow-left icon-white"></i> Previous</a>
-                <a class="btn btn-primary modal-next" style="display: inline-block" onclick="checkGalleryImage(1)">Next <i class="icon-arrow-right icon-white"></i></a>
-            </div>
-        </div>
-        
-		<div class="container-fluid" style="background-color: white; position: relative; height: 100%; padding-bottom: 0; padding-right: 0">
+		<div class="container-fluid" style="background-color: white; position: relative; height: 100%; padding: 5px; padding-top: 0;">
 			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
                 <div class="span9 row">
                     <div class="well container span12" style="background-color: white; padding-top: 0;">
@@ -36,9 +23,12 @@
 						<tr><th>Contact details<td>{{case.user.contact}} / {{case.user.email}}
 						<tr><th>Sending duration<td>{{case.duration}} 
                         </table>
+                        <div class="pull-left">
+                            <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
+                        </div>
                         <div class="pull-right">              
-                        <a class="btn btn-medium" href="/map/?lat={{case.lat}}&lng={{case.lng}}&zoom=13&date_start=1/1/1970&date_end=Today">View on Map</a>
-                        <input class="btn btn-medium" name="choice" type="submit" value="Print" style="height: 30px">
+                        <button class="btn btn-medium" name="choice" onclick=openSelectedImages(); style="height: 30px">Open selected images in new tabs</button>
+                        <input class="btn btn-medium" name="choice" type="submit" value="Download as PDF" style="height: 30px">
                         </div>
                         
                     </div>
@@ -66,34 +56,19 @@
                         <div class="tab-pane fade in active" id="raw_images">
                             <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
                             <tr>
-                            <td style="width: 64%"><h5 class="pull-left">Check for printing</h5>
+                            <td style="width: 64%"><h5 class="pull-left">Select images:</h5>
                             <td style="width: 34%"><h5 class="pull-right">Select all</h5> 
                             <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()" style="margin-bottom: 5px" checked>
-                            <script>
-                             function toggleAll()
-                             {
-                                for (var i=0; i<window.currentGalleryLength; i++)
-                                {
-                                    document.getElementById("chkbox_"+i).checked = document.getElementById("selectAll").checked;
-                                }
-                             }
-                             function toggleSelectAll(x)
-                             {
-                                if(document.getElementById("chkbox_"+x).checked == false)
-                                {
-                                    document.getElementById("selectAll").checked = false;
-                                }
-                             }
-                            </script>
+                            
                             </table>
-                            <div class="row-fluid" id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery" style="padding: 0">
+                            <div class="row-fluid" id="gallery" style="padding: 0">
                                 <ul class="thumbnails">
                                  {% for j, i in images %}
                                 <li class="span12" style="margin: 0; margin-left: 0; margin-right: 1.2%; margin-bottom: 1.2%">
                                     <div class="container span12">
-										<input class=" pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" checked>
+										<input class="pull-left" type="checkbox" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" checked>
 										<p>&nbsp;Image #{{j}}</p>
-										<a href="/{{i}}" class="thumbnail  pull-right" style="width: calc(100% - 30px)" data-gallery="gallery" onclick="window.currentImageIndex={{loop.index0}};getElementById('currentlyViewed_chkbox_printing').checked = document.getElementById('chkbox_'+{{loop.index0}}).checked; $('span#modalImageNumber').text('{{j}}');">
+										<a href="/{{i}}" id="link_{{loop.index0}}" target="_blank" class="thumbnail" >
                                           <img src="/thumb/{{i}}" alt="">
                                         </a>
                                     </div>
@@ -127,10 +102,34 @@
         <p>This page shows the details of a specific case. <br><br> The "View on Map" button brings you to the map and zooms in on the location of this case. <br><br>The "Print" button prints the details of this case along with the selected images.</p>
         </div>
     </div>
+        <script>
+             function toggleAll()
+             {
+                for (var i=0; i<window.currentGalleryLength; i++)
+                {
+                    document.getElementById("chkbox_"+i).checked = document.getElementById("selectAll").checked;
+                }
+             }
+             function toggleSelectAll(x)
+             {
+                if(document.getElementById("chkbox_"+x).checked == false)
+                {
+                    document.getElementById("selectAll").checked = false;
+                }
+             }
+             function openSelectedImages()
+             {
+                for (var i=0; i<window.currentGalleryLength; i++)
+                {
+                    if(document.getElementById("chkbox_"+i).checked){
+                        window.open(document.getElementById("link_"+i).href, '_blank');
+                    }
+                    window.focus();
+                }
+             }
+        </script>
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
-        <script src="/static/js/load-image.js"></script>
-        <script src="/static/js/bootstrap-image-gallery.js"></script>
         <script>
             function var_dump(x) {
                 var s = "";

@@ -45,7 +45,7 @@
         #coordinates_container { 
         background-color: transparent; 
         
-        width: 77px;
+        width: 83px;
         background: white; 
         border: 1px solid;
         border-color: #999999;
@@ -141,7 +141,7 @@
         </div>
         
         <div id="coordinates_container" class="container" style="display: none">
-        Lat:<br>Lng:
+            Lat:<span id="lat_container"></span><br>Long:<span id="lng_container"></span>
         </div>
         
         <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -197,7 +197,8 @@
                 google.maps.event.addListener(map, "mousemove", function(event) {
                     var lat = event.latLng.lat().toFixed(5);
                     var lng = event.latLng.lng().toFixed(5);
-                    document.getElementById("coordinates_container").innerHTML = "Lat: " + lat + "<br>Lng: " + lng;
+                    document.getElementById("lat_container").innerHTML = lat;
+                    document.getElementById("lng_container").innerHTML = lng;
                 });
             
               
