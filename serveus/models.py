@@ -244,12 +244,12 @@ class Chunklist(db.Model):
 	
 	def set_done(self, case):
 		self.case = case
-		end_time = datetime.datetime.now().replace(microsecond=0)
+		self.end_time = datetime.datetime.now().replace(microsecond=0)
 	
 	@property
 	def duration(self):
 		if self.end_time:
-			return str(self.date - self.end_time)
+			return str(self.end_time - self.date)
 		else:
 			return "Not done"
 	

@@ -56,6 +56,8 @@ class CommunicationTest(TestCase):
 		elem = web.find_element_by_name('file')
 		# TODO: should be portable
 		elem.send_keys('/home/befreicafsan/files/199/Malaria-Server/upload/a02272014_151331_rodolfo/02272014_151331_rodolfo.zip')
+		elem = web.find_element_by_name('checksum')
+		elem.send_keys('ab7cffd3279eae2057876d6293643e2c')
 		web.find_element_by_css_selector('input[type="submit"]').click()
 
 		self.login_as_admin()
@@ -75,7 +77,7 @@ class CommunicationTest(TestCase):
 
 	def aux_send_all_chunks(self):
 		web = self.web
-		for i in xrange(2, 18):
+		for i in xrange(2, 19):
 			web.get('http://localhost/api/chunk/')
 			elem = web.find_element_by_name('file')
 			# TODO: should be portable
