@@ -1045,11 +1045,11 @@ def upload_chunk():
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
-                    partype = mapping['species'].capitalize()
+                    partype_text = mapping['species'].capitalize()
                     latitude = float(mapping['latitude'])
-                    partype = ParType.query.filter(ParType.type==partype).first()
+                    partype = ParType.query.filter(ParType.type==partype_text).first()
                     if not partype:
-                        partype =  ParType(type=partype)
+                        partype = ParType(type=partype_text)
                         db.session.add(partype)
                         db.session.commit()
                     description = mapping['description']
