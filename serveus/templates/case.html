@@ -18,7 +18,7 @@
                         <tr><th>Microscopist remarks<td>{{case.description}}
                         <tr><th>Validator diagnosis<td>{{case.parasite_validator}}
                         <tr><th>Validator remarks<td>{{case.description_validator}}
-                        <tr><th>Coordinates<td>{{case.lat}}, {{case.lng}}
+                        <tr><th>GPS location<td><span id="location">Reverse geolocating coordinates...</span> ({{case.lat}}, {{case.lng}})
 						<tr><th>Microscopist<td>{{case.user.username}} ({{case.user.firstname}} {{case.user.lastname}})
 						<tr><th>Contact details<td>{{case.user.contact}} / {{case.user.email}}
 						<tr><th>Sending duration<td>{{case.duration}} 
@@ -129,6 +129,17 @@
              }
         </script>
 		<script src="/static/js/jquery.js"></script>
+         <script>
+            var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng={{case.lat}},{{case.lng}}&sensor=false'
+            $.getJSON(url, function(data){
+                if (data['status'] == "OK"){
+                    document.getElementById('location').innerHTML = data['results'][0]['formatted_address'];
+                }
+                else{
+                    document.getElementById('location').innerHTML = "Reverse geolocation status: " + data['status'];
+                }
+            });
+        </script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script>
             function var_dump(x) {

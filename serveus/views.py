@@ -18,6 +18,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
 from cStringIO import StringIO
+# import geocoder
 
 from flask import send_file
 
@@ -528,6 +529,7 @@ def case(id):
             response = make_response(pdf)
             response.headers["Content-Disposition"] = "attachment; filename=malaria.pdf"
             return response
+    # location = geocoder.reverse((case.lat, case.lng)).address
     return render_template("case.html", case = case, user = current_user, images=images)
 
 @app.route('/download/',  methods = ['GET', 'POST'])
