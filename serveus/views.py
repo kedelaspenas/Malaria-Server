@@ -954,11 +954,12 @@ def upload_chunk():
                     for child in root:
                         mapping[child.tag] = child.text
                     month, day, year = map(int, mapping['date-created'].split('/'))
+                    if month > 12:
+                        year, month, day = month, day, year
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
-                    partype_text = mapping['species'].capitalize()
-                    latitude = float(mapping['latitude'])
+                    partype_text = mapping['species'].capitalize().strip()
                     partype = ParType.query.filter(ParType.type==partype_text).first()
                     if not partype:
                         partype = ParType(type=partype_text)
