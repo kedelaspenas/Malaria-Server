@@ -884,7 +884,7 @@ def upload_chunk():
 
                     # store chunk data in list and concatenate to file
                     # assumption: chunklist filenames are sortable (correct order)
-                    for chunk_filename in sorted([chunk.filename for chunk in chunks]):
+                    for chunk_filename in sorted([temp_chunk.filename for temp_chunk in chunks]):
                         with open(os.path.join(folder, chunk_filename), 'r') as f:
                             chunk_data.append(f.read())
                     data = ''.join(chunk_data)
