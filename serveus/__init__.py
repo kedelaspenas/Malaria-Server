@@ -25,7 +25,9 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 # LOGGING
-LOG_FILE = os.path.join(app.config['BASE_DIR'], "logs", time.strftime("%Y-%m-%d"), time.strftime("%H.%M.%S") + ".log")
+DATE_INIT = time.strftime("%Y-%m-%d")
+TIME_INIT = time.strftime("%H.%M.%S")
+LOG_FILE = os.path.join(app.config['BASE_DIR'], "logs", DATE_INIT, TIME_INIT + ".log")
 
 try:
     os.mkdir(os.path.join(app.config['BASE_DIR'], "logs", time.strftime("%Y-%m-%d")))

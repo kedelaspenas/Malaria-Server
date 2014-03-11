@@ -2,6 +2,7 @@ from serveus import app
 from flask.ext.admin import Admin, AdminIndexView, expose
 from flask.ext.admin.base import MenuLink
 from flask.ext.admin.contrib.sqla import ModelView
+from flask.ext.admin.contrib.fileadmin import FileAdmin
 #from flask.ext.wtf import PasswordField
 from wtforms import PasswordField, FileField
 from flask.ext.login import current_user
@@ -9,7 +10,7 @@ from flask import request
 from jinja2 import Markup
 from flask.ext.admin.actions import action
 from flask import redirect, url_for
-import webbrowser
+import os, webbrowser
 
 
 from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality, ParType
@@ -112,6 +113,8 @@ class ImageView(MyModelView):
             '<a href="/pic/%s/" ><img src="/thumb/pic/%s/" class="thumbnail pull-left" style="width: 160px; height: 120px"/></a>' % (model.id, model.id)
         ) if model.im else ""
     column_formatters = { 'id': _image_view }
+    
+log_path = os.path.join(app.config['BASE_DIR'], "logs")
             
 # Add pages to the admin page
 admin.add_view(MyModelView(UserType, db.session))
@@ -124,6 +127,7 @@ admin.add_view(MyModelView(Chunk, db.session))
 admin.add_view(MyModelView(Region, db.session))
 admin.add_view(MyModelView(Province, db.session))
 admin.add_view(MyModelView(Municipality, db.session))
+admin.add_view(FileAdmin(log_path, '/logs/', name='Logs', url="/admin/logview"))
 
 # Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='monitoring'))

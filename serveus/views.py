@@ -31,7 +31,7 @@ except ImportError:
 from flask_mail import Message
 
 from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality, ParType
-from serveus import mail, LOG_FILE
+from serveus import mail, DATE_INIT, TIME_INIT
 
 
 login_manager = LoginManager()
@@ -820,17 +820,16 @@ def fetch_image(picture_id):
     response.headers['Content-Type'] = 'image/jpeg'
     return response
     
-@app.route('/logs/', methods=['GET'])
-def view_log():
-    date = request.args.get('date')
-    time = request.args.get('time')
+@app.route('/logs/<string:date>\<string:time>/', methods=['GET'])
+def view_log(date, time):
+    time = time[0:time.find('.log')]
     if date == "latest":
-        file = LOG_FILE
+        file = os.path.join(app.config['BASE_DIR'], "logs", DATE_INIT, TIME_INIT + ".log")
         # kasi katamad iparse date time
-        name = LOG_FILE
+        name = "Latest | Date: %s Time: %s" % (DATE_INIT, TIME_INIT.replace('.',':'))
     else:
         file = os.path.join(app.config['BASE_DIR'], "logs", date, time + ".log")
-        name = "%s %s" % (date, time)
+        name = "Old | Date: %s Time: %s" % (date, time.replace('.',':'))
     return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + name + "<br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
     
     
