@@ -59,5 +59,11 @@ root = logging.getLogger('')
 sys.stderr = StreamToLogger(root, logging.INFO)
 root.addHandler(file_handler)
 
+try:
+    root.log(logging.DEBUG, "Initialized logger")
+except IOError as e:
+    # Remove stderr logger if console is hidden. Print statements will not be logged
+    root.removeHandler(root.__dict__['handlers'][0])
+    
 # IMPORT PARTS OF APP
 from serveus import views, models, admin
