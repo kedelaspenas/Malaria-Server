@@ -819,19 +819,30 @@ def fetch_image(picture_id):
     response = make_response(x.im)
     response.headers['Content-Type'] = 'image/jpeg'
     return response
-    
-@app.route('/logs/<string:date>\<string:time>/', methods=['GET'])
+'''    
+@app.route('/log/<string:date>\<string:time>/', methods=['GET'])
 def view_log(date, time):
     time = time[0:time.find('.log')]
-    if date == "latest":
+    if date == "latest" or (date == DATE_INIT and time == TIME_INIT):
         file = os.path.join(app.config['BASE_DIR'], "logs", DATE_INIT, TIME_INIT + ".log")
         # kasi katamad iparse date time
-        name = "Latest | Date: %s Time: %s" % (DATE_INIT, TIME_INIT.replace('.',':'))
+        date = DATE_INIT
+        time = TIME_INIT
+        name = "Latest | Date: %s Time: %s" % (date, time.replace('.',':'))
     else:
         file = os.path.join(app.config['BASE_DIR'], "logs", date, time + ".log")
         name = "Old | Date: %s Time: %s" % (date, time.replace('.',':'))
-    return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + name + "<br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
-    
+    return "<html><head><title>" + name + "</title><style type=\"text/css\">body {font-family:Courier;color: #CCCCCC;background: #000000;padding: 10px;font-size: 12px;}</style></head><body><div class=\"console\">" + name + " <a href=\"/getlog/" + date + "\\"+ time +"\"> Download</a><br>" + open(file, 'r').read().replace("\n","<br>") + "</div></body></html>"
+'''
+@app.route('/log/<string:date>\<string:time>/', methods=['GET'])
+def download_log(date, time):
+    if date == "latest":
+        date = DATE_INIT
+        time = TIME_INIT
+    file = os.path.join(app.config['BASE_DIR'], "logs", date, time + ".log")
+    response = make_response(open(file, 'r').read())
+    response.headers['Content-Type'] = 'text/plain'
+    return response
     
 @app.route('/thumb/pic/<int:picture_id>/', methods=['GET'])
 def fetch_thumbnail(picture_id):

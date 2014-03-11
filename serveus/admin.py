@@ -127,7 +127,7 @@ admin.add_view(MyModelView(Chunk, db.session))
 admin.add_view(MyModelView(Region, db.session))
 admin.add_view(MyModelView(Province, db.session))
 admin.add_view(MyModelView(Municipality, db.session))
-admin.add_view(FileAdmin(log_path, '/logs/', name='Logs', url="/admin/logview"))
+admin.add_view(FileAdmin(log_path, '/log/', name='Logs', url="/admin/logview"))
 
 # Navbar links
 admin.add_link(AuthenticatedMenuLink(name='Back to Website', endpoint='monitoring'))
