@@ -43,7 +43,7 @@ admin = Admin(app, index_view=MyAdminIndexView())
 # More info in https://github.com/mrjoes/flask-admin/issues/173
 class UserView(MyModelView):
     can_create = True
-    column_list = ('username', 'usertype', 'Download Images')
+    column_list = ('username', 'usertype', 'firstname', 'lastname', 'contact', 'email', 'Download Images')
     form_excluded_columns = ('case', 'chunklists')
     column_excluded_list = ('password')
     

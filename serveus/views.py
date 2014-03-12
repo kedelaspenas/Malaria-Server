@@ -836,6 +836,7 @@ def view_log(date, time):
 '''
 @app.route('/log/<string:date>\<string:time>/', methods=['GET'])
 def download_log(date, time):
+    time = time[0:time.find('.log')]
     if date == "latest":
         date = DATE_INIT
         time = TIME_INIT
