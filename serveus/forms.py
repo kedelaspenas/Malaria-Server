@@ -14,3 +14,4 @@ class RecoveryForm(Form):
 class ChangePassForm(Form):
     oldpassword = TextField('password', validators = [Required()])
     newpassword = TextField('password')
+    confirmpassword = TextField('password')

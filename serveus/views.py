@@ -77,18 +77,21 @@ def profilepage():
     if changepass_form.validate_on_submit():
         old_pass = ""
         new_pass = ""
+        confirm_pass = ""
         old_pass = changepass_form.oldpassword.data
         new_pass = changepass_form.newpassword.data
-        changepass_form.oldpassword.data = changepass_form.newpassword.data = ""
-        if len(new_pass) > 0 and len(old_pass) > 0 and old_pass == current_user.password:
+        confirm_pass = changepass_form.confirmpassword.data
+        changepass_form.oldpassword.data = changepass_form.newpassword.data = changepass_form.confirmpassword.data = ""
+        if len(new_pass) > 0 and len(old_pass) > 0 and len(confirm_pass) >0 and new_pass == confirm_pass and old_pass == current_user.password:
             current_user.password = new_pass
             db.session.commit()
             message = 'Password successfully changed.'
             return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
         # Error message if old password mismatches    
-        if len(new_pass) <= 0 or len(old_pass) <= 0:
+        if len(new_pass) <= 0 or len(old_pass) <= 0 or len(confirm_pass) <= 0:
             error = 'Please enter in both fields.'
         else:
+            print new_pass + " asd " + confirm_pass
             error = 'Old password mismatch.'
         return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
         

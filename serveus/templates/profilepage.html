@@ -12,6 +12,11 @@
                     hash = CryptoJS.SHA1($('#newpassword').val());
                     $('#newpassword').val(hash);
                 }
+                if ($('#confirmpassword').val().length > 0)
+                {
+                    hash = CryptoJS.SHA1($('#confirmpassword').val());
+                    $('#confirmpassword').val(hash);
+                }
 			}
 		</script>
 {% endblock %}
@@ -46,8 +51,9 @@
                 {{ changepass_form.hidden_tag() }}
                 {{changepass_form.oldpassword(size=40, placeholder="Old Password", class="span4", type="password")}} <br>
                 {{changepass_form.newpassword(size=40, placeholder="New Password", class="span4", type="password")}} <br>
+                {{changepass_form.confirmpassword(size=40, placeholder="Confirm New Password", class="span4", type="password")}} <br>
                 <input class="btn pull-right" type="submit" value="Submit" style="height: 30px">
-                <input class="btn pull-left" type="button" value="Cancel" onClick="location.href = '/monitoring/' " >
+                <a class="btn pull-left" href={%if user.is_microscopist() %}'/records/' {%else%}'/monitoring/'{%endif%}>Cancel</a>
                 </form>
         </div>
     <script src="/static/js/jquery.js"></script>
