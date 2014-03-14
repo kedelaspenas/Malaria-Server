@@ -276,15 +276,17 @@
                   });
                 });
                 
-                google.maps.event.addListenerOnce(map, 'tilesloaded', function(){
+                google.maps.event.addListenerOnce(map, 'idle', function(){
                     document.getElementById('loading_block').style.display = 'None';
-                    document.getElementById('map-canvas').style.display = '';document.getElementById('date_slider').style.display = '';document.getElementById('slider_controls').style.display = '';
+                    document.getElementById('map-canvas').style.display = '';
+                    document.getElementById('date_slider').style.display = '';
+                    document.getElementById('slider_controls').style.display = '';
                     document.getElementById('filter').style.display = '';
                     document.getElementById('total_container').style.display = '';
                     document.getElementById('coordinates_container').style.display = '';
                     document.getElementById('extra_controls').style.display = '';
-                     $('#date_slider').dateRangeSlider('min', min_date);
-                     $('#date_slider').dateRangeSlider('max', max_date);
+                    $('#date_slider').dateRangeSlider('min', min_date);
+                    $('#date_slider').dateRangeSlider('max', max_date);
                 });
                 
             }
@@ -367,6 +369,7 @@
                 else{
                     c = 7
                 }
+                
                 $('#date_slider').dateRangeSlider('min', new Date($('#date_slider').dateRangeSlider('max').getFullYear()-a, $('#date_slider').dateRangeSlider('max').getMonth()-b, $('#date_slider').dateRangeSlider('max').getDate()-c))
                 
                 min_date = $('#date_slider').dateRangeSlider('min');
