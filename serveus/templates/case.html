@@ -5,23 +5,34 @@
     <form id="super" action="" method="post">
 		<div class="container-fluid" style="background-color: white; position: relative; height: 100%; padding: 5px; padding-top: 0;">
 			<div class="row-fluid" style="background-color: white; position: relative; height: 100%">
-                <div class="span9 row">
+                <div class="span10 row">
                     <div class="well container span12" style="background-color: white; padding-top: 0;">
-                        <h4 class="pull-left">Patient Information</h4>
-                        <h4 class="pull-right">{{case.date.strftime('%B %d, %Y %I:%M %p')}}</h4>
+                        <div>
+                            <h4 class="span4 pull-left">{{case.code}}</h4>
+                            <h4 class="span4" style="text-align: center">Case Information</h4>
+                            <h4 class="span4" style="text-align: right">{{case.date.strftime('%B %d, %Y %I:%M %p')}}</h4>
+                        </div>
+                        
                         <table class="table table-condensed table-bordered" style="width: 100%">
-                        <tr><th class="span2">Case ID<td class="span10"> {{case.code}}
-						<tr><th>Region<td>{{case.region}}
-						<tr><th>Province<td>{{case.province}}
-						<tr><th>Municipality<td>{{case.municipality}}
-                        <tr><th>Microscopist diagnosis<td>{{case.partype}}
-                        <tr><th>Microscopist remarks<td>{{case.description}}
-                        <tr><th>Validator diagnosis<td>{{case.parasite_validator}}
-                        <tr><th>Validator remarks<td>{{case.description_validator}}
-                        <tr><th>GPS location<td><span id="location">Reverse geolocating coordinates...</span> ({{case.lat}}, {{case.lng}})
-						<tr><th>Microscopist<td>{{case.user.username}} ({{case.user.firstname}} {{case.user.lastname}})
-						<tr><th>Contact details<td>{{case.user.contact}} / {{case.user.email}}
-						<tr><th>Sending duration<td>{{case.duration}} 
+                            <tr><th class="span4">Region<th class="span2">Province<th class="span2">Municipality<th class="span4">GPS
+                            <tr><td>{{case.region}}<td>{{case.province}}<td>{{case.municipality}}<td><span id="location"></span> ({{case.lat}}, {{case.lng}})
+                        </table>
+                        
+                        <table class="table table-condensed table-bordered" style="width: 100%">
+                            <tr><th class="span2">Microscopist<td class="span4">{{case.user.firstname}} {{case.user.lastname}} ({{case.user.username}})<th class="span2">Contact Details<td class="span4">{{case.user.contact}} / {{case.user.email}}
+                            <tr><th>Diagnosis<td colspan="3">{{case.partype}}
+                            <tr><th>Remarks<td colspan="3">{{case.description}}
+                        </table>
+                        
+                        <table class="table table-condensed table-bordered" style="width: 100%">
+                            <tr><th class="span2">Validator<td class="span4">Firstname Lastname (username)<th class="span2">Contact Details<td class="span4">Number / Email
+                            <tr><th>Diagnosis<td colspan="3">{{case.parasite_validator}}
+                            <tr><th>Remarks<td colspan="3">{{case.description_validator}}
+                            {% if user.is_doctor() %}<tr><td colspan="4" style="text-align: left"><a href="#">View validation history...</a>{% endif %}
+                        </table>
+                        
+                        <table class="table table-condensed table-bordered" style="width: 100%">
+                            <tr><th class="span2">Sending duration<td class="span10">{{case.duration}} 
                         </table>
                         <table style="width: 100%">
                             <tr>
@@ -44,7 +55,7 @@
                     </div>
 					{% endif %}
                 </div>
-				<div class="span3 well" style="background-color: white; overflow-y: auto; overflow-x:hidden; position: relative; height: 100%; padding: 0.5%; padding-top: 0;">
+				<div class="span2 well" style="background-color: white; overflow-y: auto; overflow-x:hidden; position: relative; height: 100%; padding: 5px; padding-top: 0;">
                     <!--
                     <ul class="nav nav-tabs" id="image_tabs">
                         <li class="active"><a href="#raw_images" data-toggle="tab">Raw Images</a></li>
@@ -54,8 +65,7 @@
                         <div class="tab-pane fade in active" id="raw_images">
                             <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
                             <tr>
-                            <td style="width: 64%"><h5 class="pull-left"></h5>
-                            <td style="width: 34%"><h5 class="pull-right">Select all</h5> 
+                            <td><h5 class="pull-right">Select all</h5> 
                             <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" type="checkbox" onclick="toggleAll()" style="margin-bottom: 5px">
                             
                             </table>
@@ -132,9 +142,6 @@
             $.getJSON(url, function(data){
                 if (data['status'] == "OK"){
                     document.getElementById('location').innerHTML = data['results'][0]['formatted_address'];
-                }
-                else{
-                    document.getElementById('location').innerHTML = "Reverse geolocation status: " + data['status'];
                 }
             });
         </script>
