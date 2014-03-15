@@ -125,14 +125,28 @@ def records():
         page = int(request.args.get('page'))
 
     regionList = ['All Regions'] + Region.query.all()
+    microscopistList = ['All Medical Technologists'] + User.query.filter(User.usertype==UserType.get_microscopist()).all()
     parasiteList = [str(i) for i in ParType.query.all()]
     parasiteList2 = [i for i in ParType.query.all()]
 
     if request.args:
         parasiteSelected = request.args.get('parasite_selection')
-        regionIndex = int(request.args.get('region_selection'))
-        provinceIndex = int(request.args.get('province_selection'))
-        municipalityIndex = int(request.args.get('municipality_selection'))
+        try:
+			regionIndex = int(request.args.get('region_selection'))
+        except ValueError:
+			regionIndex = 0
+        try:
+			provinceIndex = int(request.args.get('province_selection'))
+        except ValueError:
+			provinceIndex = 0
+        try:
+			municipalityIndex = int(request.args.get('municipality_selection'))
+        except ValueError:
+			municipalityIndex = 0
+        try:
+            microscopistIndex = int(request.args.get('microscopist_selection'))
+        except ValueError:
+            microscopistIndex = 0
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
         sort_by = request.args.get('sort_by')
@@ -147,6 +161,8 @@ def records():
             provinceIndex = 0
         if not request.args.get('municipality_selection'):
             municipalityIndex = 0
+        if not request.args.get('microscopist_selection'):
+            microscopistIndex = 0
         if not request.args.get('date_start'):
             date_start = 'The Beginning'
         if not request.args.get('date_end'):
@@ -197,6 +213,8 @@ def records():
             caseList = caseList.filter(Case.province==Province.query.get(provinceIndex))
         if municipalityIndex != 0:
             caseList = caseList.filter(Case.municipality==Municipality.query.get(municipalityIndex))
+        if microscopistIndex != 0:
+            caseList = caseList.filter(Case.user==User.query.get(microscopistIndex))
     else:
         # Default values
         provinceList = ['All Provinces']
@@ -205,6 +223,7 @@ def records():
         regionIndex = 0
         provinceIndex = 0
         municipalityIndex = 0
+        microscopistIndex = 0
         date_start = "The Beginning"
         date_end = "Today"
         sort_by = "date"
@@ -222,7 +241,7 @@ def records():
     pagination = Pagination(page, Pagination.PER_PAGE, len(caseList))
     caseList = caseList[(page-1)*Pagination.PER_PAGE : ((page-1)*Pagination.PER_PAGE) + Pagination.PER_PAGE]
     
-    return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records', regionList = regionList, regionIndex = regionIndex, provinceList = provinceList, provinceIndex = provinceIndex, municipalityList = municipalityList, municipalityIndex = municipalityIndex)
+    return render_template("records.html", caseList = caseList, pagination = pagination, parasiteList = parasiteList, parasiteIndex = parasiteIndex, date_start = date_start, date_end = date_end, sort_by = sort_by, order = order, user = current_user, menu_active='records', regionList = regionList, regionIndex = regionIndex, provinceList = provinceList, provinceIndex = provinceIndex, municipalityList = municipalityList, municipalityIndex = municipalityIndex, microscopistList = microscopistList, microscopistIndex = microscopistIndex)
 
     
 @app.route('/map/')

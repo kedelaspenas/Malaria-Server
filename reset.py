@@ -1936,7 +1936,7 @@ x = Case(datetime.date(2013,1,10),f,'Description',10.32,119.17,True, a, b, db.se
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2013,9,10),g,'Description',10.08,119.46,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Taytay').first())
+x = Case(datetime.date(2013,9,10),g,'Description',10.08,119.46,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Taytay')[-1])
 x.user_id = 4
 db.session.add(x)
 

@@ -79,7 +79,7 @@
                     <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select id="sel_region" style="width: calc(100% - 34px)" name="region_selection">
 					{% for i in regionList %}
-						<option {% if i.id == regionIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
+						<option {% if i.id == regionIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -88,7 +88,7 @@
                     <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select id="sel_province" style="width: calc(100% - 34px)" name="province_selection">
 					{% for i in provinceList %}
-						<option {% if i.id == provinceIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
+						<option {% if i.id == provinceIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
@@ -97,10 +97,27 @@
                     <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
 					<select id="sel_municipality" style="width: calc(100% - 34px)" name="municipality_selection">
 					{% for i in municipalityList %}
-						<option {% if i.id == municipalityIndex %}selected{% endif %} value={{ loop.index0 }}>{{ i }}</option>
+						<option {% if i.id == municipalityIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>
+
+					{% if not user.is_microscopist() %}
+					<div class="input-prepend" style="width: 100%">
+                    <span class="add-on">by&nbsp;&nbsp;&nbsp;</span>
+					<select style="width: calc(100% - 34px)" name="microscopist_selection">
+					{% for i in microscopistList %}
+						<option {% if i.id == microscopistIndex %}selected{% endif %} value={{ i.id }}>
+						{% if loop.index0 == 0 %}
+							{{ i }}
+						{% else %}
+							{{i.firstname}} {{i.lastname}} ({{i.username}})
+						{% endif %}
+						</option>
+                    {% endfor %}
+					</select>
+					</div>
+					{% endif %}
 
                     <br>
                     <div class="input-prepend" style="width: 100%">
