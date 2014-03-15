@@ -32,7 +32,7 @@ c.execute('''CREATE TABLE user (id INTEGER NOT NULL, username VARCHAR(80), passw
 conn.commit()
 conn.close()
 
-parasite_types = ['Any Disease','Falciparum', 'Vivax', 'Ovale', 'Malariae', 'No Disease']
+parasite_types = ['Falciparum', 'Vivax', 'Ovale', 'Malariae', 'No Disease']
 for i in parasite_types:
 	temp = ParType(i)
 	db.session.add(temp)

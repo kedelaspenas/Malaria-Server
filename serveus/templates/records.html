@@ -70,7 +70,7 @@
                     <span class="add-on">with</span>
 					<select style="width: calc(100% - 35px)" name="parasite_selection">
                     {% for i in parasiteList %}
-                        <option {% if i.id == parasiteIndex %}selected{% endif %}>{{ i }}</option>
+					<option {% if i.id == parasiteIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
                     {% endfor %}
 					</select>
 					</div>

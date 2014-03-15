@@ -91,7 +91,6 @@ def profilepage():
         if len(new_pass) <= 0 or len(old_pass) <= 0 or len(confirm_pass) <= 0:
             error = 'Please enter in both fields.'
         else:
-            print new_pass + " asd " + confirm_pass
             error = 'Old password mismatch.'
         return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
         
@@ -118,7 +117,6 @@ def ajax_municipalities():
 @app.route('/records/')
 @login_required
 def records():
-    print request.args.get('page')
     if not request.args.get('page'):
         page = 1
     else:
@@ -126,11 +124,13 @@ def records():
 
     regionList = ['All Regions'] + Region.query.all()
     microscopistList = ['All Medical Technologists'] + User.query.filter(User.usertype==UserType.get_microscopist()).all()
-    parasiteList = [str(i) for i in ParType.query.all()]
-    parasiteList2 = [i for i in ParType.query.all()]
+    parasiteList = ['All Diagnoses'] + [i for i in ParType.query.all()]
 
     if request.args:
-        parasiteSelected = request.args.get('parasite_selection')
+        try:
+			parasiteIndex = int(request.args.get('parasite_selection'))
+        except ValueError:
+			parasiteIndex = 0
         try:
 			regionIndex = int(request.args.get('region_selection'))
         except ValueError:
@@ -154,7 +154,7 @@ def records():
         
         # Default Values
         if not request.args.get('parasite_selection'):
-            parasiteSelected = parasiteList[0]
+            parasiteIndex = 0
         if not request.args.get('region_selection'):
             regionIndex = 0
         if not request.args.get('province_selection'):
@@ -172,7 +172,6 @@ def records():
         if not request.args.get('order'):
             order = "desc"
         
-        parasiteIndex = parasiteList.index(parasiteSelected)
         region = Region.query.get(regionIndex)
         provinceList = ['All Provinces'] + Province.query.filter(Province.region==region).all()
         province = Province.query.get(provinceIndex)
@@ -204,9 +203,8 @@ def records():
         param= "\"case\"."+sortby+" "+order
         # chain queries based on filters (clean branching)
         caseList = Case.query.filter(Case.date>=dt,Case.date<=dte).order_by(param)
-        print parasiteIndex
         if parasiteIndex != 0:
-            caseList = caseList.filter(Case.partype==parasiteList2[parasiteIndex])
+            caseList = caseList.filter(Case.partype==ParType.query.get(parasiteIndex))
         if regionIndex != 0:
             caseList = caseList.filter(Case.region==regionList[regionIndex])
         if provinceIndex != 0:
@@ -339,10 +337,8 @@ def monitoring():
         return (centerlat,centerlng)
 
     unique_municipality = Case.query.group_by(Case.municipality_id)
-    print unique_municipality
     municipality_list = []
     for j in unique_municipality:
-        print str(j.region)
         countM = Case.query.filter_by(municipality = j.municipality).count()
         temp = Case.query.filter_by(municipality = j.municipality)
         coor_list = []
@@ -350,7 +346,6 @@ def monitoring():
             coor_list.append((k.lat,k.lng))
         geoCenter = getGeoCenter(coor_list)
         municipality_list.append((geoCenter,countM,j.municipality, j.region_id, j.province_id, j.municipality_id))
-    print municipality_list
 
     location = "Philippines"
     cases_this_week = 13
