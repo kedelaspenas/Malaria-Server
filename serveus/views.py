@@ -89,7 +89,9 @@ def profilepage():
             return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, message = message)
         # Error message if old password mismatches    
         if len(new_pass) <= 0 or len(old_pass) <= 0 or len(confirm_pass) <= 0:
-            error = 'Please enter in both fields.'
+            error = 'Please enter in all fields.'
+        elif(new_pass != confirm_pass):
+            error = 'New password is different from Confirmation password'
         else:
             error = 'Old password mismatch.'
         return render_template("profilepage.html", user = current_user, changepass_form = changepass_form, error = error)
