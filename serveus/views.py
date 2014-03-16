@@ -130,21 +130,21 @@ def records():
 
     if request.args:
         try:
-			parasiteIndex = int(request.args.get('parasite_selection'))
+            parasiteIndex = int(request.args.get('parasite_selection'))
         except ValueError:
-			parasiteIndex = 0
+            parasiteIndex = 0
         try:
-			regionIndex = int(request.args.get('region_selection'))
+            regionIndex = int(request.args.get('region_selection'))
         except ValueError:
-			regionIndex = 0
+            regionIndex = 0
         try:
-			provinceIndex = int(request.args.get('province_selection'))
+            provinceIndex = int(request.args.get('province_selection'))
         except ValueError:
-			provinceIndex = 0
+            provinceIndex = 0
         try:
-			municipalityIndex = int(request.args.get('municipality_selection'))
+            municipalityIndex = int(request.args.get('municipality_selection'))
         except ValueError:
-			municipalityIndex = 0
+            municipalityIndex = 0
         try:
             microscopistIndex = int(request.args.get('microscopist_selection'))
         except ValueError:
@@ -495,7 +495,7 @@ def case(id):
                 c.drawString(temp['x'], temp['y'], "(%s,%s)" % (str(x), str(y)))
             """
             width, height = letter
-            reportString = "Date: %s\nRegion: %s\nProvince %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s" % (case.date.strftime('%B %d, %Y %I:%M %p'), case.region, case.province, case.municipality, case.partype, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s (%s %s)" % (case.user.username, case.user.firstname, case.user.lastname), "%s / %s" % (case.user.contact, case.user.email))
+            reportString = "Date: %s\nRegion: %s\nProvince: %s\nMunicipality: %s\nMicroscopist diagnosis: %s\nMicroscopist remarks: %s\nValidator diagnosis: %s\nValidator remarks: %s\nCoordinates: %s\nMicroscopist: %s\nContact details: %s\nSending duration: %s" % (case.date.strftime('%B %d, %Y %I:%M %p'), case.region, case.province, case.municipality, case.partype, case.description, case.parasite_validator, case.description_validator, "%s, %s" % (case.lat, case.lng), "%s %s (%s)" % (case.user.firstname, case.user.lastname, case.user.username), "%s / %s" % (case.user.contact, case.user.email), case.duration)
         
             for i, s in enumerate(reportString.split('\n')):
                 z = t(25,(i+2)*15)
@@ -520,8 +520,18 @@ def case(id):
                         im = PIL.open('image%s.jpg' % id)
                         '''
                         im = PIL.open(StringIO(x))
+
+                        # resize by aspect ratio
+                        width, height = im.size
+                        ratio = width * 1.0 / height
+                        if ratio >= 1.0:
+                            resized_width = 320
+                            resized_height = int(resized_width / ratio)
+                        else:
+                            resized_height = 320
+                            resized_width = int(ratio * resized_height)
                         
-                        im2 = im.resize((320, 240), PIL.NEAREST)
+                        im2 = im.resize((resized_width, resized_height), PIL.ANTIALIAS)
                         im2.save('image%s.jpg' % id)
                         z = t(350 * counter + 40, 400)
                         c.drawImage('image%s.jpg' % id, z['x'], z['y'])
@@ -989,7 +999,7 @@ def upload_chunk():
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
-                    partype_text = mapping['species'].capitalize().strip()
+                    partype_text = mapping['species'].strip()
                     partype = ParType.query.filter(ParType.type==partype_text).first()
                     if not partype:
                         partype = ParType(type=partype_text)
