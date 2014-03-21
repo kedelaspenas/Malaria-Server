@@ -28,39 +28,9 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
-        #slider_controls { 
-        background-color: transparent; 
-        right: 20px;
-        width: 80px;
-        background: white; 
-        border: 1px solid;
-        border-color: #999999;
-        padding: 5px;
-        padding-left: 7px;
-        padding-right: 7px;
-        padding-bottom: 3px;
-        margin-right: 5px;
-        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
-	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
-        box-shadow: 0px 7px 6px -6px #0F0F0F;
-        }
-        #total_container { 
-        background-color: transparent; 
-        width: 85px;
-        background: white; 
-        border: 1px solid;
-        border-color: #999999;
-        padding: 5px;
-        padding-left: 7px;
-        padding-bottom: 3px;
-        margin-right: 5px;
-        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
-	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
-        box-shadow: 0px 7px 6px -6px #0F0F0F;
-        }
         #coordinates_container { 
         background-color: transparent; 
-        width: 83px;
+        width: 92px;
         background: white; 
         border: 1px solid;
         border-color: #999999;
@@ -90,7 +60,7 @@
             max-width:100%;
         }
         #date_slider{
-            margin-bottom: 22px;
+            margin-right: 15%;
         }
         #loading_block {
             position: fixed;
@@ -99,6 +69,10 @@
             width: 100%;
             height: 100%;
             z-index:99;
+        }
+        .hline {
+            padding: 0px;
+            margin: 5px;
         }
 		</style>
 {% endblock %}
@@ -132,13 +106,21 @@
             <input type="text" id="lat" name="lat" value="{{ lat }}" style="display: None">
             <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
             </form>
-        </div>
-        
-        <div id="total_container" class="container" style="display: none">
-        Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
+            <hr class="hline">
+            Slider size: <br />
+            <input class="btn btn-medium" style="width: 100%;" type="submit" value="7 Days" onclick="setMin('Week')"><br/>
+            <input class="btn btn-medium" style="width: 100%;" type="submit" value="30 Days" onclick="setMin('Month')"><br/>
+            <input class="btn btn-medium" style="width: 100%;" type="submit" value="1 Year" onclick="setMin('Year')"><br/>
         </div>
         <div id="coordinates_container" class="container" style="display: none">
-            Lat:<span id="lat_container"></span><br>Long:<span id="lng_container"></span>
+            Coordinates:
+            <table>
+            <tr><td>Lat:<td id="lat_container">
+            <tr><td>Long: &nbsp;<td id="lng_container">
+            </table>
+            
+            <hr class="hline">
+            Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
         <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
@@ -238,12 +220,9 @@
               document.getElementById("marker_total").innerHTML = total_shown;
               var filter = document.getElementById('filter')
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
-              var total = document.getElementById('total_container')
-              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(total);
               var slider = document.getElementById('date_slider')
-              map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(slider);
-              var slider_controls = document.getElementById('slider_controls');
-              map.controls[google.maps.ControlPosition.RIGHT].push(slider_controls);
+              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(slider);
+              
               var coordinates_container = document.getElementById('coordinates_container');
               map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(coordinates_container);
               
@@ -280,15 +259,13 @@
                     document.getElementById('loading_block').style.display = 'None';
                     document.getElementById('map-canvas').style.display = '';
                     document.getElementById('date_slider').style.display = '';
-                    document.getElementById('slider_controls').style.display = '';
                     document.getElementById('filter').style.display = '';
-                    document.getElementById('total_container').style.display = '';
                     document.getElementById('coordinates_container').style.display = '';
                     document.getElementById('extra_controls').style.display = '';
                     $('#date_slider').dateRangeSlider('min', min_date);
                     $('#date_slider').dateRangeSlider('max', max_date);
                 });
-                
+                triggerMarker(2);
             }
             google.maps.event.addDomListener(window, 'load', initialize);
            
@@ -322,6 +299,10 @@
                     triggerMarker(this.index);
                 }
                 chkbox.checked = true;
+                if (markers[i].name == "Test Data")
+                {
+                    chkbox.checked = false;
+                }
                 tmpdiv.appendChild(chkbox);
                 
                 var chkname = document.createElement("span");
@@ -385,12 +366,6 @@
             }
         </script>
         
-        <div id="slider_controls" class="row-fluid" style="display: None">
-            Slider size: <br />
-            <input class="btn btn-medium span12" type="submit" value="7 Days" onclick="setMin('Week')"><br/>
-            <input class="btn btn-medium span12" type="submit" value="30 Days" onclick="setMin('Month')"><br/>
-            <input class="btn btn-medium span12" type="submit" value="1 Year" onclick="setMin('Year')"><br/>
-        </div>
         <script>
         function getCurrentWidth()
         {

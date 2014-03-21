@@ -27,25 +27,10 @@
 	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
         box-shadow: 0px 7px 6px -6px #0F0F0F;
         }
-        #total_container { 
-        background-color: transparent; 
-        
-        width: 85px;
-        background: white; 
-        border: 1px solid;
-        border-color: #999999;
-        padding: 5px;
-        padding-left: 7px;
-        padding-bottom: 3px;
-        margin-right: 5px;
-        -webkit-box-shadow: 0px 7px 6px -6px #0F0F0F;
-	    -moz-box-shadow: 0px 7px 6px -6px #0F0F0F;
-        box-shadow: 0px 7px 6px -6px #0F0F0F;
-        }
         #coordinates_container { 
         background-color: transparent; 
         
-        width: 83px;
+        width: 92px;
         background: white; 
         border: 1px solid;
         border-color: #999999;
@@ -106,6 +91,10 @@
          border-radius: 50%;
          white-space: nowrap;
        }
+        .hline {
+            padding: 0px;
+            margin: 5px;
+        }
 		</style>
 {% endblock %}
 
@@ -135,13 +124,16 @@
         <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
         </form>
         </div>
-            
-        <div id="total_container" class="container" style="display: none">
-        Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
-        </div>
         
         <div id="coordinates_container" class="container" style="display: none">
-            Lat:<span id="lat_container"></span><br>Long:<span id="lng_container"></span>
+            Coordinates:
+            <table>
+            <tr><td>Lat:<td id="lat_container">
+            <tr><td>Long: &nbsp;<td id="lng_container">
+            </table>
+            
+            <hr class="hline">
+            Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
         
         <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -227,8 +219,6 @@
               }
               var filter = document.getElementById('filter')
               map.controls[google.maps.ControlPosition.RIGHT_TOP].push(filter);
-              var total = document.getElementById('total_container')
-              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(total);
               var coordinates_container = document.getElementById('coordinates_container');
               map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(coordinates_container);
               var extra_controls=document.getElementById('extra_controls')
@@ -260,17 +250,16 @@
                   });
                 });
                 
-                google.maps.event.addListenerOnce(map, 'tilesloaded', function(){
+                google.maps.event.addListenerOnce(map, 'idle', function(){
                     document.getElementById('loading_block').style.display = 'None';
                     document.getElementById('map-canvas').style.display = '';
                     document.getElementById('filter').style.display = '';
-                    document.getElementById('total_container').style.display = '';
                     document.getElementById('coordinates_container').style.display = '';
                     document.getElementById('extra_controls').style.display = '';
                 });
+                triggerMarker(2);
             }
             google.maps.event.addDomListener(window, 'load', initialize);
-            var show1 = true, show2 = true, show3 = true, show4 = true, show5 = true
             function triggerMarker(x)
               {
                 var markerclass = markers[x-1];
@@ -308,6 +297,10 @@
                     triggerMarker(this.index);
                 }
                 chkbox.checked = true;
+                if (markers[i].name == "Test Data")
+                {
+                    chkbox.checked = false;
+                }
                 tmpdiv.appendChild(chkbox);
                 
                 var chkname = document.createElement("span");
