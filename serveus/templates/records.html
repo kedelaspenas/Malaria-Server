@@ -62,77 +62,85 @@
 {% endblock %}
 
 {% block content %}
-		<div class="container-fluid">
-            <div class="row-fluid">
-				<form action="/records/" method="get" name="filter" class="span3 container" style="background-color: white; ">
+		<div class="row" style="width: 100%; margin: 0">
+				<form action="/records/" method="get" name="filter" class="col-md-3">
 					<h4>Show Cases:</h4>
-					<div class="input-prepend" style="width: 100%">
-                    <span class="add-on">with</span>
-					<select style="width: calc(100% - 35px)" name="parasite_selection">
-                    {% for i in parasiteList %}
-					<option {% if i.id == parasiteIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div class="input-prepend" style="width: 100%">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_region" style="width: calc(100% - 34px)" name="region_selection">
-					{% for i in regionList %}
-						<option {% if i.id == regionIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div id="province" class="input-prepend" style="width: 100%; display: none">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_province" style="width: calc(100% - 34px)" name="province_selection">
-					{% for i in provinceList %}
-						<option {% if i.id == provinceIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
-					<div id="municipality" class="input-prepend" style="width: 100%; display: none">
-                    <span class="add-on">in&nbsp;&nbsp;&nbsp;</span>
-					<select id="sel_municipality" style="width: calc(100% - 34px)" name="municipality_selection">
-					{% for i in municipalityList %}
-						<option {% if i.id == municipalityIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
-                    {% endfor %}
-					</select>
-					</div>
-
+                    <div class="" style="background-color: white; ">
+                        <div class=""  style="background-color: white; ">
+                            <div class="input-group">
+                                <span class="input-group-addon">with</span>
+                                <select class="form-control" style="width: 100%" name="parasite_selection">
+                                    {% for i in parasiteList %}
+                                        <option {% if i.id==parasiteIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="">
+                            <div class="input-group">
+                                <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
+                                <select id="sel_region" class="form-control" style="width: 100%" name="region_selection">
+                                    {% for i in regionList %}
+                                        <option {% if i.id==regionIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="" id="province" style="display: none">
+                            <div  class="input-group">
+                                <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
+                                <select id="sel_province" class="form-control" style="width: 100%" name="province_selection">
+                                    {% for i in provinceList %}
+                                        <option {% if i.id==provinceIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="" id="municipality" style="display: none">
+                            <div class="input-group">
+                                <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
+                                <select id="sel_municipality" class="form-control" style="width: 100%" name="municipality_selection">
+                                    {% for i in municipalityList %}
+                                        <option {% if i.id==municipalityIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
 					{% if not user.is_microscopist() %}
-					<div class="input-prepend" style="width: 100%">
-                    <span class="add-on">by&nbsp;&nbsp;&nbsp;</span>
-					<select style="width: calc(100% - 34px)" name="microscopist_selection">
-					{% for i in microscopistList %}
-						<option {% if i.id == microscopistIndex %}selected{% endif %} value={{ i.id }}>
-						{% if loop.index0 == 0 %}
-							{{ i }}
-						{% else %}
-							{{i.firstname}} {{i.lastname}} ({{i.username}})
-						{% endif %}
-						</option>
-                    {% endfor %}
-					</select>
+					<div class="input-group">
+                        <span class="input-group-addon">by&nbsp;&nbsp;&nbsp;</span>
+                        <select class="form-control" style="width: 100%" name="microscopist_selection">
+                            {% for i in microscopistList %}
+                                <option {% if i.id==microscopistIndex %}selected{% endif %} value={{ i.id }}>
+                                {% if loop.index0 == 0 %}
+                                    {{ i }}
+                                {% else %}
+                                    {{i.firstname}} {{i.lastname}} ({{i.username}})
+                                {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
 					</div>
+                    <br>
 					{% endif %}
-
+                    <div class="input-group" style="width: 100%">
+                    <span class="input-group-addon">from</span>
+                    <input class="form-control" style="width: 100%" value="{{date_start}}" id="dpd1" name="date_start" type="text">
+                    </div>
                     <br>
-                    <div class="input-prepend" style="width: 100%">
-                    <span class="add-on">from</span>
-                    <input type="text" style="width: calc(100% - 52px)" value="{{date_start}}" id="dpd1" name="date_start">
-                    </div> 
-                    <br>
-                    <div class="input-prepend" style="width: 100%">
-                    <span class="add-on">to&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <input type="text" style="width: calc(100% - 52px)" value="{{date_end}}" id="dpd2" name="date_end">
+                    <div class="input-group" style="width: 100%">
+                    <span class="input-group-addon">to&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <input class="form-control" style="width: 100%" value="{{date_end}}" id="dpd2" name="date_end" type="text">
                     </div> 
                     <!-- HIDDEN FILTERS -->
-                    <input type="text" id="sort_by" name="sort_by" value="{{ sort_by }}" style="display: None"> 
-                    <input type="text" id="order" name="order" value="{{ order }}" style="display: None"> 
-                    <input type="text" id="page" name="page" value="1" style="display: None"> 
+                    <input class="form-control" id="sort_by" name="sort_by" value="{{ sort_by }}" style="display: None" type="text"> 
+                    <input class="form-control" id="order" name="order" value="{{ order }}" style="display: None" type="text"> 
+                    <input class="form-control" id="page" name="page" value="1" style="display: None" type="text"> 
                     <script>
                     function sort(column)
                     {
@@ -154,41 +162,38 @@
                     <!-- HIDDEN FILTERS -->
                     <br>
                     <!-- <input class="btn btn-medium" type="reset" value="Clear Filters" style="height: 30px"> -->
-                    <div style="text-align: right">
-                        <a class="btn" href="/records/" >Reset Filters</a>
-                        <input class="btn btn-medium" type="submit" id="submit_button" value="Filter Records" style="height: 30px;">
-                    </div>
+                    <a class="btn btn-default col-md-6" href="/records/">Reset Filters</a>
+                    <input class="btn btn-medium btn-default col-md-6" id="submit_button" value="Filter Records" type="submit">
 				</form>
-				<div class="span9" style="background-color: white;">
+				<div class="col-md-9" style="background-color: white;">
 				    <table class="table table-bordered table-condensed">
-					<tr>
-                    <th class="span1">ID</div>
-                    <th class="span2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class="" id="date_chevron"></i></div>
-                    <th class="span3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class="" id="location_chevron"></i></div>
-                    <th class="span3" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class="" id="parasite_chevron"></i></div>
-                    <th class="span3" onclick="sort('description');" style="cursor: pointer;">Remarks <div class="pull-left"><i class="" id="description_chevron"></i></div>
-                    <th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class="" id="microscopist_chevron"></i></div>
-                    <th class="span1">
+					<tbody><tr>
+                    <th class="span1">ID
+                    </th><th class="span2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class id="date_chevron"></i></div>
+                    </th><th class="span3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class id="location_chevron"></i></div>
+                    </th><th class="span3" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class id="parasite_chevron"></i></div>
+                    </th><th class="span3" onclick="sort('description');" style="cursor: pointer;">Remarks <div class="pull-left"><i class id="description_chevron"></i></div>
+                    </th><th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class id="microscopist_chevron"></i></div>
+                    </th><th class="span1">
                     {% for i in caseList %}
-					<tr><td {%if i.test %}style="color:red;"{%endif%}>{{i.code}}<td>{{i.date}}<td>{{i.region}}, {{i.province}}, {{i.municipality}}<td>{{i.partype}}<td>{{i.description}}<td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})<td><a href="/case/{{ i.id }}/" class="btn" style="width: calc(100% - 25px)">View</a>
+					</th></tr><tr><td {%if i.test %}style="color:red;" {%endif%}>{{i.code}}</td><td>{{i.date}}</td><td>{{i.region}}, {{i.province}}, {{i.municipality}}</td><td>{{i.partype}}</td><td>{{i.description}}</td><td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})</td><td><a href="/case/{{ i.id }}/" class="btn btn-default" style="width: 100%">View</a>
                     {% endfor %}
                     {% if not caseList %}
-                    <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results</a>
+                    </td></tr><tr><td colspan="5" style="text-align: center; font-weight: bold">No Results
                     {% endif %}
-					</table>
+					</td></tr></tbody></table>
                     {% if pagination.pages %}
-                    <div class="pagination" style="text-align: center">
-                    <ul>
-                    <li><a href="#" {% if pagination.has_prev %}onclick="set_page('{{pagination.page - 1}}')"{% endif %}>&laquo; Previous</a></li>
-                    {% for page in pagination.iter_pages() %}{% if page %}<li><a href="#" {% if page != pagination.page %}onclick="set_page('{{page}}')"{% else %}style="color: black; font-weight: bold"{% endif %}>{{ page }}</a></li>{% endif %}{% endfor %}
-                    <li><a href="#"{% if pagination.has_next %}onclick="set_page('{{pagination.page + 1}}')"{% endif %}>Next &raquo;</a></li>
+                    <div class="" style="text-align: center">
+                    <ul class="pagination">
+                    <li><a href="#" {% if pagination.has_prev %}onclick="set_page('{{pagination.page - 1}}')"{% endif %}> <</a></li>
+                    {% for page in pagination.iter_pages() %}{% if page %}<li><a href="#" {% if page !="pagination.page" %}onclick="set_page('{{page}}')"{% else %}style="color: black; font-weight: bold"{% endif %}>{{ page }}</a></li>{% endif %}{% endfor %}
+                    <li><a href="#" {% if pagination.has_next %}onclick="set_page('{{pagination.page + 1}}')"{% endif %}>> </a></li>
                     </ul>
                     </div>
                     {% endif %}
 				</div>
-			</div>
 		</div>
-        </div>
+                
         <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
@@ -198,6 +203,7 @@
         <p>This page displays the latest cases on the table. <br><br>Details of individual cases can be seen by clicking the respective "View" button.<br><br> Filters are available to narrow down the results.</p>
         </div>
         </div>
+
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/eyecon-datepicker.js"></script>
