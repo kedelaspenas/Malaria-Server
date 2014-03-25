@@ -2,7 +2,7 @@
 {% block title %}Outbreak Monitoring{% endblock %}
 
 {% block script %}
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&components=country:Philippines"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places&amp;components=country:Philippines"></script>
 {% endblock %}
 
 {% block style %}
@@ -24,7 +24,7 @@
 {% block content %}
         
         <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center">
-            <img src="/static/images/loading.gif"/>
+            <img src="/static/images/loading.gif">
         </div>
         
         <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: none">
@@ -37,14 +37,14 @@
             </div>
             <div class="modal-body">
                 <p>This page shows all instances of cases in the past week. <br> The height of the bar signifies how many cases there are in that area. <br><br> The + or - indicates either the increase or decrease of cases compared to the previous week. The number shows by how many. <br><br> 
-            </div>
+            </p></div>
         </div>
 
         <canvas id="myCanvas" width="0" height="0"></canvas> 
 
         <span id="monitoring_timeframe">
             <br>
-            <input type="text" id="autocomplete">
+            <input class="form-control" id="autocomplete" type="text">
             <!-- <h1>{{location}}</h1> -->
             <h4>{{week_start}} - {{week_end}}</h4>
             <!-- <h5> <font color="yellow"> This week: {{cases_this_week}} cases </font>

@@ -3,7 +3,7 @@
 
 {% block script %}
         <link href="/static/css/iThing-min.css" rel="stylesheet">
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&components=country:Philippines"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places&amp;components=country:Philippines"></script>
 {% endblock %}
 
 {% block style %}
@@ -16,7 +16,7 @@
         #filter { 
         background-color: transparent; 
         right: 20px;
-        width: 100px;
+        width: 110px;
         background: white; 
         border: 1px solid;
         border-color: #999999;
@@ -30,7 +30,7 @@
         }
         #coordinates_container { 
         background-color: transparent; 
-        width: 92px;
+        width: 100px;
         background: white; 
         border: 1px solid;
         border-color: #999999;
@@ -78,12 +78,12 @@
 {% endblock %}
 
 {% block content %}
-        <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center; z-index: 100;"><img src="/static/images/loading.gif"/></div>
+        <div id="loading_block" style="height: 100px; width: 100%; margin-top: 15%; text-align: center; z-index: 100;"><img src="/static/images/loading.gif"></div>
         
         <div id="map-canvas" class="google-maps" style="height: calc(100% - 42px); width: 100%; margin: -20px 0 0; display: "></div>
         
         <div id="extra_controls" style="display: none;">
-            <input type="text" id="autocomplete">
+            <input class="form-control" id="autocomplete" type="text">
         </div>
 
         <div id="date_slider" style="width:70%; display: none;"></div>
@@ -94,30 +94,30 @@
             </span>
             <form action="/timeline/" method="get" style="padding: 0; margin: 0;">
             From:<br>
-            <input type="text" style="width: calc(100% - 15px); margin-bottom: 0" value="{{bound_start.month}}/{{bound_start.day}}/{{bound_start.year}}" id="dpd1" name="date_start">
+            <input class="form-control" style="width: 100%; margin-bottom: 0" value="{{bound_start.month}}/{{bound_start.day}}/{{bound_start.year}}" id="dpd1" name="date_start" type="text">
             <br>
             To:<br>
-            <input type="text" style="width: calc(100% - 15px); margin-bottom: 3px" value="{{bound_end.month}}/{{bound_end.day}}/{{bound_end.year}}" id="dpd2" name="date_end">
+            <input class="form-control" style="width: 100%; margin-bottom: 3px" value="{{bound_end.month}}/{{bound_end.day}}/{{bound_end.year}}" id="dpd2" name="date_end" type="text">
             <div class="" style="padding: 0; margin: 0">
-            <input class="btn btn-medium" type="reset" value="Reset" onclick="window.location='/timeline/';"  style="display: inline-block; width: 48%"/>
-            <input class="btn btn-medium" type="submit" id="submit_button" value="Filter" style="display: inline-block; width: 48%" onclick="document.getElementById('lat').value=null;document.getElementById('lng').value=null"/>
+            <input class="btn btn-medium form-control btn-default" value="Reset" onclick="window.location='/timeline/';" style="display: inline-block; width: 48%" type="reset">
+            <input class="btn btn-medium form-control btn-default" id="submit_button" value="Filter" style="display: inline-block; width: 48%" onclick="document.getElementById('lat').value=null;document.getElementById('lng').value=null" type="submit">
             </div>
-            <input type="text" id="lng" name="lng" value="{{ lng }}" style="display: None">
-            <input type="text" id="lat" name="lat" value="{{ lat }}" style="display: None">
-            <input type="text" id="zoom" name="zoom" value="{{ zoom }}" style="display: None">
+            <input class="form-control" id="lng" name="lng" value="{{ lng }}" style="display: None" type="text">
+            <input class="form-control" id="lat" name="lat" value="{{ lat }}" style="display: None" type="text">
+            <input class="form-control" id="zoom" name="zoom" value="{{ zoom }}" style="display: None" type="text">
             </form>
             <hr class="hline">
-            Slider size: <br />
-            <input class="btn btn-medium" style="width: 100%;" type="submit" value="7 Days" onclick="setMin('Week')"><br/>
-            <input class="btn btn-medium" style="width: 100%;" type="submit" value="30 Days" onclick="setMin('Month')"><br/>
-            <input class="btn btn-medium" style="width: 100%;" type="submit" value="1 Year" onclick="setMin('Year')"><br/>
+            Slider size: <br>
+            <input class="btn btn-medium form-control btn-default" style="width: 100%;" value="7 Days" onclick="setMin('Week')" type="submit"><br>
+            <input class="btn btn-medium form-control btn-default" style="width: 100%;" value="30 Days" onclick="setMin('Month')" type="submit"><br>
+            <input class="btn btn-medium form-control btn-default" style="width: 100%;" value="1 Year" onclick="setMin('Year')" type="submit"><br>
         </div>
         <div id="coordinates_container" class="container" style="display: none">
             Coordinates:
             <table>
-            <tr><td>Lat:<td id="lat_container">
-            <tr><td>Long: &nbsp;<td id="lng_container">
-            </table>
+            <tbody><tr><td>Lat:</td><td id="lat_container">
+            </td></tr><tr><td>Long: &nbsp;</td><td id="lng_container">
+            </td></tr></tbody></table>
             
             <hr class="hline">
             Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
@@ -130,9 +130,9 @@
         <div class="modal-body">
         <p>This page shows the distribution of all recorded cases in the country. <br><br> Use the filters to narrow down the results. <br><br> The slider on the bottom controls the date range of cases displayed. <br> Change the start and end dates by dragging the date bubbles. <br> Range of dates is adjusted by dragging the blue area of the slider.<br><br>
         <span style="font-weight: bold">Legend: </span><br>
-        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000|000000"/> Any Disease &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&amp;chld=|FF0000|000000"> Any Disease &nbsp;&nbsp;&nbsp;
         
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FFFFFF|000000" /> Test Data</p>
+        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&amp;chld=|FFFFFF|000000"> Test Data</p>
         </div>
         </div>
         <script src="/static/js/jquery.js"></script>
