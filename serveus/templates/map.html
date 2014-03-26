@@ -112,10 +112,9 @@
         </span>
         <form action="/map/" method="get" style="padding: 0; margin: 0;">
         From:<br>
-        <input class="form-control" style="width: 100%; margin-bottom: 0" value="{{date_start}}" id="dpd1" name="date_start" type="text">
-        <br>
+        <input class="form-control" style="width: 100%; margin-bottom: 5px; padding-left: 5px; padding-right: 5px;" value="{{date_start}}" id="dpd1" name="date_start" type="text">
         To:<br>
-        <input class="form-control" style="width: 100%; margin-bottom: 3px" value="{{date_end}}" id="dpd2" name="date_end" type="text">
+        <input class="form-control" style="width: 100%; margin-bottom: 5px; padding-left: 5px; padding-right: 5px;" value="{{date_end}}" id="dpd2" name="date_end" type="text">
         <div class="" style="padding: 0; margin: 0">
         <input class="btn btn-medium form-control btn-default" value="Reset" onclick="window.location='/map/';" style="display: inline-block; width: 48%" type="reset">
         <input class="btn btn-medium form-control btn-default" id="submit_button" value="Filter" style="display: inline-block; width: 48%" onclick="document.getElementById('lat').value=null;document.getElementById('lng').value=null" type="submit">

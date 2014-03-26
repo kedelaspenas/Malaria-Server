@@ -95,10 +95,9 @@
             </span>
             <form action="/timeline/" method="get" style="padding: 0; margin: 0;">
             From:<br>
-            <input class="form-control" style="width: 100%; margin-bottom: 0" value="{{bound_start.month}}/{{bound_start.day}}/{{bound_start.year}}" id="dpd1" name="date_start" type="text">
-            <br>
+            <input class="form-control" style="width: 100%; margin-bottom: 5px; padding-left: 5px; padding-right: 5px;" value="{{bound_start.month}}/{{bound_start.day}}/{{bound_start.year}}" id="dpd1" name="date_start" type="text">
             To:<br>
-            <input class="form-control" style="width: 100%; margin-bottom: 3px" value="{{bound_end.month}}/{{bound_end.day}}/{{bound_end.year}}" id="dpd2" name="date_end" type="text">
+            <input class="form-control" style="width: 100%; margin-bottom: 5px; padding-left: 5px; padding-right: 5px;" value="{{bound_end.month}}/{{bound_end.day}}/{{bound_end.year}}" id="dpd2" name="date_end" type="text">
             <div class="" style="padding: 0; margin: 0">
             <input class="btn btn-medium form-control btn-default" value="Reset" onclick="window.location='/timeline/';" style="display: inline-block; width: 48%" type="reset">
             <input class="btn btn-medium form-control btn-default" id="submit_button" value="Filter" style="display: inline-block; width: 48%" onclick="document.getElementById('lat').value=null;document.getElementById('lng').value=null" type="submit">
