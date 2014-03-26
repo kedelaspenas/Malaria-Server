@@ -168,15 +168,14 @@
 				<div class="col-md-9" style="background-color: white;">
 				    <table class="table table-bordered table-condensed">
 					<tbody><tr>
-                    <th class="span1">ID
-                    </th><th class="span2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class id="date_chevron"></i></div>
-                    </th><th class="span3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class id="location_chevron"></i></div>
-                    </th><th class="span3" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class id="parasite_chevron"></i></div>
-                    </th><th class="span3" onclick="sort('description');" style="cursor: pointer;">Remarks <div class="pull-left"><i class id="description_chevron"></i></div>
-                    </th><th class="span4" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class id="microscopist_chevron"></i></div>
-                    </th><th class="span1">
+                    <th class="col-md-1">ID
+                    </th><th class="col-md-2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class id="date_chevron"></i></div>
+                    </th><th class="col-md-3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class id="location_chevron"></i></div>
+                    </th><th class="col-md-2" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class id="parasite_chevron"></i></div>
+                    </th><th class="col-md-3" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class id="microscopist_chevron"></i></div>
+                    </th><th class="col-md-1">
                     {% for i in caseList %}
-					</th></tr><tr><td {%if i.test %}style="color:red;" {%endif%}>{{i.code}}</td><td>{{i.date}}</td><td>{{i.region}}, {{i.province}}, {{i.municipality}}</td><td>{{i.partype}}</td><td>{{i.description}}</td><td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})</td><td><a href="/case/{{ i.id }}/" class="btn btn-default" style="width: 100%">View</a>
+					</th></tr><tr><td {%if i.test %}style="color:red;" {%endif%}>{{i.code}}</td><td>{{i.date}}</td><td>{{i.region}}, {{i.province}}, {{i.municipality}}</td><td>{{i.partype}}</td><td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})</td><td><a href="/case/{{ i.id }}/" class="btn btn-default" style="width: 100%">View</a>
                     {% endfor %}
                     {% if not caseList %}
                     </td></tr><tr><td colspan="5" style="text-align: center; font-weight: bold">No Results
@@ -219,9 +218,9 @@
         <script>
             $(document).ready ( function(){
                 if ("{{ order }}" == "asc")
-                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "icon-chevron-up")
+                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "glyphicon glyphicon-chevron-up")
                 else
-                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "icon-chevron-down")
+                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "glyphicon glyphicon-chevron-down")
             });
             var clicked = false;
             var checkin = $('#dpd1').datepicker({
