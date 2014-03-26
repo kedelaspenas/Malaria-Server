@@ -26,7 +26,7 @@
                                 <li><a href="/profilepage/">Profile</a></li>
                                 {% if user.is_administrator() %}<li><a href="/admin/">Admin Page</a></li>{% endif %}
                                 <li class="divider"></li>
-                                <li><a href="/logout/">Logout<i class="icon-off"></i></a></li>
+                                <li><a href="/logout/">Logout<span class="glyphicon glyphicon-off"></span></a></li>
                             </ul>
                         </div>
                     </ul>
@@ -37,12 +37,12 @@
                 <div id="collapse-bar" class="collapse navbar-collapse navbar-left" style="width: 50%">
                     <ul class="nav navbar-nav">
                         <li>&nbsp;</li>
-                        <!--<li><a href="/dashboard/"><i class="icon-tasks"></i> Summary</a></li>-->
-                        {% if not user.is_microscopist() %}<li {% if menu_active == 'monitoring' %}class="active"{% endif %}><a href="/monitoring/"><i class="icon-eye-open"></i> Monitoring</a></li>{% endif %}
-                        <li {% if menu_active == 'records' %}class="active"{% endif %}><a href="/records/"><i class="icon-book"></i> Records</a></li>
-                        {% if not user.is_microscopist() %}<li {% if menu_active == 'map' %}class="active"{% endif %}><a href="/map/"><i class="icon-map-marker"></i> Map</a></li>{% endif %}
-                        {% if not user.is_microscopist() %}<li {% if menu_active == 'timeline' %}class="active"{% endif %}><a href="/timeline/"><i class="icon-globe"></i> Timeline</a></li>{% endif %}
-                        <li><a href="#helpModal" id="help" data-toggle="modal"><i class="icon-question-sign"></i> Help</a></li>
+                        <!--<li><a href="/dashboard/"><span class="icon-tasks"></span> Summary</a></li>-->
+                        {% if not user.is_microscopist() %}<li {% if menu_active == 'monitoring' %}class="active"{% endif %}><a href="/monitoring/"><span class="glyphicon glyphicon-eye-open"></span> Monitoring</a></li>{% endif %}
+                        <li {% if menu_active == 'records' %}class="active"{% endif %}><a href="/records/"><span class="glyphicon glyphicon-book"></span> Records</a></li>
+                        {% if not user.is_microscopist() %}<li {% if menu_active == 'map' %}class="active"{% endif %}><a href="/map/"><span class="glyphicon glyphicon-globe"></span> Map</a></li>{% endif %}
+                        {% if not user.is_microscopist() %}<li {% if menu_active == 'timeline' %}class="active"{% endif %}><a href="/timeline/"><span class="glyphicon glyphicon-time"></span> Timeline</a></li>{% endif %}
+                        <li><a href="#helpModal" id="help" data-toggle="modal"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
                     </ul>
                 </div>
 			</div>

@@ -89,7 +89,7 @@
                             <br>
                         </div>
                         <div class="" id="province" style="display: none">
-                            <div  class="input-group">
+                            <div class="input-group">
                                 <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
                                 <select id="sel_province" class="form-control" style="width: 100%" name="province_selection">
                                     {% for i in provinceList %}
@@ -193,16 +193,25 @@
                     {% endif %}
 				</div>
 		</div>
-                
-        <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-        <h3 id="helpModalLabel">Records</h3>
+        
+        <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+                <h4 class="modal-title" id="myModalLabel">Records</h4>
+              </div>
+              <div class="modal-body">
+                <ul>
+                    <li>This page displays the latest cases on the table. <br><br>
+                    <li>Details of individual cases can be seen by clicking the respective "View" button.<br><br> 
+                    <li>Filters are available to narrow down the results.
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-        <p>This page displays the latest cases on the table. <br><br>Details of individual cases can be seen by clicking the respective "View" button.<br><br> Filters are available to narrow down the results.</p>
-        </div>
-        </div>
+        
 
 		<script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
@@ -242,8 +251,9 @@
             }).data('datepicker');
 
             $('select#sel_region').change(function() {
-                if ($('select#sel_region').val() == 'All Regions') {
+                if ($('select#sel_region').val() == 'All Regions' || $('select#sel_region').val() == "") {
                     $('div#province').hide();
+                    $('div#municipality').hide();
                 } else {
 					$.getJSON('/ajax/provinces', {
 						region: $('select#sel_region').val()
@@ -259,7 +269,10 @@
 						});
 
 					});
-                    $('div#province').show();
+                    $('div#province').show('fast', function(){
+                        $('div#province select').focus();
+                    });
+                    
                 }
                 $('select#sel_province').prop('selectedIndex', 0);
                 $('div#municipality').hide();
@@ -267,7 +280,7 @@
             });
 
             $('select#sel_province').change(function() {
-                if ($('select#sel_province').val() == 'All Provinces') {
+                if ($('select#sel_province').val() == 'All Provinces' || $('select#sel_province').val() == "0") {
                     $('div#municipality').hide();
                 } else {
 					$.getJSON('/ajax/municipalities', {
@@ -285,7 +298,9 @@
 						});
 
 					});
-                    $('div#municipality').show();
+                    $('div#municipality').show('fast', function(){
+                        $('div#municipality select').focus();
+                    });
                 }
                 $('select#sel_municipality').prop('selectedIndex', 0);
             });

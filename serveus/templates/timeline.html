@@ -45,6 +45,7 @@
         #extra_controls { 
         background-color: transparent; 
         margin-top: 27px;
+        width: 240px;
         }
         #autocomplete[type='text']{
         font-size: 12px;
@@ -122,19 +123,31 @@
             <hr class="hline">
             Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
-        <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-        <h3 id="helpModalLabel">Timeline</h3>
+
+        <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+                <h4 class="modal-title" id="myModalLabel">Timeline</h4>
+              </div>
+              <div class="modal-body">
+                <ul>
+                    <li>This page shows the distribution of all recorded cases in the country. <br><br> 
+                    <li>Use the filters to narrow down the results. <br><br> 
+                    <li>The slider on the bottom controls the date range of cases displayed. <br><br> 
+                    <li>Change the start and end dates by dragging the date bubbles. <br><br>
+                    <li>Range of dates is adjusted by dragging the blue area of the slider.<br>
+                </ul>
+                <span style="font-weight: bold">Legend: </span><br>
+                &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&amp;chld=|FF0000|000000"> Any Disease &nbsp;&nbsp;&nbsp;
+                
+                <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&amp;chld=|FFFFFF|000000"> Test Data
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-        <p>This page shows the distribution of all recorded cases in the country. <br><br> Use the filters to narrow down the results. <br><br> The slider on the bottom controls the date range of cases displayed. <br> Change the start and end dates by dragging the date bubbles. <br> Range of dates is adjusted by dragging the blue area of the slider.<br><br>
-        <span style="font-weight: bold">Legend: </span><br>
-        &nbsp;&nbsp;&nbsp;<img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&amp;chld=|FF0000|000000"> Any Disease &nbsp;&nbsp;&nbsp;
         
-        <img src="http://chart.googleapis.com/chart?chst=d_map_pin_letter&amp;chld=|FFFFFF|000000"> Test Data</p>
-        </div>
-        </div>
         <script src="/static/js/jquery.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -286,9 +299,9 @@
                 colorbox.style.backgroundColor = "#"+markerColors[i];
                 colorbox.innerHTML = "&nbsp;&nbsp;";
                 colorbox.style.display = "inline-block";
-                colorbox.style.height = "11px";
+                colorbox.style.height = "15px";
                 colorbox.style.border = "1px solid Black"
-                colorbox.style.verticalAlign = "middle"
+                colorbox.style.verticalAlign = ""
                 tmpdiv.appendChild(colorbox);
             
                 var chkbox = document.createElement("input");

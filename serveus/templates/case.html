@@ -118,15 +118,47 @@
 			</div>
 		</div>
     </form>
-    <div id="helpModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-        <h3 id="helpModalLabel">View Case</h3>
+    
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+            <h4 class="modal-title" id="myModalLabel">Case</h4>
+          </div>
+          <div class="modal-body">
+            <ul>
+                <li>This page shows the details of a specific case. <br><br> 
+                <li>The "View on Map" button brings you to the map and zooms in on the location of this case. <br><br>
+                <li>The "Print" button prints the details of this case along with the selected images.
+            </ul>
+          </div>
         </div>
-        <div class="modal-body">
-        <p>This page shows the details of a specific case. <br><br> The "View on Map" button brings you to the map and zooms in on the location of this case. <br><br>The "Print" button prints the details of this case along with the selected images.</p>
-        </div>
+      </div>
     </div>
+    
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+                <h4 class="modal-title" id="myModalLabel">Monitoring</h4>
+              </div>
+              <div class="modal-body">
+                <ul>
+                    <li>This page shows all instances of cases in the past week.
+                    <br><br>
+                    <li>The height of the bar signifies how many cases there are in that municipality.
+                    <br><br>
+                    <li>Mouse over a bar to see the name of the municipality.
+                    <br><br>
+                    <li>Click on a bar to see its corresponding records.
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+    
         <script>
              function toggleAll()
              {
