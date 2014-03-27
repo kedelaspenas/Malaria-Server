@@ -480,7 +480,11 @@ def case(id):
                         db.session.add(ParType(case.parasite_validator))
                     
                 if request.form['validator_remarks']:
+                    print request.form['validator_remarks']
                     case.description_validator = request.form['validator_remarks']
+                    
+                if request.form['Final']:
+                    print request.form['Final']
                     
                 db.session.commit();
         else:

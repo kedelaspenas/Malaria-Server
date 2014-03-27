@@ -56,18 +56,27 @@
                     </div>
                     <hr>
                     <div class="container col-sm-12 col-md-12" style="background-color: white; padding-right: 30px;">
-                        
+                    <input id="a" type="button" onclick="showval()" value="add form"/>
                     </div>
+                    <script>
+                    function showval(){
+                       document.getElementById('b').style.display = 'block';
+                    } 
+                    </script>
                     <br><br><br>
 					{% if user.is_doctor() %}
-                    <div class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 10px; margin-left: 0;">
+                    <div id="b" class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 10px; margin-left: 0;">
                         <h4>Validator Form: </h4>
+                        <textarea disabled style="resize:none;" placeholder="Name: {{user.username}}"></textarea>
                         <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text">
                         <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
                         <br>
                         <textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks" placeholder="Enter your remarks here"></textarea>
                         <!--<textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>-->
                         <br>
+                        Final :
+                        <input type="radio" name="Final" value="Yes">Yes
+                        <input type="radio" name="Final" value="No">No<br>
                         <input class="btn btn-medium form-control btn-default" name="choice" value="Submit" style="height: 30px" type="submit">
                     </div>
 					{% endif %}
