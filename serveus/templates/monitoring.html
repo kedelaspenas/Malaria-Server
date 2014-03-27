@@ -99,12 +99,13 @@
                 }
                 var barImage = new Image();
                 var bar_space = 2;
-                var bar_height = 20;
+                var bar_height = 10;
                 var bar_width = 5;
                 barImage.src = '/static/images/bar.png';
                 function makeIcon(size){
                     var c = document.getElementById("myCanvas");
                     var ctx = c.getContext("2d");
+                    //offset + height + spaces
                     c.height = (size*bar_height)+bar_height+((size-1)*bar_space);
                     c.width = bar_width;
                     
@@ -127,7 +128,7 @@
                             new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
                             new google.maps.MarkerImage(
                                 makeIcon({{i[1]}}),
-                                new google.maps.Size(bar_height/2,(({{i[1]}}-1)*bar_height)+bar_height+(({{i[1]}}-1)*bar_space)),
+                                new google.maps.Size(bar_width*2,(({{i[1]}}-1)*bar_height)+bar_height+(({{i[1]}}-1)*bar_space)),
                                 new google.maps.Point(0,0),
                                 new google.maps.Point(bar_width,(({{i[1]}}-1)*bar_height)+bar_height+(({{i[1]}}-1)*bar_space)) 
                             ),
