@@ -58,15 +58,54 @@
             .search-query:focus + button {
             z-index: 3;
             }
+
+            .tableheader{
+                background-color: #183D16;
+                color: white;
+                height: 70px;
+                font-size: 18px;
+            }
+
+            tbody > tr:hover{
+                background-color: #ccddcb;
+            }
+
+            .viewbutton{
+                background-color: #cbf8f6;
+                color: #024240;
+            }
+
+            .viewbutton:hover{
+                background-color: #4e9694;
+                color: black;
+            }
+
+            .filterform{
+                background-color: #ccddcb;
+                border-radius: 5px;
+            }
+
+            .filterbutton{
+                background-color: #77ad75;
+                color: white;
+            }
+
+            .pagination{
+                background-color: #183D16;
+            }
+
         </style>
 {% endblock %}
 
 {% block content %}
 		<div class="row" style="width: 100%; margin: 0">
-				<form action="/records/" method="get" name="filter" class="col-md-3">
+		  <div class="col-md-12">		
+            <!-- Filters -->
+                <form action="/records/" method="get" name="filter" class="col-md-3 filterform"><fieldset>
+
 					<h4>Show Cases:</h4>
-                    <div class="" style="background-color: white; ">
-                        <div class=""  style="background-color: white; ">
+                    <div class="" style="background-color: #ccddcb; ">
+                        <div class=""  style="background-color: #ccddcb; ">
                             <div class="input-group">
                                 <span class="input-group-addon">with</span>
                                 <select class="form-control" style="width: 100%" name="parasite_selection">
@@ -129,12 +168,12 @@
                     <br>
 					{% endif %}
                     <div class="input-group" style="width: 100%">
-                    <span class="input-group-addon">from</span>
+                    <span class="input-group-addon" style="background-color: #ffffff">from</span>
                     <input class="form-control" style="width: 100%" value="{{date_start}}" id="dpd1" name="date_start" type="text">
                     </div>
                     <br>
                     <div class="input-group" style="width: 100%">
-                    <span class="input-group-addon">to&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="input-group-addon" style="background-color: #ffffff">to&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <input class="form-control" style="width: 100%" value="{{date_end}}" id="dpd2" name="date_end" type="text">
                     </div> 
                     <!-- HIDDEN FILTERS -->
@@ -162,31 +201,42 @@
                     <!-- HIDDEN FILTERS -->
                     <br>
                     <!-- <input class="btn btn-medium" type="reset" value="Clear Filters" style="height: 30px"> -->
-                    <a class="btn btn-default col-md-6" href="/records/">Reset Filters</a>
-                    <input class="btn btn-medium btn-default col-md-6" id="submit_button" value="Filter Records" type="submit">
-				</form>
+                    <a class="btn col-md-4 col-md-offset-1 btn-success" style="font-size:11px;" href="/records/">Reset Filters</a>
+                    <input class="btn btn-success col-md-4 col-md-offset-2 " id="submit_button" style="font-size:11px;" value="Filter Records" type="submit">
+                    
+                </fieldset>
+                <br>
+                </form>
+                <!--Table -->
 				<div class="col-md-9" style="background-color: white;">
-				    <table class="table table-bordered table-condensed">
+				    <table class="table table-condensed">
 					<tbody>
-                    <tr>
-                        <th class="col-md-1">ID
-                        <th class="col-md-1" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class id="date_chevron"></i></div>
+                    <tr class="tableheader">
+                        <th class="col-md-1" style="border-top-left-radius: 5px;">ID
+
                         <th class="col-md-3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class id="location_chevron"></i></div>
-                        <th class="col-md-2" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class id="parasite_chevron"></i></div>
-                        <th class="col-md-2" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class id="microscopist_chevron"></i></div>
+                        
+                        <th class="col-md-2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class id="date_chevron"></i></div>
+                        
+                        <th class="col-md-1" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class id="parasite_chevron"></i></div>
+                        
+                        <th class="col-md-1" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class id="microscopist_chevron"></i></div>
+                        
                         <th class="col-md-1">Priority
+                        
                         <th class="col-md-1">Validation
-                        <th class="col-md-1">
+                        
+                        <th class="col-md-1" style="border-top-right-radius: 5px;">
                     {% for i in caseList %}
 					<tr>
                         <td {%if i.test %}style="color:red;" {%endif%}>{{i.code}}
-                        <td>{{i.date}}
                         <td>{{i.region}}, {{i.province}}, {{i.municipality}}
+                        <td>{{i.date}}
                         <td>{{i.partype}}
                         <td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})
                         <td>High/Normal
                         <td>Done/Pending
-                        <td><a href="/case/{{ i.id }}/" class="btn btn-default" style="width: 100%">View</a>
+                        <td><a href="/case/{{ i.id }}/" class="btn viewbutton" style="width: 100%"><span class="glyphicon glyphicon-search"></span> View</a>
                     {% endfor %}
                     {% if not caseList %}
                     <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results
@@ -202,6 +252,7 @@
                     </div>
                     {% endif %}
 				</div>
+            </div>
 		</div>
         
         <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
