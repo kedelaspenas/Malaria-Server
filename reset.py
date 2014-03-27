@@ -1988,6 +1988,7 @@ x = Case(datetime.date(2014,2,19),e,'Severe',14.639946,121.0781, True, a, b, c)
 x.user_id = 6
 db.session.add(x)
 
+
 # Images
 for i in xrange(1,9):
     tmp = Image()
@@ -2001,6 +2002,12 @@ for i in xrange(1,9):
     tmp.number = i
     db.session.add(tmp)
 log('images')    
+
+x =Validation(1,'Vivax','super severe')
+db.session.add(x)
+
+x =Validation(1,'Falciparum','mild')
+db.session.add(x)
 
 # TODO: remove when keys are synced with accounts
 """

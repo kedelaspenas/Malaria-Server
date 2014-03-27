@@ -56,18 +56,24 @@
                     </div>
                     <hr>
                     <div class="container col-sm-12 col-md-12" style="background-color: white; padding-right: 30px;">
-                    <input id="a" type="button" onclick="showval()" value="add form"/>
-                    </div>
+                    <input id="a" type="button" onclick="showval()" value="add form"/><br>
+                    {% for i in case.validation %}
+                        {{i.diagnosis}}<br>
+                        {{i.remarks}}<br>
+                    {% endfor %}
+                    <br>
                     <script>
                     function showval(){
                        document.getElementById('b').style.display = 'block';
                     } 
                     </script>
                     <br><br><br>
+                    
 					{% if user.is_doctor() %}
+                    </div>
                     <div id="b" class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 10px; margin-left: 0;">
                         <h4>Validator Form: </h4>
-                        <textarea disabled style="resize:none;" placeholder="Name: {{user.username}}"></textarea>
+                        <textarea disabled style="resize:none;" name="validator_name" placeholder="Name: {{user.username}}"></textarea>
                         <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text">
                         <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
                         <br>

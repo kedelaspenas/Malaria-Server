@@ -30,7 +30,7 @@ except ImportError:
     import PIL
 from flask_mail import Message
 
-from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality, ParType
+from models import db, User, UserType, Case, Key, Image, Database, Chunklist, Chunk, Region, Province, Municipality, ParType, Validation
 from serveus import mail, DATE_INIT, TIME_INIT
 
 
@@ -474,6 +474,7 @@ def case(id):
     if request.method == 'POST':
         if request.form['choice'] == 'Submit':
             if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
+                db.session.add(Validation(request.form['validator_name'],request.form['validator_diagnosis'],request.form['validator_remarks']))   
                 if request.form['validator_diagnosis']:
                     case.parasite_validator = request.form['validator_diagnosis']
                     if(ParType.query.filter(ParType.type == case.parasite_validator ).first() == None):
@@ -484,8 +485,7 @@ def case(id):
                     case.description_validator = request.form['validator_remarks']
                     
                 if request.form['Final']:
-                    print request.form['Final']
-                    
+                    print request.form['Final'] 
                 db.session.commit();
         else:
             def t(x, y):

@@ -107,6 +107,7 @@ class Case(db.Model):
 	lng = db.Column(db.Float)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	images = db.relationship('Image', backref='case', lazy='dynamic')
+	validation = db.relationship('Validation', backref='case', lazy='dynamic')
 	test = db.Column(db.Boolean)
 	partype_id = db.Column(db.Integer, db.ForeignKey('partype.id'))
 	region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
@@ -311,6 +312,18 @@ class Province(db.Model):
 	@property
 	def serialize(self):
 		return {'id': self.id, 'name': self.name}
+class Validation(db.Model):
+    __tablename__ = 'validation'
+    
+    id = db.Column(db.Integer,primary_key=True)
+    diagnosis = db.Column(db.String(50))
+    remarks = db.Column(db.String(50))
+    case_id = db.Column(db.Integer, db.ForeignKey('case.id'))
+    
+    def __init__(self,case_id='', diagnosis='', remarks=''):
+        self.case_id= case_id
+        self.diagnosis = diagnosis
+        self.remarks = remarks
 
 class Municipality(db.Model):
 	__tablename__ = 'municipality'
