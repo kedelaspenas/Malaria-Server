@@ -44,13 +44,12 @@
                                     <tr><th>Contact Details<td>None
                                     <tr><th>Diagnosis<td>{{case.parasite_validator}}
                                     <tr><th>Remarks<td>{{case.description_validator}}
-                                    {% if user.is_doctor() %}<tr><td colspan="4" style="text-align: left"><a href="#">View validation history...</a>{% endif %}
                                 </tbody>
                             </table>
                         </div>
                         <tr><td style="text-align: right">
                             <input id="print_pdf" name="choice" value="Download as PDF" type="submit" style="display: none;">
-                            <a class="btn btn-success" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-print" style="font-size: 30px"></span><br>Download as PDF</a>
+                            <a class="btn btn-success" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save" style="font-size: 30px"></span><br>Download as PDF</a>
                             {% if not user.is_microscopist() %}<a style="text-align: center" class="btn  btn-success" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker" style="font-size: 30px"></span><br>View on Map</a>{% endif %}
                             <a class="btn btn-success" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture" style="font-size: 30px"></span><br>View Image(s)</a>
                         </table>
