@@ -95,22 +95,24 @@
                 }
                 var barImage = new Image();
                 var bar_space = 2;
+                var bar_height = 20;
+                var bar_width = 5;
                 barImage.src = '/static/images/bar.png';
                 function makeIcon(size){
                     var c = document.getElementById("myCanvas");
                     var ctx = c.getContext("2d");
-                    c.height = (size*20)+20+((size-1)*bar_space);
-                    c.width = 5;
+                    c.height = (size*bar_height)+bar_height+((size-1)*bar_space);
+                    c.width = bar_width;
                     
                     for (var i=0; i<size; i++) {
-                        ctx.drawImage(barImage, 0,(i*20)+(i*bar_space), 10, 20);
+                        ctx.drawImage(barImage, 0,(i*bar_height)+(i*bar_space), bar_width*2, bar_height);
                     }
                     var img = c.toDataURL("image/png");
                     var image = {
                         url: img,
-                        size: new google.maps.Size(10,((size-1)*20)+20+((size-1)*bar_space)),
+                        size: new google.maps.Size(bar_width*2,((size-1)*bar_height)+bar_height+((size-1)*bar_space)),
                         origin: new google.maps.Point(0,0),
-                        anchor: new google.maps.Size(5,((size-1)*20)+20+((size-1)*bar_space))
+                        anchor: new google.maps.Size(bar_width,((size-1)*bar_height)+bar_height+((size-1)*bar_space))
                     };
                     
                     return img;
@@ -121,9 +123,9 @@
                             new google.maps.LatLng({{i[0][0]}},{{i[0][1]}}),
                             new google.maps.MarkerImage(
                                 makeIcon({{i[1]}}),
-                                new google.maps.Size(10,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*bar_space)),
+                                new google.maps.Size(bar_height/2,(({{i[1]}}-1)*bar_height)+bar_height+(({{i[1]}}-1)*bar_space)),
                                 new google.maps.Point(0,0),
-                                new google.maps.Point(5,(({{i[1]}}-1)*20)+20+(({{i[1]}}-1)*bar_space)) 
+                                new google.maps.Point(bar_width,(({{i[1]}}-1)*bar_height)+bar_height+(({{i[1]}}-1)*bar_space)) 
                             ),
                             "{{i[2]}} : {{i[1]}} &nbsp;","{{i[3]}}","{{i[4]}}","{{i[5]}}"
                         )

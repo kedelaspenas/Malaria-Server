@@ -341,13 +341,14 @@ def monitoring():
     unique_municipality = Case.query.group_by(Case.municipality_id)
     municipality_list = []
     for j in unique_municipality:
-        countM = Case.query.filter_by(municipality = j.municipality).count()
-        temp = Case.query.filter_by(municipality = j.municipality)
-        coor_list = []
-        for k in temp:
-            coor_list.append((k.lat,k.lng))
-        geoCenter = getGeoCenter(coor_list)
-        municipality_list.append((geoCenter,countM,j.municipality, j.region_id, j.province_id, j.municipality_id))
+        countM = Case.query.filter_by(municipality = j.municipality, test = True).count()
+        if countM != 0:
+            temp = Case.query.filter_by(municipality = j.municipality, test = True)
+            coor_list = []
+            for k in temp:
+                coor_list.append((k.lat,k.lng))
+            geoCenter = getGeoCenter(coor_list)
+            municipality_list.append((geoCenter,countM,j.municipality, j.region_id, j.province_id, j.municipality_id))
 
     location = "Philippines"
     cases_this_week = 13
