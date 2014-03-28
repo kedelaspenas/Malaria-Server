@@ -80,11 +80,11 @@ class ImageView(MyModelView):
     def action_open(self,ids):
         tempids=""
         for i in ids:
-            tempids= tempids + "window.open(\"/pic/"+ str(Image.query.get(i).id) + ");"
-        #return Markup( ' <a href="/pic/%s" id = "imlink" target="_blank">%s</a> ' % (str(Image.query.get(ids[0]).id), str(Image.query.get(ids[0]).id)) 
-     #   return Markup( '  <a href="/pic/1" id = "imlink" target="_blank"></a> <script> document.getElementById("imlink").click(); alert("asd");</script> ')
-        return Markup( '  <a href="/pic/1" class= "imlink" target="_blank"></a>  <a href="/pic/2" class = "imlink" target="_blank"></a><script> var l= document.getElementsByClassName("imlink"); \
-        for (var i=0;i<l.length; i++) {l[i].click();}       </script>  ')
+            #tempids= tempids + "window.open(\"/pic/"+ str(Image.query.get(i).id) + ");"
+            tempids=tempids + '<a href=\"/pic/'+ str(Image.query.get(i).id) + '\" class =\"imlink\" target =\"_blank\"></a>'
+        print tempids
+        return Markup( '  %s <script> var l= document.getElementsByClassName("imlink"); \
+        for (var i=0;i<l.length; i++) {l[i].click();}       </script>  ' % tempids)
         
     @action('download','Download')
     def action_download(self,ids):
