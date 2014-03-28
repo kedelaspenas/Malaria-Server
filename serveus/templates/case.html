@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 {% block title %}Case{% endblock %}
-
+{% block style %}
+    <style type="text/css">
+        .icon-button{
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 <form id="super" action="" method="post" class="">
     <div class="row col-sm-10 col-md-10" style="background-color: white;">
@@ -48,42 +54,42 @@
             </div>
             <tr><td>
             {% if user.is_doctor() %}
-        {% if not case.finalized %}
-            <input id="a" type="button" onclick="showval()" value="add form"/><br>
-        {% endif %}
-        {% for i in case.validations|reverse %}
-             date: {{i.date}}<br>
-             validator: {{i.user}}<br>
-             diagnosis: {{i.diagnosis}}<br>
-             remarks: {{i.remarks}}<br>
-        {% endfor %}
-         <br>
-        <script>
-            function showval(){
-                document.getElementById('b').style.display = 'block';
-        } 
-        </script>
-        
-        <div id="b" class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 10px; margin-left: 0;">
-            <h4>Validator Form: </h4>
-            <textarea disabled style="resize:none;"  id="validator_name" name="validator_name" placeholder="Name: {{user.username}}"></textarea>
-            <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text">
+            {% for i in case.validations|reverse %}
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th>Date<td>{{i.date}}
+                        <tr><th>Validator<td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})
+                        <tr><th>Contact Details<td>{{i.user.contact}}
+                        <tr><th>Diagnosis<td>{{i.diagnosis}}
+                        <tr><th>Remarks<td>{{i.remarks}}
+                    </tbody>
+                </table>
+            {% endfor %}
+            {% if not case.finalized %}
+                <a id="add_validation_button" class="btn btn-success" style="width:100%" onclick="$('#validator_div').show('fast');$('#add_validation_button').hide('fast');"/><span class="glyphicon glyphicon-plus-sign"></span> Add Validation</a>
+            {% endif %}
+        <div id="validator_div" class="" style="display: none">
+            <h5>Validator Form: </h5>
+            
+            <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text" style="width: 100%;">
             <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
             <br>
-            <textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks" placeholder="Enter your remarks here"></textarea>
+            <textarea style="resize:none; width: 100%;" id="validator_remarks" name="validator_remarks" placeholder="Enter your remarks here"></textarea>
             <!--<textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>-->
             <br>
-            Final :
-            <input type="radio" name="Final" value="Yes">Yes
-            <input type="radio" name="Final" value="No" checked>No<br>
+            <h5>
+            Final: &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="Final" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="Final" value="No" checked>No 
+            </h5>
             <input class="btn btn-medium form-control btn-default" name="choice" value="Submit" style="height: 30px" type="submit">
         </div>
         {% endif %}
             <td style="text-align: right">
                 <input id="print_pdf" name="choice" value="Download as PDF" type="submit" style="display: none;">
-                <a class="btn btn-success" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save" style="font-size: 30px"></span><br>Download as PDF</a>
-                {% if not user.is_microscopist() %}<a style="text-align: center" class="btn  btn-success" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker" style="font-size: 30px"></span><br>View on Map</a>{% endif %}
-                <a class="btn btn-success" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture" style="font-size: 30px"></span><br>View Image(s)</a>
+                <a class="btn btn-success" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save icon-button"></span><br>Download as PDF</a>
+                {% if not user.is_microscopist() %}<a style="text-align: center" class="btn btn-success" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker icon-button"></span><br>View on Map</a>{% endif %}
+                <a class="btn btn-success" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture icon-button"></span><br>View Image(s)</a>
             </table>
             
             
