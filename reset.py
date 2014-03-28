@@ -2003,10 +2003,10 @@ for i in xrange(1,9):
     db.session.add(tmp)
 log('images')    
 
-x =Validation(1,'Vivax','super severe')
+x =Validation('Rodolfo',1,'Vivax','super severe')
 db.session.add(x)
 
-x =Validation(1,'Falciparum','mild')
+x =Validation('noel',1,'Falciparum','mild')
 db.session.add(x)
 
 # TODO: remove when keys are synced with accounts

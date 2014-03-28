@@ -316,11 +316,13 @@ class Validation(db.Model):
     __tablename__ = 'validation'
     
     id = db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String(50))
     diagnosis = db.Column(db.String(50))
     remarks = db.Column(db.String(50))
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'))
     
-    def __init__(self,case_id='', diagnosis='', remarks=''):
+    def __init__(self, name='', case_id='', diagnosis='', remarks=''):
+        self.name = name
         self.case_id= case_id
         self.diagnosis = diagnosis
         self.remarks = remarks
