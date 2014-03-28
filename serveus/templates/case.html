@@ -2,219 +2,197 @@
 {% block title %}Case{% endblock %}
 
 {% block content %}
-    
-			<form id="super" action="" method="post" class="row">
-                <div class="row col-sm-10 col-md-10" style="background-color: white;">
-                    <div class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 0;">
-                        <table class="table table-condensed table-bordered" style="width: calc(100% - 15px); margin-left: 15px">
-                        <tr><td>
-                        <div>
-                            <h4 class="col-md-4 pull-left">{{case.code}}</h4>
-                            <h4 class="col-md-4" style="text-align: center"></h4>
-                            <h4 class="col-md-4" style="text-align: right">{{case.date.strftime('%B %d, %Y %I:%M %p')}}</h4>
-                        </div>
-                        <div class="col-md-4">
-                            <table class="table table-condensed table-bordered">
-                                <tbody>
-                                    <tr><th colspan="2">Location
-                                    <tr><th>Region<td>{{case.region}}
-                                    <tr><th>Province<td>{{case.province}}
-                                    <tr><th>Municipality<td>{{case.municipality}}
-                                    <tr><th>GPS<td><span id="location"></span> ({{case.lat}}, {{case.lng}})
-                                    <tr><th>Sending duration<td class="span10">{{case.duration}} 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-4">
-                            <table class="table table-condensed table-bordered">
-                                <tbody>
-                                    <tr><th colspan="2">Microscopist
-                                    <tr><th>Name<td>{{case.user.firstname}} {{case.user.lastname}} ({{case.user.username}})
-                                    <tr><th>Contact Details<td>{{case.user.contact}} / {{case.user.email}}
-                                    <tr><th>Diagnosis<td>{{case.partype}}
-                                    <tr><th>Remarks<td>{{case.description}}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-4">
-                            <table class="table table-condensed table-bordered">
-                                <tbody>
-                                    <tr><th colspan="2">Validator
-									<tr><th>Name<td>{{case.validator}}
-									<tr><th>Contact Details<td>{{case.validator_contacts}}
-                                    <tr><th>Diagnosis<td>{{case.parasite_validator}}
-                                    <tr><th>Remarks<td>{{case.description_validator}}
-                                </tbody>
-                            </table>
-                        </div>
-                        <tr><td style="text-align: right">
-                            <input id="print_pdf" name="choice" value="Download as PDF" type="submit" style="display: none;">
-                            <a class="btn btn-success" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save" style="font-size: 30px"></span><br>Download as PDF</a>
-                            {% if not user.is_microscopist() %}<a style="text-align: center" class="btn  btn-success" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker" style="font-size: 30px"></span><br>View on Map</a>{% endif %}
-                            <a class="btn btn-success" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture" style="font-size: 30px"></span><br>View Image(s)</a>
-                        </table>
-                    </div>
-                    <hr>
-                    <div class="container col-sm-12 col-md-12" style="background-color: white; padding-right: 30px;">
-                    <br><br><br>                   					
-                    {% if user.is_doctor() %}
-                    </div>
-					{% if not case.finalized %}
-						<input id="a" type="button" onclick="showval()" value="add form"/><br>
-					{% endif %}
-                    {% for i in case.validations|reverse %}
-                         date: {{i.date}}<br>
-                         validator: {{i.user}}<br>
-                         diagnosis: {{i.diagnosis}}<br>
-                         remarks: {{i.remarks}}<br>
-                    {% endfor %}
-                     <br>
-                    <script>
-                        function showval(){
-                            document.getElementById('b').style.display = 'block';
-                    } 
-                    </script>
-                    
-                    <div id="b" class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 10px; margin-left: 0;">
-                        <h4>Validator Form: </h4>
-                        <textarea disabled style="resize:none;"  id="validator_name" name="validator_name" placeholder="Name: {{user.username}}"></textarea>
-                        <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text">
-                        <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
-                        <br>
-                        <textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks" placeholder="Enter your remarks here"></textarea>
-                        <!--<textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>-->
-                        <br>
-                        Final :
-                        <input type="radio" name="Final" value="Yes">Yes
-                        <input type="radio" name="Final" value="No" checked>No<br>
-                        <input class="btn btn-medium form-control btn-default" name="choice" value="Submit" style="height: 30px" type="submit">
-                    </div>
-					{% endif %}
-                </div>
-				<div class=" col-sm-2 col-md-2" style="padding-top: 0; border: 1px solid #DDD;">
-                    <!--
-                    <ul class="nav nav-tabs" id="image_tabs">
-                        <li class="active"><a href="#raw_images" data-toggle="tab">Raw Images</a></li>
-                    </ul>
-                    -->
-                            <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
-                            <tbody><tr>
-                            <td><h5 class="pull-right">Select all</h5> 
-                            <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" onclick="toggleAll()" style="margin-bottom: 5px" type="checkbox">
-                            
-                            </tbody></table>
-                            <div class="row" id="gallery" style="padding: 0">
-                                {% for j, i in images %}
-                                    <div class="container col-sm-12 col-md-12">
-										<input class="pull-left" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" type="checkbox">
-										<p>&nbsp;Image #{{j}}</p>
-										<a href="/{{i}}" id="link_{{loop.index0}}" target="_blank" class="thumbnail">
-                                          <img src="/thumb/{{i}}" alt="">
-                                        </a>
-                                    </div>
-                                     {% if loop.index0 == (loop.length-1) %}
-                                          <script>
-                                                window.currentGalleryLength = {{ loop.length }}
-                                                function checkGalleryImage(increment) {
-                                                    var i = (window.currentImageIndex+increment+window.currentGalleryLength)%window.currentGalleryLength;
-                                                    checkGalleryImage.chkbox_print.checked = document.getElementById("chkbox_"+i).checked;
-                                                    window.currentImageIndex = i;
-                                                }
-                                                checkGalleryImage.chkbox_print = document.getElementById("currentlyViewed_chkbox_printing");
-                                          </script>
-                                     {% endif %}
-                                 {% endfor %}
-                                 </li>
-                            </div>
-                        
-				</div>
-            </form>
-
-    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-            <h4 class="modal-title" id="myModalLabel">Case</h4>
-          </div>
-          <div class="modal-body">
-            <ul>
-                <li>This page shows the details of a specific case. <br><br> 
-                <li>The "View on Map" button brings you to the map and zooms in on the location of this case. <br><br>
-                <li>The "Print" button prints the details of this case along with the selected images.
-            </ul>
-          </div>
+<form id="super" action="" method="post" class="">
+    <div class="row col-sm-10 col-md-10" style="background-color: white;">
+        <div class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 0;">
+            <table class="table table-condensed table-bordered" style="width: calc(100% - 15px); margin-left: 15px">
+            <tr><td colspan="2">
+            <div>
+                <h4 class="col-md-4 pull-left">{{case.code}}</h4>
+                <h4 class="col-md-4" style="text-align: center"></h4>
+                <h4 class="col-md-4" style="text-align: right">{{case.date.strftime('%B %d, %Y %I:%M %p')}}</h4>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th colspan="2">Location
+                        <tr><th>Region<td>{{case.region}}
+                        <tr><th>Province<td>{{case.province}}
+                        <tr><th>Municipality<td>{{case.municipality}}
+                        <tr><th>GPS<td><span id="location"></span> ({{case.lat}}, {{case.lng}})
+                        <tr><th>Sending duration<td class="span10">{{case.duration}} 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th colspan="2">Microscopist
+                        <tr><th>Name<td>{{case.user.firstname}} {{case.user.lastname}} ({{case.user.username}})
+                        <tr><th>Contact Details<td>{{case.user.contact}} / {{case.user.email}}
+                        <tr><th>Diagnosis<td>{{case.partype}}
+                        <tr><th>Remarks<td>{{case.description}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th colspan="2">Validator
+                        <tr><th>Name<td>{{case.validator}}
+                        <tr><th>Contact Details<td>{{case.validator_contacts}}
+                        <tr><th>Diagnosis<td>{{case.parasite_validator}}
+                        <tr><th>Remarks<td>{{case.description_validator}}
+                    </tbody>
+                </table>
+            </div>
+            <tr><td>
+            {% if user.is_doctor() %}
+        {% if not case.finalized %}
+            <input id="a" type="button" onclick="showval()" value="add form"/><br>
+        {% endif %}
+        {% for i in case.validations|reverse %}
+             date: {{i.date}}<br>
+             validator: {{i.user}}<br>
+             diagnosis: {{i.diagnosis}}<br>
+             remarks: {{i.remarks}}<br>
+        {% endfor %}
+         <br>
+        <script>
+            function showval(){
+                document.getElementById('b').style.display = 'block';
+        } 
+        </script>
+        
+        <div id="b" class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 10px; margin-left: 0;">
+            <h4>Validator Form: </h4>
+            <textarea disabled style="resize:none;"  id="validator_name" name="validator_name" placeholder="Name: {{user.username}}"></textarea>
+            <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text">
+            <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
+            <br>
+            <textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks" placeholder="Enter your remarks here"></textarea>
+            <!--<textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>-->
+            <br>
+            Final :
+            <input type="radio" name="Final" value="Yes">Yes
+            <input type="radio" name="Final" value="No" checked>No<br>
+            <input class="btn btn-medium form-control btn-default" name="choice" value="Submit" style="height: 30px" type="submit">
         </div>
+        {% endif %}
+            <td style="text-align: right">
+                <input id="print_pdf" name="choice" value="Download as PDF" type="submit" style="display: none;">
+                <a class="btn btn-success" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save" style="font-size: 30px"></span><br>Download as PDF</a>
+                {% if not user.is_microscopist() %}<a style="text-align: center" class="btn  btn-success" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker" style="font-size: 30px"></span><br>View on Map</a>{% endif %}
+                <a class="btn btn-success" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture" style="font-size: 30px"></span><br>View Image(s)</a>
+            </table>
+            
+            
+            
+            
+            
+        </div>            					
+        
+    </div>
+    <div class=" col-sm-2 col-md-2" style="padding-top: 0; border: 1px solid #DDD;">
+        <!--
+        <ul class="nav nav-tabs" id="image_tabs">
+            <li class="active"><a href="#raw_images" data-toggle="tab">Raw Images</a></li>
+        </ul>
+        -->
+                <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
+                <tbody><tr>
+                <td><h5 class="pull-right">Select all</h5> 
+                <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" onclick="toggleAll()" style="margin-bottom: 5px" type="checkbox">
+                
+                </tbody></table>
+                <div class="row" id="gallery" style="padding: 0">
+                    {% for j, i in images %}
+                        <div class="container col-sm-12 col-md-12">
+                            <input class="pull-left" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" type="checkbox">
+                            <p>&nbsp;Image #{{j}}</p>
+                            <a href="/{{i}}" id="link_{{loop.index0}}" target="_blank" class="thumbnail">
+                              <img src="/thumb/{{i}}" alt="">
+                            </a>
+                        </div>
+                         {% if loop.index0 == (loop.length-1) %}
+                              <script>
+                                    window.currentGalleryLength = {{ loop.length }}
+                                    function checkGalleryImage(increment) {
+                                        var i = (window.currentImageIndex+increment+window.currentGalleryLength)%window.currentGalleryLength;
+                                        checkGalleryImage.chkbox_print.checked = document.getElementById("chkbox_"+i).checked;
+                                        window.currentImageIndex = i;
+                                    }
+                                    checkGalleryImage.chkbox_print = document.getElementById("currentlyViewed_chkbox_printing");
+                              </script>
+                         {% endif %}
+                     {% endfor %}
+                     </li>
+                </div>
+            
+    </div>
+</form>
+
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+        <h4 class="modal-title" id="myModalLabel">Case</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>This page shows the details of a specific case. <br><br> 
+            <li>The "View on Map" button brings you to the map and zooms in on the location of this case. <br><br>
+            <li>The "Print" button prints the details of this case along with the selected images.
+        </ul>
       </div>
     </div>
+  </div>
+</div>
     
-    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
-                <h4 class="modal-title" id="myModalLabel">Monitoring</h4>
-              </div>
-              <div class="modal-body">
-                <ul>
-                    <li>This page shows all instances of cases in the past week.
-                    <br><br>
-                    <li>The height of the bar signifies how many cases there are in that municipality.
-                    <br><br>
-                    <li>Mouse over a bar to see the name of the municipality.
-                    <br><br>
-                    <li>Click on a bar to see its corresponding records.
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-    
-        <script>
-             function toggleAll()
-             {
-                for (var i=0; i<window.currentGalleryLength; i++)
-                {
-                    document.getElementById("chkbox_"+i).checked = document.getElementById("selectAll").checked;
-                }
-             }
-             function toggleSelectAll(x)
-             {
-                if(document.getElementById("chkbox_"+x).checked == false)
-                {
-                    document.getElementById("selectAll").checked = false;
-                }
-             }
-             function openSelectedImages()
-             {
-                for (var i=0; i<window.currentGalleryLength; i++)
-                {
-                    if(document.getElementById("chkbox_"+i).checked){
-                        window.open(document.getElementById("link_"+i).href, '_blank');
-                    }
-                    window.focus();
-                }
-             }
-        </script>
-		<script src="/static/js/jquery.js"></script>
-         <script>
-            var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng={{case.lat}},{{case.lng}}&sensor=false'
-            $.getJSON(url, function(data){
-                if (data['status'] == "OK"){
-                    document.getElementById('location').innerHTML = data['results'][0]['formatted_address'];
-                }
-            });
-        </script>
-		<script src="/static/js/bootstrap.min.js"></script>
-        <script>
-            function var_dump(x) {
-                var s = "";
-                for (var i in x) {
-                    s += i+" = "+x[i]+"\n";
-                 }
-                 alert(s);
+<script>
+     function toggleAll()
+     {
+        for (var i=0; i<window.currentGalleryLength; i++)
+        {
+            document.getElementById("chkbox_"+i).checked = document.getElementById("selectAll").checked;
+        }
+     }
+     function toggleSelectAll(x)
+     {
+        if(document.getElementById("chkbox_"+x).checked == false)
+        {
+            document.getElementById("selectAll").checked = false;
+        }
+     }
+     function openSelectedImages()
+     {
+        for (var i=0; i<window.currentGalleryLength; i++)
+        {
+            if(document.getElementById("chkbox_"+i).checked){
+                window.open(document.getElementById("link_"+i).href, '_blank');
             }
-        </script>
-        <script>
-    </script>
+            window.focus();
+        }
+     }
+</script>
+<script src="/static/js/jquery.js"></script>
+ <script>
+    var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng={{case.lat}},{{case.lng}}&sensor=false'
+    $.getJSON(url, function(data){
+        if (data['status'] == "OK"){
+            document.getElementById('location').innerHTML = data['results'][0]['formatted_address'];
+        }
+    });
+</script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script>
+    function var_dump(x) {
+        var s = "";
+        for (var i in x) {
+            s += i+" = "+x[i]+"\n";
+         }
+         alert(s);
+    }
+</script>
 {% endblock %}
