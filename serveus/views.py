@@ -693,6 +693,23 @@ def login():
         error = True
     return redirect("/index")
 
+@app.route('/stats/', methods=['GET'])
+@login_required
+def stats():
+	ret = []
+	for i in Region.query.all():
+		ret.append(str(i))
+		dur = total = 0
+		for j in Case.query.filter(Case.region == i):
+			if j.duration != 'Not recorded':
+				dur += j.duration
+				total += 1.0
+		try:
+			ret.append(dur / total)
+		except ZeroDivisionError:
+			ret.append('None')
+	return '<br />'.join(ret)
+
 """Returns a CSV file of the cases stored."""
 @app.route('/csv/', methods = ['GET'])
 @login_required
