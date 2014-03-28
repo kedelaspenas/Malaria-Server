@@ -40,8 +40,8 @@
                             <table class="table table-condensed table-bordered">
                                 <tbody>
                                     <tr><th colspan="2">Validator
-                                    <tr><th>Name<td>None
-                                    <tr><th>Contact Details<td>None
+									<tr><th>Name<td>{{case.validator}}
+									<tr><th>Contact Details<td>{{case.validator_contacts}}
                                     <tr><th>Diagnosis<td>{{case.parasite_validator}}
                                     <tr><th>Remarks<td>{{case.description_validator}}
                                 </tbody>
@@ -59,9 +59,12 @@
                     <br><br><br>                   					
                     {% if user.is_doctor() %}
                     </div>
-                    <input id="a" type="button" onclick="showval()" value="add form"/><br>
-                    {% for i in case.validation %}
-                         name: {{i.name}}<br>
+					{% if not case.finalized %}
+						<input id="a" type="button" onclick="showval()" value="add form"/><br>
+					{% endif %}
+                    {% for i in case.validations|reverse %}
+                         date: {{i.date}}<br>
+                         validator: {{i.user}}<br>
                          diagnosis: {{i.diagnosis}}<br>
                          remarks: {{i.remarks}}<br>
                     {% endfor %}
@@ -83,7 +86,7 @@
                         <br>
                         Final :
                         <input type="radio" name="Final" value="Yes">Yes
-                        <input type="radio" name="Final" value="No">No<br>
+                        <input type="radio" name="Final" value="No" checked>No<br>
                         <input class="btn btn-medium form-control btn-default" name="choice" value="Submit" style="height: 30px" type="submit">
                     </div>
 					{% endif %}

@@ -474,21 +474,22 @@ def case(id):
     if request.method == 'POST':
         if request.form['choice'] == 'Submit':
             if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
-                print request.form.keys()
+
+				# not used
                 if request.form['validator_diagnosis']:
                     if request.form['Final'] == 'Yes':
                         case.parasite_validator = request.form['validator_diagnosis']
                         if(ParType.query.filter(ParType.type == case.parasite_validator ).first() == None):
                             db.session.add(ParType(case.parasite_validator))
                     
+				# not used
                 if request.form['validator_remarks']:
                     if request.form['Final'] == 'Yes':
-                        print request.form['validator_remarks']
                         case.description_validator = request.form['validator_remarks']
                     
                 if request.form['Final']:
-                    print request.form['Final']
-                    db.session.add(Validation(str(current_user),1,str(request.form['validator_diagnosis']),str(request.form['validator_remarks']))) 
+					final = True if request.form['Final'] == 'Yes' else False
+					db.session.add(Validation(user=current_user,case=case,diagnosis=str(request.form['validator_diagnosis']),remarks=str(request.form['validator_remarks']),final=final)) 
                 db.session.commit();
         else:
             def t(x, y):

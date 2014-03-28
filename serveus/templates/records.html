@@ -252,8 +252,8 @@
                         <td>{{i.date}}
                         <td>{{i.partype}}
                         <td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})
-                        <td>High/Normal
-                        <td>Done/Pending
+						<td>{{i.priority}}
+						<td>{{i.finalized_text}}
                         <td><a href="/case/{{ i.id }}/" class="btn viewbutton" style="width: 100%;"><span class="glyphicon glyphicon-search"></span> View</a>
                     {% endfor %}
                     {% if not caseList %}

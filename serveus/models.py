@@ -50,6 +50,7 @@ class User(db.Model, UserMixin):
 	contact = db.Column(db.String(80))
 	email = db.Column(db.String(80), unique=True)
 	chunklists = db.relationship('Chunklist', backref='user', lazy='dynamic')
+	validations = db.relationship('Validation', backref='user', lazy='dynamic')
 
 	"""
 	@models_committed.connect_via(app)
@@ -107,7 +108,7 @@ class Case(db.Model):
 	lng = db.Column(db.Float)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	images = db.relationship('Image', backref='case', lazy='dynamic')
-	validation = db.relationship('Validation', backref='case', lazy='dynamic')
+	validations = db.relationship('Validation', backref='case', lazy='dynamic')
 	test = db.Column(db.Boolean)
 	partype_id = db.Column(db.Integer, db.ForeignKey('partype.id'))
 	region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
@@ -156,6 +157,36 @@ class Case(db.Model):
 			return self.chunklist.duration
 		else:
 			return 'Not recorded'
+
+	@property
+	def final_validation(self):
+		return Validation.query.filter(Validation.final==True, Validation.case==self).first()
+	
+	@property
+	def finalized(self):
+		return self.final_validation != None
+
+	@property
+	def finalized_text(self):
+		return "Done" if self.finalized else "Pending"
+
+	@property
+	def validator(self):
+		validation = self.final_validation
+		if validation:
+			return validation.user
+		return None
+
+	@property
+	def validator_contacts(self):
+		validator = self.validator
+		if validator:
+			return "%s / %s" % (validator.contact, validator.email)
+		return None
+
+	@property
+	def priority(self):
+		return "Normal"
 
 class Image(db.Model):
 	__tablename__ = 'image'
@@ -312,20 +343,25 @@ class Province(db.Model):
 	@property
 	def serialize(self):
 		return {'id': self.id, 'name': self.name}
+
 class Validation(db.Model):
     __tablename__ = 'validation'
     
     id = db.Column(db.Integer,primary_key=True)
-    name = db.Column(db.String(50))
-    diagnosis = db.Column(db.String(50))
-    remarks = db.Column(db.String(50))
+    diagnosis = db.Column(db.String(100))
+    remarks = db.Column(db.String(1000))
     case_id = db.Column(db.Integer, db.ForeignKey('case.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    final = db.Column(db.Boolean)
+    date = db.Column(db.DateTime())
     
-    def __init__(self, name='', case_id='', diagnosis='', remarks=''):
-        self.name = name
-        self.case_id= case_id
+    def __init__(self, user='', case='', diagnosis='', remarks='', final=False):
+        self.user = user
+        self.case = case
         self.diagnosis = diagnosis
         self.remarks = remarks
+        self.final = final
+        self.date = datetime.datetime.now().replace(microsecond=0)
 
 class Municipality(db.Model):
 	__tablename__ = 'municipality'

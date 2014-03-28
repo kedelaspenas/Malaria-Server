@@ -2003,12 +2003,6 @@ for i in xrange(1,9):
     db.session.add(tmp)
 log('images')    
 
-x =Validation('Rodolfo',1,'Vivax','super severe')
-db.session.add(x)
-
-x =Validation('noel',1,'Falciparum','mild')
-db.session.add(x)
-
 # TODO: remove when keys are synced with accounts
 """
 from Crypto.PublicKey import RSA
