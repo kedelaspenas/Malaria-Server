@@ -702,6 +702,7 @@ def stats():
 		dur = total = 0
 		for j in Case.query.filter(Case.region == i):
 			if j.duration != 'Not recorded':
+				print j.duration
 				dur += j.duration
 				total += 1.0
 		try:
