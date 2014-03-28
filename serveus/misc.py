@@ -3,7 +3,7 @@ from math import ceil
 # Class for miscellaneous helper objects
 
 class Pagination(object):
-    PER_PAGE = 10
+    PER_PAGE = 8
 
     def __init__(self, page, per_page, total_count):
         self.page = page

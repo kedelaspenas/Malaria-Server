@@ -13,17 +13,6 @@
                min-height:100%;
                position:relative;
             }
-            #body {
-               padding:10px;
-               padding-bottom: 20px;
-            }
-            #footer {
-               position:absolute;
-               bottom:0;
-               width:100%;
-               height: 20px;
-               text-align: center;
-            }
             
             #custom-search-form {
             margin:0;
@@ -113,7 +102,7 @@
 {% endblock %}
 
 {% block content %}
-		<div class="row" style="width: 100%; margin: 0">
+		<div class="row" style="width: 100%; margin: 0; margin-top: -15px">
 		  <div class="col-md-12">		
             <!-- Filters -->
                 <form action="/records/" method="get" name="filter" class="col-md-3 filterform"><fieldset>
