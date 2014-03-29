@@ -97,7 +97,12 @@
             .pagination{
                 background-color: #183D16;
             }
-
+            .form-control{
+                height: 38px;
+            }
+            .input-group-addon{
+                font-size: 14px;
+            }
         </style>
 {% endblock %}
 
@@ -156,7 +161,7 @@
                     </div>
 					{% if not user.is_microscopist() %}
 					<div class="input-group">
-                        <span class="input-group-addon">by&nbsp;&nbsp;&nbsp;</span>
+                        <span class="input-group-addon">by&nbsp;&nbsp;</span>
                         <select class="form-control" style="width: 100%" name="microscopist_selection">
                             {% for i in microscopistList %}
                                 <option {% if i.id==microscopistIndex %}selected{% endif %} value={{ i.id }}>
