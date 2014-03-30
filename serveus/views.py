@@ -195,11 +195,11 @@ def records():
         if sort_by== 'date':
             sortby='date'
         elif sort_by== 'parasite':
-            sortby='parasite'
+            sortby='partype_id'
         elif sort_by== 'description':
             sortby='description'
         elif sort_by== 'microscopist':
-            sortby='microscopist'
+            sortby='user_id'
         else:
             sortby='id'
         param= "\"case\"."+sortby+" "+order
