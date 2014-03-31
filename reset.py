@@ -1900,51 +1900,51 @@ g = db.session.query(ParType).filter(ParType.type == 'Ovale').first()
 h = db.session.query(ParType).filter(ParType.type == 'No Disease').first()
 
 
-x = Case(datetime.date(2010,5,15),d,'Description',11.2,119.41,True, a, b, db.session.query(Municipality).filter(Municipality.name=='El Nido (Bacuit)').first())
+x = Case(datetime.date(2010,5,15),d,'Description',11.2,119.41,True, a, b, db.session.query(Municipality).filter(Municipality.name=='El Nido (Bacuit)').first(),priority="Normal")
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2005,8,26),d,'Description',11.25,119.49,True,  a, b, db.session.query(Municipality).filter(Municipality.name=='El Nido (Bacuit)').first())
+x = Case(datetime.date(2005,8,26),d,'Description',11.25,119.49,True,  a, b, db.session.query(Municipality).filter(Municipality.name=='El Nido (Bacuit)').first(),priority="Normal")
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2010,5,15),f,'Description',10.49,119.31,True, a, b, db.session.query(Municipality).filter(Municipality.name=='San Vicente').first())
+x = Case(datetime.date(2010,5,15),f,'Description',10.49,119.31,True, a, b, db.session.query(Municipality).filter(Municipality.name=='San Vicente').first(),priority="Normal")
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2007,1,5),g,'Description',9.17,118.25,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Narra').first())
+x = Case(datetime.date(2007,1,5),g,'Description',9.17,118.25,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Narra').first(),priority="Normal")
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2009,9,9),h,'Description',10.42,119.2,True, a, b, db.session.query(Municipality).filter(Municipality.name=='San Vicente').first())
+x = Case(datetime.date(2009,9,9),h,'Description',10.42,119.2,True, a, b, db.session.query(Municipality).filter(Municipality.name=='San Vicente').first(),priority="Normal")
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2011,9,9),e,'Description',8.693,117.621,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Bataraza').first())
+x = Case(datetime.date(2011,9,9),e,'Description',8.693,117.621,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Bataraza').first(),priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
-x = Case(datetime.date(2008,9,9),h,'Description',9.25,118.05,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Quezon').first())
+x = Case(datetime.date(2008,9,9),h,'Description',9.25,118.05,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Quezon').first(),priority="Normal")
 x.user_id = 1
 db.session.add(x)
 
-x = Case(datetime.date(2012,9,9),e,'Description',9.26,118.33,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Narra').first())
+x = Case(datetime.date(2012,9,9),e,'Description',9.26,118.33,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Narra').first(),priority="Normal")
 x.user_id = 2
 db.session.add(x)
 
-x = Case(datetime.date(2013,1,10),f,'Description',10.32,119.17,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Roxas').first())
+x = Case(datetime.date(2013,1,10),f,'Description',10.32,119.17,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Roxas').first(),priority="Normal")
 x.user_id = 3
 db.session.add(x)
 
-x = Case(datetime.date(2013,9,10),g,'Description',10.08,119.46,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Taytay')[-1])
+x = Case(datetime.date(2013,9,10),g,'Description',10.08,119.46,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Taytay')[-1],priority="Normal")
 x.user_id = 4
 db.session.add(x)
 
-x = Case(datetime.date(2011,5,15),h,'Description',7.95316,117.018,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Balabac').first())
+x = Case(datetime.date(2011,5,15),h,'Description',7.95316,117.018,True, a, b, db.session.query(Municipality).filter(Municipality.name=='Balabac').first(),priority="Normal")
 x.user_id = 5
 db.session.add(x)
 
-x = Case(datetime.date(2012,5,9),d,'Description',10.82,121.04, True, a, b, db.session.query(Municipality).filter(Municipality.name=='Cuyo').first())
+x = Case(datetime.date(2012,5,9),d,'Description',10.82,121.04, True, a, b, db.session.query(Municipality).filter(Municipality.name=='Cuyo').first(),priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
@@ -1952,39 +1952,39 @@ a = db.session.query(Region).filter(Region.name == 'NCR - National Capital Regio
 b = db.session.query(Province).filter(Province.name=='First District').first()
 c = db.session.query(Municipality).filter(Municipality.name=='Malate').first()
 # Manila
-x = Case(datetime.date(2014,2,19),e,'Severe',14.565454,120.993973, True, a, b, c)
+x = Case(datetime.date(2014,2,19),e,'Severe',14.565454,120.993973, True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
 # Manila
-x = Case(datetime.date(2014,2,19),e,'Severe',14.569454,120.990973,True, a, b, c)
+x = Case(datetime.date(2014,2,19),e,'Severe',14.569454,120.990973,True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
 # Manila
-x = Case(datetime.date(2014,2,10),e,'Severe',14.561454,120.998973, True, a, b, c)
+x = Case(datetime.date(2014,2,10),e,'Severe',14.561454,120.998973, True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
 c = db.session.query(Municipality).filter(Municipality.name=='Quezon City').first()
 
 # QC
-x = Case(datetime.date(2014,2,17),e,'Severe',14.64236399, 121.0684764, True, a, b, c)
+x = Case(datetime.date(2014,2,17),e,'Severe',14.64236399, 121.0684764, True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
 # QC
-x = Case(datetime.date(2014,2,18),e,'Severe',14.64836399, 121.0634764, True, a, b, c)
+x = Case(datetime.date(2014,2,18),e,'Severe',14.64836399, 121.0634764, True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
 # QC
-x = Case(datetime.date(2014,2,19),e,'Severe',14.64636399, 121.0704764, True, a, b, c)
+x = Case(datetime.date(2014,2,19),e,'Severe',14.64636399, 121.0704764, True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 
 # QC
-x = Case(datetime.date(2014,2,19),e,'Severe',14.639946,121.0781, True, a, b, c)
+x = Case(datetime.date(2014,2,19),e,'Severe',14.639946,121.0781, True, a, b, c, priority="Normal")
 x.user_id = 6
 db.session.add(x)
 

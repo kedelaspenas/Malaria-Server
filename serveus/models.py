@@ -117,13 +117,15 @@ class Case(db.Model):
 	chunklist_id = db.Column(db.Integer, db.ForeignKey('chunklist.id'))
 	parasite_validator = db.Column(db.String(100))
 	description_validator = db.Column(db.String(1000))
+	priority = db.Column(db.String(20))
 
-	def __init__(self, date="", partype="", description="", lat="", lng="", test="", region="", province="", municipality=""):
+	def __init__(self, date="", partype="", description="", lat="", lng="", test="", region="", province="", municipality="", priority=""):
 		self.date = date
 		self.description = description
 		self.lat = lat
 		self.lng = lng
 		self.test = test
+		self.priority = priority
 		if region == '':
 			self.region = None
 		else:
@@ -183,10 +185,6 @@ class Case(db.Model):
 		if validator:
 			return "%s / %s" % (validator.contact, validator.email)
 		return None
-
-	@property
-	def priority(self):
-		return "Normal"
 
 class Image(db.Model):
 	__tablename__ = 'image'

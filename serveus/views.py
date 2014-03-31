@@ -1020,12 +1020,14 @@ def upload_chunk():
                     mapping = {}
                     for child in root:
                         mapping[child.tag] = child.text
+                    print mapping
                     month, day, year = map(int, mapping['date-created'].split('/'))
                     if month > 12:
                         year, month, day = month, day, year
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
+                    priority = mapping['priority']
                     partype_text = mapping['species'].strip()
                     partype = ParType.query.filter(ParType.type==partype_text).first()
                     if not partype:
@@ -1042,7 +1044,7 @@ def upload_chunk():
                     region = Region.query.filter(Region.name == region).first()
                     province = Province.query.filter(Province.name == province).first()
                     municipality = Municipality.query.filter(Municipality.name == municipality).first()
-                    case = Case(date=dt,partype=partype,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality)
+                    case = Case(date=dt,partype=partype,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality,priority=priority)
 
                     user = User.query.filter(User.username == username).first()
                     case.user = user
