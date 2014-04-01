@@ -394,7 +394,7 @@ def timeline():
         dte=datetime.date(int(b[2]),int(b[0]),int(b[1])) + datetime.timedelta(days=1)
         
         bound_start = dt
-        bound_end = dte
+        bound_end = dte - datetime.timedelta(days=1)
         
         print str(bound_start)
         
