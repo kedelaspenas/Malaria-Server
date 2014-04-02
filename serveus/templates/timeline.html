@@ -118,7 +118,14 @@
             <tbody><tr><td>Lat:</td><td id="lat_container">
             </td></tr><tr><td>Long: &nbsp;</td><td id="lng_container">
             </td></tr></tbody></table>
-            
+            <!--
+                <hr class="hline">
+                Date Start:<br>
+                <span id="min_d"></span>
+                <br><br>
+                Date End:<br>
+                <span id="max_d"></span>
+            -->
             <hr class="hline">
             Cases displayed:<br><div class="pull-right" id="marker_total" name="total" style="margin-right: 5px; font-weight: bold">0</div>
         </div>
@@ -134,7 +141,8 @@
                 <ul>
                     <li>This page shows the distribution of all recorded cases in the country. <br><br> 
                     <li>Use the filters to narrow down the results. <br><br> 
-                    <li>The slider on the bottom controls the date range of cases displayed. <br><br> 
+                    <li>The slider on the bottom controls the date range of cases displayed. <br><br>
+                    <li>The slider's date range automatically snaps to the range of available cases. <br><br>
                     <li>Change the start and end dates by dragging the date bubbles. <br><br>
                     <li>Range of dates is adjusted by dragging the blue area of the slider.<br>
                 </ul>
@@ -175,7 +183,7 @@
                     this.show = b;
                     for (var i=0; i<this.list.length; i++)
                     {
-                        if (this.dates[i] >= min_date && this.dates[i] <= max_date && this.show) {
+                        if (this.dates[i] >= new Date(min_date.getFullYear(), min_date.getMonth(), min_date.getDate()) && this.dates[i] <= max_date && this.show) {
                             if (!this.list[i].getVisible()) {
                                 total_shown += 1;
                             }
@@ -195,8 +203,8 @@
                 }
             }
             var markers = [
-                new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %} new google.maps.LatLng({{i[0]}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], infectedPin),
-                new MarkerList("Test Data", [{% for i in case_list['Test Data'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Test Data'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], testDataPin)
+                new MarkerList("Any Disease", [{% for i in case_list['Any Disease'] %} new google.maps.LatLng({{i[0]}}) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Any Disease'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}, {{i[1].hour}}, {{i[1].minute}}, {{i[1].second}}, 0) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], infectedPin),
+                new MarkerList("Test Data", [{% for i in case_list['Test Data'] %}new google.maps.LatLng({{i[0]}}){% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], [{% for i in case_list['Test Data'] %} new Date({{i[1].year}},{{i[1].month - 1}},{{i[1].day}}, {{i[1].hour}}, {{i[1].minute}}, {{i[1].second}}, 0) {% if loop.index0 != (loop.length-1) %},{% endif %}{% endfor %}], testDataPin)
             ]
             
             function initialize() {
@@ -338,12 +346,14 @@
             {
             bounds:{
                 min: new Date({{bound_start.year}}, {{bound_start.month - 1}}, {{bound_start.day}}),
-                max: new Date({{bound_end.year}}, {{bound_end.month - 1}}, {{bound_end.day}})
+                max: new Date({{bound_end.year}}, {{bound_end.month - 1}}, {{bound_end.day + 1}})
             }});
             $("#date_slider").dateRangeSlider('resize');
             $("#date_slider").bind("valuesChanging", function(e, data){
                 min_date = data.values.min;
                 max_date = data.values.max;
+                //$('#min_d').text(min_date);
+                //$('#max_d').text(max_date);
                 for (var i=0; i<markers.length; i++)
                 {
                     if (markers[i].show == true) {
