@@ -1263,7 +1263,10 @@ def update_validation():
             for filename in filenames.split(','):
                 filename = '_'.join(filename.split('_')[:3])
                 #chunklist = Chunklist.query.filter(Chunklist.validation_filename==filename).first()
-                chunklist = [i for i in Chunklist.query.all() if i.validation_filename == filename][0]
+                try:
+                    chunklist = [i for i in Chunklist.query.all() if i.validation_filename == filename][0]
+                except IndexError:
+                    chunklist = None
                 if chunklist and chunklist.case and chunklist.case.finalized:
                     print chunklist, chunklist.case
                     validation = chunklist.case.final_validation
