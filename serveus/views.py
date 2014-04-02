@@ -1051,6 +1051,8 @@ def upload_chunk():
                     case = Case(date=dt,partype=partype,description=description,lat=latitude,lng=longitude,test=test,region=region,province=province,municipality=municipality,priority=priority)
 
                     user = User.query.filter(User.username == username).first()
+                    if user.test:
+                        case.test = True
                     case.user = user
                     hex_aes_key = ''.join(x.encode('hex') for x in aes_key)
                     if hex_aes_key == user.password[:32]:
