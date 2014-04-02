@@ -1267,6 +1267,7 @@ def update_validation():
                     chunklist = [i for i in Chunklist.query.all() if i.validation_filename == filename][0]
                 except IndexError:
                     chunklist = None
+                print chunklist
                 if chunklist and chunklist.case and chunklist.case.finalized:
                     print chunklist, chunklist.case
                     validation = chunklist.case.final_validation

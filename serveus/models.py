@@ -51,6 +51,7 @@ class User(db.Model, UserMixin):
 	email = db.Column(db.String(80), unique=True)
 	chunklists = db.relationship('Chunklist', backref='user', lazy='dynamic')
 	validations = db.relationship('Validation', backref='user', lazy='dynamic')
+	test = db.Column(db.Boolean)
 
 	"""
 	@models_committed.connect_via(app)
@@ -82,13 +83,14 @@ class User(db.Model, UserMixin):
 	def is_doctor(self):
 		return self.usertype == UserType.get_doctor()
 
-	def __init__(self, firstname="", lastname="", username="", password="", contact="", email=""):
+	def __init__(self, firstname="", lastname="", username="", password="", contact="", email="", test=False):
 		self.firstname = firstname
 		self.lastname = lastname
 		self.username = username
 		self.password = password
 		self.contact = contact
 		self.email = email
+		self.test = test
 
 	def __repr__(self):
 		return '<User %r %r (%r)>' % (self.firstname, self.lastname, self.username)

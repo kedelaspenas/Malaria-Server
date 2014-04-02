@@ -8,4 +8,4 @@ if len(sys.argv) > 1 and sys.argv[1]:
 print ' * IP: ' + socket.gethostbyname(socket.gethostname()) + ':' + str(port)
 
 
-app.run('0.0.0.0', port=80, debug = True)
+app.run('0.0.0.0', port=port, debug = True)

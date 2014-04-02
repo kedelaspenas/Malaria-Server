@@ -1870,19 +1870,19 @@ log('dummy data')
 
 # Users
 x = []
-x.append(User('Rodolfo', 'Kirong', 'rodolfo', User.hash_password('genius123'), '0912-345-6789', 'rodolfo@mailinator.com'))
+x.append(User('Rodolfo', 'Kirong', 'rodolfo', User.hash_password('genius123'), '0912-345-6789', 'rodolfo@mailinator.com', True))
 x[-1].usertype_id = 1
-x.append(User('Noel', 'Sison', 'noel', User.hash_password('qwert'), '0912-345-6789', 'noel@mailinator.com'))
+x.append(User('Noel', 'Sison', 'noel', User.hash_password('qwert'), '0912-345-6789', 'noel@mailinator.com', True))
 x[-1].usertype_id = 2
-x.append(User('Juancho', 'Coronel', 'juancho', User.hash_password('12345'), '0912-345-6789', 'juancho@mailinator.com'))
+x.append(User('Juancho', 'Coronel', 'juancho', User.hash_password('12345'), '0912-345-6789', 'juancho@mailinator.com', True))
 x[-1].usertype_id = 1
-x.append(User('Marven', 'Sanchez', 'marven', User.hash_password('asd'), '0912-345-6789', 'marven@mailinator.com'))
+x.append(User('Marven', 'Sanchez', 'marven', User.hash_password('asd'), '0912-345-6789', 'marven@mailinator.com', True))
 x[-1].usertype_id = 3
-x.append(User('Jasper', 'Cacbay', 'jasper', User.hash_password('asd'), '0912-345-6789', 'jasper@mailinator.com'))
+x.append(User('Jasper', 'Cacbay', 'jasper', User.hash_password('asd'), '0912-345-6789', 'jasper@mailinator.com', True))
 x[-1].usertype_id = 2
-x.append(User('Cat', 'Angangco', 'cat', User.hash_password('asd'), '0912-345-6789', 'cat@mailinator.com'))
+x.append(User('Cat', 'Angangco', 'cat', User.hash_password('asd'), '0912-345-6789', 'cat@mailinator.com', True))
 x[-1].usertype_id = 1
-x.append(User('Pros', 'Naval', 'pcnaval', User.hash_password('genius123'), '0917-865-8452', 'pros@mailinator.com'))
+x.append(User('Pros', 'Naval', 'pcnaval', User.hash_password('genius123'), '0917-865-8452', 'pros@mailinator.com', True))
 x[-1].usertype_id = 1
 for i in x:
     db.session.add(i)

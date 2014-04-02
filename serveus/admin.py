@@ -13,7 +13,7 @@ from flask import redirect, url_for
 import os, webbrowser
 
 
-from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality, ParType
+from models import db, User, UserType, Case, Image, Chunk, Chunklist, Region, Province, Municipality, ParType, Validation
 from views import dashboard
 
 # Custom admin links on navbar
@@ -127,6 +127,7 @@ admin.add_view(MyModelView(Chunk, db.session))
 admin.add_view(MyModelView(Region, db.session))
 admin.add_view(MyModelView(Province, db.session))
 admin.add_view(MyModelView(Municipality, db.session))
+admin.add_view(MyModelView(Validation, db.session))
 admin.add_view(FileAdmin(log_path, '/log/', name='Logs', url="/admin/logview"))
 
 # Navbar links
