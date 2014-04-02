@@ -1028,7 +1028,10 @@ def upload_chunk():
                     hours, minutes, seconds = map(int, mapping['time-created'].split(':'))
                     latitude = float(mapping['latitude'])
                     longitude = float(mapping['longitude'])
-                    priority = mapping['priority']
+                    try:
+                        priority = mapping['priority']
+                    except KeyError:
+                        priority = 'Normal'
                     partype_text = mapping['species'].strip()
                     partype = ParType.query.filter(ParType.type==partype_text).first()
                     if not partype:
