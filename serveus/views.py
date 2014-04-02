@@ -491,6 +491,7 @@ def case(id):
                     final = True if request.form['Final'] == 'Yes' else False
                     db.session.add(Validation(user=current_user,case=case,diagnosis=str(request.form['validator_diagnosis']),remarks=str(request.form['validator_remarks']),final=final)) 
                 db.session.commit();
+            return redirect('/case/%s/' % id)
         else:
             def t(x, y):
                 return {'x': x + 20, 'y': 580 - y}
