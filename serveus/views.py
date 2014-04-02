@@ -1,4 +1,4 @@
-import os, math, time, datetime, zipfile, base64, hashlib, glob, sqlite3, tempfile, shutil
+import os, math, time, datetime, zipfile, base64, hashlib, glob, sqlite3, tempfile, shutil, json
 import xml.etree.ElementTree as ET
 from functools import wraps
 from flask import render_template, flash, redirect, request, url_for, make_response, abort, jsonify
@@ -475,21 +475,21 @@ def case(id):
         if request.form['choice'] == 'Submit':
             if 'validator_diagnosis' in request.form.keys() or 'validator_remarks' in request.form.keys():
 
-				# not used
+                # not used
                 if request.form['validator_diagnosis']:
                     if request.form['Final'] == 'Yes':
                         case.parasite_validator = request.form['validator_diagnosis']
                         if(ParType.query.filter(ParType.type == case.parasite_validator ).first() == None):
                             db.session.add(ParType(case.parasite_validator))
                     
-				# not used
+                # not used
                 if request.form['validator_remarks']:
                     if request.form['Final'] == 'Yes':
                         case.description_validator = request.form['validator_remarks']
                     
                 if request.form['Final']:
-					final = True if request.form['Final'] == 'Yes' else False
-					db.session.add(Validation(user=current_user,case=case,diagnosis=str(request.form['validator_diagnosis']),remarks=str(request.form['validator_remarks']),final=final)) 
+                    final = True if request.form['Final'] == 'Yes' else False
+                    db.session.add(Validation(user=current_user,case=case,diagnosis=str(request.form['validator_diagnosis']),remarks=str(request.form['validator_remarks']),final=final)) 
                 db.session.commit();
         else:
             def t(x, y):
@@ -696,20 +696,20 @@ def login():
 @app.route('/stats/', methods=['GET'])
 @login_required
 def stats():
-	ret = []
-	for i in Region.query.all():
-		ret.append(str(i))
-		dur = total = 0
-		for j in Case.query.filter(Case.region == i):
-			if j.duration != 'Not recorded':
-				print j.duration
-				dur += j.duration
-				total += 1.0
-		try:
-			ret.append(dur / total)
-		except ZeroDivisionError:
-			ret.append('None')
-	return '<br />'.join(ret)
+    ret = []
+    for i in Region.query.all():
+        ret.append(str(i))
+        dur = total = 0
+        for j in Case.query.filter(Case.region == i):
+            if j.duration != 'Not recorded':
+                print j.duration
+                dur += j.duration
+                total += 1.0
+        try:
+            ret.append(dur / total)
+        except ZeroDivisionError:
+            ret.append('None')
+    return '<br />'.join(ret)
 
 """Returns a CSV file of the cases stored."""
 @app.route('/csv/', methods = ['GET'])
@@ -1249,3 +1249,33 @@ def retype():
             else:
                 upload_cache.pop(username)
             return "RETYPE %s" % tries
+
+"""."""
+@app.route('/api/validation/', methods=['GET','POST'])
+def update_validation():
+    if request.method == 'POST':
+        # get file from form
+        filenames = request.form['string']
+        # if form is not empty
+        if filenames:
+            print 'VALIDATION:', filenames
+            ret = {}
+            for filename in filenames.split(','):
+                filename = '_'.join(filename.split('_')[:3])
+                #chunklist = Chunklist.query.filter(Chunklist.validation_filename==filename).first()
+                chunklist = [i for i in Chunklist.query.all() if i.validation_filename == filename][0]
+                if chunklist and chunklist.case and chunklist.case.finalized:
+                    print chunklist, chunklist.case
+                    validation = chunklist.case.final_validation
+                    ret[filename] = [validation.diagnosis, validation.remarks]
+            return json.dumps(ret)
+
+    return '''
+    <!doctype html>
+    <title>Request validation status</title>
+    <h1>Request validation status </h1>
+    <form action="" method=post>
+      <p><input type=text name=string size=200><br />
+         <input type=submit value=Upload>
+    </form>
+    '''

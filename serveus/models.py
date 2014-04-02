@@ -282,6 +282,10 @@ class Chunklist(db.Model):
 			return str(self.end_time - self.date)
 		else:
 			return "Not done"
+
+	@property
+	def validation_filename(self):
+		return '_'.join(self.filename.split('_')[:3])
 	
 	def __repr__(self):
 		return self.filename
