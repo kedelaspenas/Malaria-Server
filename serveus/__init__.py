@@ -69,3 +69,6 @@ except IOError as e:
     
 # IMPORT PARTS OF APP
 from serveus import views, models, admin
+
+from crowd import crowd
+app.register_blueprint(crowd)
