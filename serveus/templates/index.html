@@ -154,16 +154,15 @@
 
             h4 {
                 font-size:17px;
-                font-size: 1.7rem;
             }
         </style>
     </head>
     <body>
         <div id="login" class="bg-white">
             <h2 class="bg-green text-center">Multimedia-based Monitoring of Medical Technologists <br> trained on Integrated Microscopy</h2>
-            <div class="row padded" style="width: 100%;">
+            <div class="row" style="width: 100%; padding-left: 15px;">
                 <!-- Form -->
-                <div class="col-xs-3">
+                <div class="col-sm-3">
                     &nbsp;<br>
                     <form action="/login/" method="post" name="login" class="well container-fluid" style="padding: 5%" onsubmit="return hash();">
                     {{ login_form.hidden_tag() }}
@@ -180,36 +179,24 @@
                     {% endif %}
                 </div>
                 <br>
-                <div class="well col-xs-9">
+                <div class="well col-sm-9">
                     <h4>
                     <div class="row">
-                        <div class="col-sm-4 col-xs-4">
+                        <div class="col-sm-4">
                         <p style="font-weight:bold;">Video Image Processing Laboratory<br>
                         National Institute of Physics<br>
                         UP Diliman</p>
-                        </div>
-                        <div class="col-sm-4 col-xs-4">
-                        <p style="font-weight:bold;">Computer Vision and Machine Intelligence Group<br>
-                        Department of Computer Science<br>
-                        UP Diliman</p>
-                        </div>
-                        <div class="col-sm-4 col-xs-4">
-                        <p style="font-weight:bold;">Department of Parasitology<br>
-                        College of Public Health<br>
-                        UP Manila</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-4 col-xs-4">
                         <span style="font-weight: bold">Mentor:</span><br> Maricor N. Soriano, Ph.D<br>
                         <br>
                         <span style="font-weight: bold">Students:</span><br>
                         Mary Angelie M. Alagao<br>
                         Maria Isabel S. Saludares<br>
-                        Elexis Mae A. Torres<br>
+                        Elexis Mae A. Torres<br><br>
                         </div>
-                        <div class="col-sm-4 col-xs-4">
+                        <div class="col-sm-4">
+                        <p style="font-weight:bold;">Computer Vision and Machine Intelligence Group<br>
+                        Department of Computer Science<br>
+                        UP Diliman</p>
                         <span style="font-weight: bold">Mentors:</span><br> Prospero C. Naval, Jr., Ph.D<br>
                         Kristofer E. delas Pe&ntilde;as
                         <br>
@@ -220,9 +207,12 @@
                         Juan Felipe M. Coronel<br>
                         Rodolfo S. Kirong Jr.<br>
                         Marven Paul Ray J. Sanchez<br>
-                        Noel Nicanor Y. Sison II
+                        Noel Nicanor Y. Sison II<br><br>
                         </div>
-                        <div class="col-sm-4 col-xs-4">
+                        <div class="col-sm-4">
+                        <p style="font-weight:bold;">Department of Parasitology<br>
+                        College of Public Health<br>
+                        UP Manila</p>
                         Pilarita T. Rivera, MD Ph.D<br>
                         Elena A. Villacorte, M.Sc.<br>
                         Lolita L. Cavinta, M.S. P.H.<br>
@@ -236,39 +226,5 @@
         <!--<script src="/static/js/jquery.js"></script>-->
         <script src="/static/js/jquery-1.8.2.min.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>
-        <script src="/static/js/jquery.scrollTo-1.4.3.1.min.js"></script>
-        <script type="text/javascript" src="/static/js/jquery.parallax-1.1.js"></script>
-        <script src="/static/js/jquery.easing.1.3.js"></script>
-        <script src="/static/js/jquery.scrollorama.js"></script>
-        <script src="/static/js/jquery.scrolldeck.js"></script>
-        <!-- jquery -->
-        
-        <script>
-            $(document).ready(function(){
-                //$('#nav').localScroll(800);
-                
-                RepositionNav();
-                
-                $(window).resize(function(){
-                    RepositionNav();
-                }); 
-                
-                //.parallax(xPosition, adjuster, inertia, outerHeight) options:
-                //xPosition - Horizontal position of the element
-                //adjuster - y position to start from
-                //inertia - speed to move relative to vertical scroll. Example: 0.1 is one tenth the speed of scrolling, 2 is twice the speed of scrolling
-                //outerHeight (true/false) - Whether or not jQuery should use it's outerHeight option to determine when a section is in the viewport
-                $('#intro').parallax("50%", 0, 0.1, true);
-                $('#title').parallax("50%", 0, 0.1, true);
-                $('.bg').parallax("50%", 2500, 0.4, true);
-                $('#login').parallax("50%", 2750, 0.3, true);
-                
-                var deck = new $.scrolldeck({
-                    slides: '.slide',
-                    buttons: '#nav li a',
-                    easing: 'easeInOutExpo'
-                });
-            });
-        </script>
     </body>
 </html>
