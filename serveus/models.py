@@ -52,6 +52,7 @@ class User(db.Model, UserMixin):
 	chunklists = db.relationship('Chunklist', backref='user', lazy='dynamic')
 	validations = db.relationship('Validation', backref='user', lazy='dynamic')
 	test = db.Column(db.Boolean)
+	labelers =  db.relationship('Labeler', backref='user', lazy='dynamic')
 
 	"""
 	@models_committed.connect_via(app)

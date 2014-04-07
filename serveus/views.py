@@ -131,23 +131,23 @@ def records():
     if request.args:
         try:
             parasiteIndex = int(request.args.get('parasite_selection'))
-        except ValueError:
+        except (ValueError, TypeError):
             parasiteIndex = 0
         try:
             regionIndex = int(request.args.get('region_selection'))
-        except ValueError:
+        except (ValueError, TypeError):
             regionIndex = 0
         try:
             provinceIndex = int(request.args.get('province_selection'))
-        except ValueError:
+        except (ValueError, TypeError):
             provinceIndex = 0
         try:
             municipalityIndex = int(request.args.get('municipality_selection'))
-        except ValueError:
+        except (ValueError, TypeError):
             municipalityIndex = 0
         try:
             microscopistIndex = int(request.args.get('microscopist_selection'))
-        except ValueError:
+        except (ValueError, TypeError):
             microscopistIndex = 0
         date_start = request.args.get('date_start')
         date_end = request.args.get('date_end')
@@ -912,7 +912,7 @@ def fetch_thumbnail(picture_id):
     a.seek(0)
     return send_file(a, mimetype='image/jpeg')
 
-"""."""
+"""Handles receiving of chunks from the mobile application."""
 @app.route('/api/chunk/', methods=['GET','POST'])
 def upload_chunk():
     if request.method == 'POST':
@@ -1111,7 +1111,7 @@ def upload_chunk():
     </form>
     '''
 
-"""."""
+"""Handles initial files sent by the mobile application that indicate the start of a case."""
 @app.route('/api/init/', methods=['GET','POST'])
 def upload_start_file():
     if request.method == 'POST':
@@ -1256,7 +1256,7 @@ def retype():
                 upload_cache.pop(username)
             return "RETYPE %s" % tries
 
-"""."""
+"""Handles validation requests from the mobile application."""
 @app.route('/api/validation/', methods=['GET','POST'])
 def update_validation():
     if request.method == 'POST':
