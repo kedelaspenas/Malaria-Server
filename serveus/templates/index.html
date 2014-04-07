@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/static/css/normalize.css" rel="stylesheet">
         <!-- Bootstrap -->
-        <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/resizer.css" rel="stylesheet">
         <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <script src="/static/js/sha1.js"></script>
         <script>
@@ -87,19 +87,17 @@
                 text-align: center;
             }
             .padded {
-                padding-top: 5vh;
-                padding-left: 10vh;
-                padding-right: 10vh;
+                padding-top: 2vh;
+                padding-left: 5vh;
+                padding-right: 5vh;
             }
             .m-content {
                 font-size: 30px;
                 font-size: 3rem;
-                font-family: Furura-Condensed, Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
             }
             .s-content {
                 font-size: 25px;
                 font-size: 2.5rem;
-                font-family: Furura-Condensed, Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
             }
             .width-100{
                 width: 100%;
@@ -130,30 +128,8 @@
             .bg-white {
                 background-color: white;
             }
-            .bg-blue {
-                background-color: #88B9C1;
-                color: white;
-                margin: 0;
-                padding-top: 4vh;
-                padding-bottom: 4vh;
-                font-family: Furura-Condensed, Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
-                font-weight: bold;
-                text-align: left;
-                padding-left: 5vw;
-            }
             .bg-green {
                 background-color: #579053;
-                color: white;
-                margin: 0;
-                padding-top: 4vh;
-                padding-bottom: 4vh;
-                font-family: Furura-Condensed, Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
-                font-weight: bold;
-                text-align: left;
-                padding-left: 5vw;
-            }
-            .bg-black {
-                background-color: black;
                 color: white;
                 margin: 0;
                 padding-top: 4vh;
@@ -166,6 +142,20 @@
             .text-center {
                 text-align: center;
             }
+            h2 {
+                font-size: 40px;
+                font-size: 4rem;
+            }
+
+            h3 {
+                font-size: 30px;
+                font-size: 3rem;
+            }
+
+            h4 {
+                font-size:17px;
+                font-size: 1.7rem;
+            }
         </style>
     </head>
     <body>
@@ -173,7 +163,7 @@
             <h2 class="bg-green text-center">Multimedia-based Monitoring of Medical Technologists <br> trained on Integrated Microscopy</h2>
             <div class="row padded" style="width: 100%;">
                 <!-- Form -->
-                <div class="col-sm-3 col-xs-3">
+                <div class="col-xs-3">
                     &nbsp;<br>
                     <form action="/login/" method="post" name="login" class="well container-fluid" style="padding: 5%" onsubmit="return hash();">
                     {{ login_form.hidden_tag() }}
@@ -190,8 +180,8 @@
                     {% endif %}
                 </div>
                 <br>
-                <div class="well col-sm-9">
-                    <h5>
+                <div class="well col-xs-9">
+                    <h4>
                     <div class="row">
                         <div class="col-sm-4 col-xs-4">
                         <p style="font-weight:bold;">Video Image Processing Laboratory<br>
@@ -238,7 +228,7 @@
                         Lolita L. Cavinta, M.S. P.H.<br>
                         </div>
                     </div>
-                    </h5>
+                    </h4>
                 </div>
             </div>
         </div>
