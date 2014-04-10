@@ -341,9 +341,9 @@ def monitoring():
     unique_municipality = Case.query.group_by(Case.municipality_id)
     municipality_list = []
     for j in unique_municipality:
-        countM = Case.query.filter_by(municipality = j.municipality, test = True).count()
+        countM = Case.query.filter_by(municipality = j.municipality, test = False).count()
         if countM != 0:
-            temp = Case.query.filter_by(municipality = j.municipality, test = True)
+            temp = Case.query.filter_by(municipality = j.municipality, test = False)
             coor_list = []
             for k in temp:
                 coor_list.append((k.lat,k.lng))
