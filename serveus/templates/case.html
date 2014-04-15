@@ -98,7 +98,7 @@
             <td class="col-md-3" style="text-align: right">
                 <input id="print_pdf" name="choice" value="Download as PDF" type="submit" style="display: none;">
                 <a class="btn btn-success action-btn" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save icon-button"></span><br>Download as PDF</a>
-                {% if not user.is_microscopist() %}<a style="text-align: center" class="btn btn-success action-btn" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker icon-button"></span><br>View on Map</a>{% endif %}
+                {% if not user.is_microscopist() %}<a style="text-align: center" class="btn btn-success action-btn" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/2014&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker icon-button"></span><br>View on Map</a>{% endif %}
                 <a class="btn btn-success action-btn" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture icon-button"></span><br>View Image(s)</a>
             </table>
             

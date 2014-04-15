@@ -33,30 +33,35 @@
 {% endblock %}
 
 {% block content %}
-        <div class="well" style="max-width: 370px; margin-left: auto; margin-right: auto">
+        <div class="well col-md-4 col-md-offset-4" >
 			<h4>Change Password</h4>
             {% if message %}
             <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert">&#120;</button>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{ message }}
             </div>
             {% endif %}
-            {% if error %}
-            <div class="alert alert-error alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert">&#120;</button>
-            {{ error }}
-            </div>
-            {% endif %}
+            
                 <form class="row" action="/profilepage/" name="cp" method="post" onsubmit="hash();">
                 {{ changepass_form.hidden_tag() }}
                 {{changepass_form.oldpassword(size=40, placeholder="Old Password", class="col-md-12", type="password")}} <br>
                 {{changepass_form.newpassword(size=40, placeholder="New Password", class="col-md-12", type="password")}} <br>
-                {{changepass_form.confirmpassword(size=40, placeholder="Confirm New Password", class="col-md-12", type="password")}} <br><br><br><br>
+                {{changepass_form.confirmpassword(size=40, placeholder="Confirm New Password", class="col-md-12", type="password")}} 
+                <br><hr style="height: 10px;">
                 <a class="btn col-md-6 btn-default" href="{% if user.is_microscopist() %}/records/{%else%}/monitoring/{%endif%}">Cancel</a>
                 <input id="submit_button" value="Submit" style="display:none" type="submit">
                 <a class="btn col-md-6 btn-default" onclick=$('#submit_button').click()>Submit</a>
                 </form>
+                
+                {% if error %}
+                
+                    <div class="alert alert-danger alert-dismissable col-md-12" style="margin-top: 10px;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ error }}
+                    </div>
+                {% endif %}
         </div>
+        
     <script src="/static/js/jquery.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 {% endblock %}

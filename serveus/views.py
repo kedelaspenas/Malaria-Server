@@ -429,7 +429,8 @@ def timeline():
     if default_view:
         bound_end = max_date + datetime.timedelta(days=1)
         bound_start = min_date - datetime.timedelta(days=1)
-    
+        # Per emailed instructions by sir pros
+        bound_start = datetime.date(2014,1,1)
     
     
     if default_view or not(lat and lng):
