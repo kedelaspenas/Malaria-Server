@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Remote Microscopy</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/normalize.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/resizer.css" rel="stylesheet">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script src="/static/js/sha1.js"></script>
+        <script>
+        function hash()
+        {
+            var text = $('#password').val();
+            var hash = CryptoJS.SHA1(text);
+            $('#username').val($('#username').val().toLowerCase());
+            $('#password').val(hash);
+        }
+        </script>
+        <style type="text/css">
+            html,
+            body {
+               margin:0;
+               padding:0;
+               height:100%;
+            }
+            .username-field{
+                margin-bottom: 5px;
+            } 
+            /*new*/
+            #nav{
+                list-style: none;
+                position: fixed;
+                right: 20px;
+                z-index: 999;
+            }
+
+            #nav li{
+                margin: 0 0 15px 0; 
+            }
+
+            #header, #title, #intro{
+                width: 100%;
+            }
+
+            #title{
+                background:url(/static/images/firstBG.jpg) 50%
+                no-repeat fixed;
+                color: white;
+                height: 600px;
+                margin: 0 auto;
+                padding: 160px 0 0 0;
+            }
+
+            #intro{
+                background: url(/static/images/secondBG.jpg) 50% 0 no-repeat fixed;
+                color: white;
+                height: 1300px;
+                margin: 0 auto;
+                overflow: hidden;
+                padding: 0;
+            }
+
+            #intro .bg{
+                background: url(/static/images/trainers.png) 50% 0 no-repeat fixed;
+                height: 1300px;
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                position: absolute;
+                z-index: 200;
+            }
+
+            .story{
+                margin: 0 auto;
+                overflow: auto;
+                width: 95%;
+            }
+
+            .story .float-left, .story .float-right{
+                position: relative;
+                width: 100%;   
+            }
+            /* Helpers */
+            .center-text {
+                text-align: center;
+            }
+            .padded {
+                padding-top: 2vh;
+                padding-left: 5vh;
+                padding-right: 5vh;
+            }
+            .m-content {
+                font-size: 30px;
+                font-size: 3rem;
+            }
+            .s-content {
+                font-size: 25px;
+                font-size: 2.5rem;
+            }
+            .width-100{
+                width: 100%;
+            }
+            .width-75{
+                width: 75%;
+            }
+            .width-65{
+                width: 65%;
+            }
+            .width-50{
+                width: 50%;
+            }
+
+            .left-pad {
+                padding-left: 10rem;
+            }
+            .right-pad {
+                padding-right: 10rem;
+            }
+            .sides-pad {
+                padding-left: 10rem;
+                padding-right: 10rem;
+            }
+            table {
+                margin: 0 auto;
+            }
+            .bg-white {
+                background-color: white;
+            }
+            .bg-green {
+                background-color: #579053;
+                color: white;
+                margin: 0;
+                padding-top: 4vh;
+                padding-bottom: 4vh;
+                font-family: Furura-Condensed, Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
+                font-weight: bold;
+                text-align: left;
+                padding-left: 5vw;
+            }
+            .text-center {
+                text-align: center;
+            }
+            h2 {
+                font-size: 40px;
+                font-size: 4rem;
+            }
+
+            h3 {
+                font-size: 30px;
+                font-size: 3rem;
+            }
+
+            h4 {
+                font-size:17px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="login" class="bg-white">
+            <h2 class="bg-green text-center">Multimedia-based Monitoring of Medical Technologists <br> trained on Integrated Microscopy</h2>
+            <div class="row" style="width: 100%; padding-left: 15px;">
+                <!-- Form -->
+                <div class="col-sm-3">
+                    &nbsp;<br>
+                    <form action="/login/" method="post" name="login" class="well container-fluid" style="padding: 5%" onsubmit="return hash();">
+                    {{ login_form.hidden_tag() }}
+                    {{ login_form.username(placeholder="Username", class="username-field form-control")}}
+                    {{ login_form.password(placeholder="Password", class="form-control")}}<br>
+                    <input class="btn pull-right form-control btn-default" value="Sign In" type="submit">
+                    </form>
+                    
+                    {% if error_message %}
+                    <div class="alert alert-error alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ error_message }}
+                    </div>
+                    {% endif %}
+                </div>
+                <br>
+                <div class="well col-sm-9">
+                    <h4>
+                    <div class="row">
+                        <div class="col-sm-4">
+                        <p style="font-weight:bold;">Video Image Processing Laboratory<br>
+                        National Institute of Physics<br>
+                        UP Diliman</p>
+                        <span style="font-weight: bold">Mentor:</span><br> Maricor N. Soriano, Ph.D<br>
+                        <br>
+                        <span style="font-weight: bold">Students:</span><br>
+                        Mary Angelie M. Alagao<br>
+                        Maria Isabel S. Saludares<br>
+                        Elexis Mae A. Torres<br><br>
+                        </div>
+                        <div class="col-sm-4">
+                        <p style="font-weight:bold;">Computer Vision and Machine Intelligence Group<br>
+                        Department of Computer Science<br>
+                        UP Diliman</p>
+                        <span style="font-weight: bold">Mentors:</span><br> Prospero C. Naval, Jr., Ph.D<br>
+                        Kristofer E. delas Pe&ntilde;as
+                        <br>
+                        <br>
+                        <span style="font-weight: bold">Students:</span><br>
+                        Catherine Marie G. Angangco<br>
+                        Jasper Ellis Deo T. Cacbay<br>
+                        Juan Felipe M. Coronel<br>
+                        Rodolfo S. Kirong Jr.<br>
+                        Marven Paul Ray J. Sanchez<br>
+                        Noel Nicanor Y. Sison II<br><br>
+                        </div>
+                        <div class="col-sm-4">
+                        <p style="font-weight:bold;">Department of Parasitology<br>
+                        College of Public Health<br>
+                        UP Manila</p>
+                        Pilarita T. Rivera, MD Ph.D<br>
+                        Elena A. Villacorte, M.Sc.<br>
+                        Lolita L. Cavinta, M.S. P.H.<br>
+                        </div>
+                    </div>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        
+        <!--<script src="/static/js/jquery.js"></script>-->
+        <script src="/static/js/jquery-1.8.2.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+    </body>
+</html>

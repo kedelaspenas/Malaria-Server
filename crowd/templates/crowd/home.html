@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Crowd</title>
+</head>
+<body>
+<img src="/crowd/static/images/malaria.png"/>
+Path to static image: {{url_for('crowd.static', filename='images/malaria.png')}}
+<br>
+Hi there! This is a blueprint template. App templated are prioritized over blueprint templates.
+<a href="/index">Back to record viewing</a>
+<br>
+<br>
+Database query:
+<ul>
+{% for i in regionList %}
+<li>{{i}}
+{% endfor %}
+</ul>
+</body>
+</html>

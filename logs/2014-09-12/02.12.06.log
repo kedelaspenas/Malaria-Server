@@ -1,0 +1,16 @@
+> Initialized logger
+>  * Running on http://0.0.0.0:80/
+> Traceback (most recent call last):
+>   File "run.py", line 11, in <module>
+> app.run('0.0.0.0', port=port, debug = True)
+>   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 772, in run
+> run_simple(host, port, self, **options)
+>   File "/usr/local/lib/python2.7/dist-packages/werkzeug/serving.py", line 706, in run_simple
+> test_socket.bind((hostname, port))
+>   File "/usr/lib/python2.7/socket.py", line 224, in meth
+> return getattr(self._sock,name)(*args)
+> socket
+> .
+> error
+> :
+> [Errno 13] Permission denied

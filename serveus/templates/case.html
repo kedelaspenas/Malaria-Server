@@ -1,0 +1,214 @@
+{% extends "layout.html" %}
+{% block title %}Case{% endblock %}
+{% block style %}
+    <style type="text/css">
+        .icon-button{
+            font-size: 30px;
+        }
+        .action-btn{
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<form id="super" action="" method="post" class="">
+    <div class="row col-sm-10 col-md-10" style="background-color: white;">
+        <div class=" container col-sm-12 col-md-12" style="background-color: white; padding-top: 0;">
+            <table class="table table-condensed table-bordered" style="width: calc(100% - 15px); margin-left: 15px">
+            <tr><td colspan="2">
+            <div>
+                <h4 class="col-md-4 pull-left">{{case.code}}</h4>
+                <h4 class="col-md-4" style="text-align: center"></h4>
+                <h4 class="col-md-4" style="text-align: right">{{case.date.strftime('%B %d, %Y %I:%M %p')}}</h4>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th colspan="2">Location
+                        <tr><th>Region<td>{{case.region}}
+                        <tr><th>Province<td>{{case.province}}
+                        <tr><th>Municipality<td>{{case.municipality}}
+                        <tr><th>GPS<td><span id="location"></span> ({{case.lat}}, {{case.lng}})
+                        <tr><th>Sending duration<td class="span10">{{case.duration}} 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th colspan="2">Microscopist
+                        <tr><th>Name<td>{{case.user.firstname}} {{case.user.lastname}} ({{case.user.username}})
+                        <tr><th>Contact Details<td>{{case.user.contact}} / {{case.user.email}}
+                        <tr><th>Diagnosis<td>{{case.partype}}
+                        <tr><th>Remarks<td>{{case.description}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><th colspan="2">Validator
+                        <tr><th>Name<td>{{case.validator}}
+                        <tr><th>Contact Details<td>{{case.validator_contacts}}
+                        <tr><th>Diagnosis<td>{{case.parasite_validator}}
+                        <tr><th>Remarks<td>{{case.description_validator}}
+                    </tbody>
+                </table>
+            </div>
+            <tr><td class="col-md-9">
+            {% if user.is_doctor() %}
+            <h4 id="no_validations" style="display: none" class="pull-left">No draft validations yet.</h4>
+            {% if case.validations.count() > 0%}
+                <h4>Draft validations:</h4>
+            {% else %}
+                <script>document.getElementById('no_validations').style.display = ''</script>
+            {% endif %}
+            {% for i in case.validations %}
+                <table class="table table-condensed table-bordered">
+                    <tbody>
+                        <tr><td colspan="2"><span class="pull-left">{{ loop.index }}. {{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}}) &nbsp;&middot;&nbsp; {{i.user.contact}}</span><span class="pull-right">{{i.date}}</span>
+                        <tr><th class="col-md-2">Diagnosis<td>{{i.diagnosis}}
+                        <tr><th>Remarks<td>{{i.remarks}}
+                    </tbody>
+                </table>
+            {% endfor %}
+            {% if not case.finalized %}
+                <a id="add_validation_button" class="btn btn-success pull-right" style=";" onclick="$('#no_validations').hide('fast');$('#add_validation_button').hide('fast');$('#validator_div').show('fast');"/><span class="glyphicon glyphicon-plus-sign"></span> Add a Validation</a>
+            {% endif %}
+        <table id="validator_div" class="table table-bordered" style="display: none; padding: 10px; width: 100%">
+            <tr><td>
+            <h5>Validator form: </h5>
+            
+            <input class="form-control" id="validator_diagnosis" name="validator_diagnosis" placeholder="Enter your diagnosis here" type="text" style="width: 100%; padding-bottom: 0; padding-top: 0;">
+            <!--<input type="text" id="validator_diagnosis" name="validator_diagnosis" value="{{case.parasite_validator}}" placeholder="Enter your diagnosis here">-->
+            <br>
+            <textarea style="resize:none; width: 100%;" id="validator_remarks" name="validator_remarks" placeholder="Enter your remarks here"></textarea>
+            <!--<textarea style="resize:none; width: 500px; height: 150px;" id="validator_remarks" name="validator_remarks">{{case.description_validator}}</textarea>-->
+            <br>
+            <h5>
+            Final: &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="Final" value="Yes">Yes &nbsp;&nbsp;&nbsp;
+            <input type="radio" name="Final" value="No" checked>No 
+            </h5>
+            <input id="submit_validation" class="btn btn-medium form-control btn-default" name="choice" value="Submit" style="display: none;" type="submit">
+            <a class="btn btn-medium btn-danger" name="choice" onclick="$('#validator_div').hide('fast');$('#add_validation_button').show('fast');">Cancel <span class="glyphicon glyphicon-remove"></span></a>
+            <a class="btn btn-medium btn-success pull-right" name="choice" onclick="$('#submit_validation').click()">Submit <span class="glyphicon glyphicon-ok"></span></a>
+        </table>
+        {% endif %}
+            <td class="col-md-3" style="text-align: right">
+                <input id="print_pdf" name="choice" value="Download as PDF" type="submit" style="display: none;">
+                <a class="btn btn-success action-btn" name="choice" type="submit" onclick="$('#print_pdf').click()"><span class="glyphicon glyphicon-save icon-button"></span><br>Download as PDF</a>
+                {% if not user.is_microscopist() %}<a style="text-align: center" class="btn btn-success action-btn" href="/map/?lat={{case.lat}}&amp;lng={{case.lng}}&amp;zoom=13&amp;date_start=1/1/1970&amp;date_end=Today"><span class="glyphicon glyphicon-map-marker icon-button"></span><br>View on Map</a>{% endif %}
+                <a class="btn btn-success action-btn" name="choice" onclick="openSelectedImages();"><span class="glyphicon glyphicon-picture icon-button"></span><br>View Image(s)</a>
+            </table>
+            
+            
+            
+            
+            
+        </div>            					
+        
+    </div>
+    <div class=" col-sm-2 col-md-2" style="padding-top: 0; border: 1px solid #DDD;">
+        <!--
+        <ul class="nav nav-tabs" id="image_tabs">
+            <li class="active"><a href="#raw_images" data-toggle="tab">Raw Images</a></li>
+        </ul>
+        -->
+                <table class="table-condensed" style="width: 100%; vertical-align: bottom; padding: 0; margin: 0">
+                <tbody><tr>
+                <td><h5 class="pull-right">Select all</h5> 
+                <td style="width: 2%; padding: 0%"><input id="selectAll" class=" pull-right" onclick="toggleAll()" style="margin-bottom: 5px" type="checkbox">
+                
+                </tbody></table>
+                <div class="row" id="gallery" style="padding: 0">
+                    {% for j, i in images %}
+                        <div class="container col-sm-12 col-md-12">
+                            <input class="pull-left" name="checkbox_{{loop.index0}}" id="chkbox_{{loop.index0}}" onchange="toggleSelectAll({{loop.index0}})" type="checkbox">
+                            <p>&nbsp;Image #{{j}}</p>
+                            <a href="/{{i}}" id="link_{{loop.index0}}" target="_blank" class="thumbnail">
+                              <img src="/thumb/{{i}}" alt="">
+                            </a>
+                        </div>
+                         {% if loop.index0 == (loop.length-1) %}
+                              <script>
+                                    window.currentGalleryLength = {{ loop.length }}
+                                    function checkGalleryImage(increment) {
+                                        var i = (window.currentImageIndex+increment+window.currentGalleryLength)%window.currentGalleryLength;
+                                        checkGalleryImage.chkbox_print.checked = document.getElementById("chkbox_"+i).checked;
+                                        window.currentImageIndex = i;
+                                    }
+                                    checkGalleryImage.chkbox_print = document.getElementById("currentlyViewed_chkbox_printing");
+                              </script>
+                         {% endif %}
+                     {% endfor %}
+                     </li>
+                </div>
+            
+    </div>
+</form>
+
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+        <h4 class="modal-title" id="myModalLabel">Case</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+            <li>This page shows the details of a specific case. <br><br> 
+            <li>The "View on Map" button brings you to the map and zooms in on the location of this case. <br><br>
+            <li>The "Print" button prints the details of this case along with the selected images.
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<script>
+     function toggleAll()
+     {
+        for (var i=0; i<window.currentGalleryLength; i++)
+        {
+            document.getElementById("chkbox_"+i).checked = document.getElementById("selectAll").checked;
+        }
+     }
+     function toggleSelectAll(x)
+     {
+        if(document.getElementById("chkbox_"+x).checked == false)
+        {
+            document.getElementById("selectAll").checked = false;
+        }
+     }
+     function openSelectedImages()
+     {
+        for (var i=0; i<window.currentGalleryLength; i++)
+        {
+            if(document.getElementById("chkbox_"+i).checked){
+                window.open(document.getElementById("link_"+i).href, '_blank');
+            }
+            window.focus();
+        }
+     }
+</script>
+<script src="/static/js/jquery.js"></script>
+ <script>
+    var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng={{case.lat}},{{case.lng}}&sensor=false'
+    $.getJSON(url, function(data){
+        if (data['status'] == "OK"){
+            document.getElementById('location').innerHTML = data['results'][0]['formatted_address'];
+        }
+    });
+</script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script>
+    function var_dump(x) {
+        var s = "";
+        for (var i in x) {
+            s += i+" = "+x[i]+"\n";
+         }
+         alert(s);
+    }
+</script>
+{% endblock %}

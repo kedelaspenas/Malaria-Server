@@ -1,0 +1,391 @@
+{% extends "layout.html" %}
+{% block title %}Records{% endblock %}
+
+{% block style %}
+        <style>
+            html,
+            body {
+               margin:0;
+               padding:0;
+               height:100%;
+            }
+            #super {
+               min-height:100%;
+               position:relative;
+            }
+            
+            #custom-search-form {
+            margin:0;
+            margin-top: 5px;
+            padding: 0;
+            }
+            #custom-search-form .search-query {
+            padding-right: 3px;
+            padding-right: 4px \9;
+            padding-left: 3px;
+            padding-left: 4px \9;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            }
+            #custom-search-form button {
+            border: 0;
+            background: none;
+            /** belows styles are working good */
+            padding: 2px 5px;
+            margin-top: 2px;
+            position: relative;
+            left: -28px;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            }
+            .search-query:focus + button {
+            z-index: 3;
+            }
+
+            .tableheader{
+                background-color: #167037;
+                color: white;
+                height: 70px;
+                font-size: 18px;
+                vertical-align: middle;
+            }
+
+            tbody {
+                font-size: 14px;
+            }
+
+            tbody > tr:hover{
+                background-color: #ccddcb;
+            }
+            
+            .table > tbody > tr > th{
+                 vertical-align: middle;
+            }
+            .viewbutton{
+                background-color: #bedffe;
+                /*border-color: #4e9694;*/
+                /*background-color: #cbf8f6;*/
+                color: #024240;
+            }
+
+            .viewbutton:hover{
+                background-color: #4e9694;
+                color: black;
+            }
+
+            .filterform{
+                background-color: #e8e6e2;
+                border-radius: 5px;
+            }
+
+            .filterbutton{
+                background-color: #ccddcb;
+                border-color: #559e51;
+                color: black;
+            }
+
+            .filterbutton:hover{
+                background-color: #559e51;
+            }
+
+            .pagination{
+                background-color: #183D16;
+            }
+            .form-control{
+                height: 38px;
+            }
+            .input-group-addon{
+                font-size: 14px;
+            }
+        </style>
+{% endblock %}
+
+{% block content %}
+		<div class="row" style="width: 100%; margin: 0; margin-top: -15px">
+		  <div class="col-md-12">		
+            <!-- Filters -->
+                <form action="/records/" method="get" name="filter" class="col-md-3 filterform"><fieldset>
+
+					<h4>Show Cases:</h4>
+                    <div class="" style="background-color: #e8e6e2; ">
+                        <div class=""  style="background-color: #e8e6e2; ">
+                            <div class="input-group">
+                                <span class="input-group-addon">with</span>
+                                <select class="form-control" style="width: 100%" name="parasite_selection">
+                                    {% for i in parasiteList %}
+                                        <option {% if i.id==parasiteIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="">
+                            <div class="input-group">
+                                <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
+                                <select id="sel_region" class="form-control" style="width: 100%" name="region_selection">
+                                    {% for i in regionList %}
+                                        <option {% if i.id==regionIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="" id="province" style="display: none">
+                            <div class="input-group">
+                                <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
+                                <select id="sel_province" class="form-control" style="width: 100%" name="province_selection">
+                                    {% for i in provinceList %}
+                                        <option {% if i.id==provinceIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="" id="municipality" style="display: none">
+                            <div class="input-group">
+                                <span class="input-group-addon">in&nbsp;&nbsp;&nbsp;</span>
+                                <select id="sel_municipality" class="form-control" style="width: 100%" name="municipality_selection">
+                                    {% for i in municipalityList %}
+                                        <option {% if i.id==municipalityIndex %}selected{% endif %} value={{ i.id }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+					{% if not user.is_microscopist() %}
+					<div class="input-group">
+                        <span class="input-group-addon">by&nbsp;&nbsp;</span>
+                        <select class="form-control" style="width: 100%" name="microscopist_selection">
+                            {% for i in microscopistList %}
+                                <option {% if i.id==microscopistIndex %}selected{% endif %} value={{ i.id }}>
+                                {% if loop.index0 == 0 %}
+                                    {{ i }}
+                                {% else %}
+                                    {{i.firstname}} {{i.lastname}} ({{i.username}})
+                                {% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+					</div>
+                    <br>
+					{% endif %}
+                    <div class="input-group" style="width: 100%">
+                    <span class="input-group-addon" style="background-color: #ffffff">from</span>
+                    <input class="form-control" style="width: 100%" value="{{date_start}}" id="dpd1" name="date_start" type="text">
+                    </div>
+                    <br>
+                    <div class="input-group" style="width: 100%">
+                    <span class="input-group-addon" style="background-color: #ffffff">to&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <input class="form-control" style="width: 100%" value="{{date_end}}" id="dpd2" name="date_end" type="text">
+                    </div> 
+                    <!-- HIDDEN FILTERS -->
+                    <input class="form-control" id="sort_by" name="sort_by" value="{{ sort_by }}" style="display: None" type="text"> 
+                    <input class="form-control" id="order" name="order" value="{{ order }}" style="display: None" type="text"> 
+                    <input class="form-control" id="page" name="page" value="1" style="display: None" type="text"> 
+                    <script>
+                    function sort(column)
+                    {
+                        if (document.getElementById('order').value == "desc" && document.getElementById('sort_by').value == column) {
+                            document.getElementById('order').value = "asc"
+                        }
+                        else {
+                            document.getElementById('order').value = "desc"
+                        }
+                        document.getElementById('sort_by').value = column
+                        document.getElementById('submit_button').click()
+                    }
+                    function set_page(page)
+                    {
+                        document.getElementById('page').value = page
+                        document.getElementById('submit_button').click()
+                    }
+                    </script>
+                    <!-- HIDDEN FILTERS -->
+                    <br>
+                    <!-- <input class="btn btn-medium" type="reset" value="Clear Filters" style="height: 30px"> -->
+                    <div style="text-align:center;">
+                    <a class="btn filterbutton  col-md-8 col-md-offset-2" href="/records/"><span class="glyphicon glyphicon-refresh"></span> Reset Filters</a>
+                    <br>
+                    <input class="" id="submit_button" style="display: none" value="Filter Records" type="submit">
+                    <br>
+                    <br>
+                    <a class="btn filterbutton col-md-8 col-md-offset-2" onclick="$('#submit_button').click()"><span class="glyphicon glyphicon-filter"></span> Filter Records</a>
+                    </div>
+                    
+                </fieldset>
+                <br>
+                </form>
+                <!--Table -->
+				<div class="col-md-9" style="background-color: white;">
+				    <table class="table table-condensed">
+					<tbody>
+                    <tr class="tableheader">
+                        <th class="col-md-1" style="border-top-left-radius: 5px;">ID
+
+                        <th class="col-md-3" onclick="sort('location');" style="cursor: pointer;">Location <div class="pull-left"><i class id="location_chevron"></i></div>
+                        
+                        <th class="col-md-2" onclick="sort('date');" style="min-width: 80px; cursor: pointer;">Date <div class="pull-left"><i class id="date_chevron"></i></div>
+                        <th class="col-md-1" onclick="sort('parasite');" style="cursor: pointer;">Diagnosis <div class="pull-left"><i class id="parasite_chevron"></i></div>
+                        <th class="col-md-1" onclick="sort('microscopist');" style="cursor: pointer;">Microscopist <div class="pull-left"><i class id="microscopist_chevron"></i></div>
+                        <th class="col-md-1">Priority
+                        
+                        <th class="col-md-1">Validation
+                        
+                        <th class="col-md-1" style="border-top-right-radius: 5px;">
+                    {% for i in caseList %}
+					<tr>
+                        <td {%if i.test %}style="color:red;" {%endif%}>{{i.code}}
+                        <td>{{i.region}}, {{i.province}}, {{i.municipality}}
+                        <td>{{i.date}}
+                        <td>{{i.partype}}
+                        <td>{{i.user.firstname}} {{i.user.lastname}} ({{i.user.username}})
+						<td>{{i.priority}}
+						<td>{{i.finalized_text}}
+                        <td><a href="/case/{{ i.id }}/" class="btn viewbutton" style="width: 100%;"><span class="glyphicon glyphicon-search"></span> View</a>
+                    {% endfor %}
+                    {% if not caseList %}
+                    <tr><td colspan="5" style="text-align: center; font-weight: bold">No Results
+                    {% endif %}
+					</tbody></table>
+                    {% if pagination.pages %}
+                    <div class="" style="text-align: center">
+                    <ul class="pagination">
+                    <li><a href="#" {% if pagination.has_prev %}onclick="set_page('{{pagination.page - 1}}')"{% endif %}> <</a></li>
+                    {% for page in pagination.iter_pages() %}{% if page %}<li><a href="#" {% if page !="pagination.page" %}onclick="set_page('{{page}}')"{% else %}style="color: black; font-weight: bold"{% endif %}>{{ page }}</a></li>{% endif %}{% endfor %}
+                    <li><a href="#" {% if pagination.has_next %}onclick="set_page('{{pagination.page + 1}}')"{% endif %}>> </a></li>
+                    </ul>
+                    </div>
+                    {% endif %}
+				</div>
+            </div>
+		</div>
+        
+        <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">close</button>
+                <h4 class="modal-title" id="myModalLabel">Records</h4>
+              </div>
+              <div class="modal-body">
+                <ul>
+                    <li>This page displays the latest cases on the table. <br><br>
+                    <li>Details of individual cases can be seen by clicking the respective "View" button.<br><br> 
+                    <li>Filters are available to narrow down the results.
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+		<script src="/static/js/jquery.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/eyecon-datepicker.js"></script>
+        <script>
+            $(document).ready ( function(){
+                if ("{{ order }}" == "asc")
+                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "glyphicon glyphicon-chevron-up")
+                else
+                    document.getElementById("{{ sort_by }}" + '_chevron').setAttribute("class", "glyphicon glyphicon-chevron-down")
+            });
+            var clicked = false;
+            var checkin = $('#dpd1').datepicker({
+            onRender: function(date) {
+            return date.valueOf();
+            }
+            }).on('changeDate', function(ev) {
+            // alert(ev.date.toString());
+            clicked = true;
+            if (true) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate());
+            checkout.setValue(newDate);
+            }
+            checkin.hide();
+            $('#dpd2')[0].focus();
+            }).data('datepicker');
+            var checkout = $('#dpd2').datepicker({
+            onRender: function(date) {
+            if (clicked)
+                return date.valueOf() <= checkin.date.valueOf() - 1 ? 'disabled' : '';
+            else
+                return date.valueOf()
+            }
+            }).on('changeDate', function(ev) {
+            checkout.hide();
+            }).data('datepicker');
+
+            $('select#sel_region').change(function() {
+                if ($('select#sel_region').val() == 'All Regions' || $('select#sel_region').val() == "") {
+                    $('div#province').hide();
+                    $('div#municipality').hide();
+                } else {
+					$.getJSON('/ajax/provinces', {
+						region: $('select#sel_region').val()
+					}, function(result) {
+						$('select#sel_province').empty();
+						$('select#sel_province').append($('<option></option>')
+						.attr('value', 0)
+						.text('All Provinces'));
+						$(result['data']).each(function(name, value) {
+							$('select#sel_province').append($('<option></option>')
+							.attr('value', value['id'])
+							.text(value['name']));
+						});
+
+					});
+                    $('div#province').show('fast', function(){
+                        $('div#province select').focus();
+                    });
+                    
+                }
+                $('select#sel_province').prop('selectedIndex', 0);
+                $('div#municipality').hide();
+                $('select#sel_municipality').prop('selectedIndex', 0);
+            });
+
+            $('select#sel_province').change(function() {
+                if ($('select#sel_province').val() == 'All Provinces' || $('select#sel_province').val() == "0") {
+                    $('div#municipality').hide();
+                } else {
+					$.getJSON('/ajax/municipalities', {
+						province: $('select#sel_province').val()
+					}, function(result) {
+						$('select#sel_municipality').empty();
+						$('select#sel_municipality').append($('<option></option>')
+						.attr('value', 0)
+						.text('All Municipalities'));
+						console.log(result);
+						$(result['data']).each(function(name, value) {
+							$('select#sel_municipality').append($('<option></option>')
+							.attr('value', value['id'])
+							.text(value['name']));
+						});
+
+					});
+                    $('div#municipality').show('fast', function(){
+                        $('div#municipality select').focus();
+                    });
+                }
+                $('select#sel_municipality').prop('selectedIndex', 0);
+            });
+
+            $(document).ready(function() {
+				{% if regionIndex != 0 %}
+					$('div#province').show();
+				{% endif %}
+				{% if provinceIndex != 0 %}
+					$('div#municipality').show();
+				{% endif %}
+            });
+
+        </script>
+{% endblock %}

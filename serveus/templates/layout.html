@@ -1,0 +1,87 @@
+<!doctype html>
+<html><head>
+		<title>{% block title %}{% endblock %} - Remote Microscopy</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/css/normalize.css" rel="stylesheet">
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<!-- <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet"> -->
+        <link href="/static/css/eyecon-datepicker.css" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
+        <style type="text/css">
+/*            .navbar-inverse .navbar-nav > li > a {
+              color: #FFF;
+            }
+            .navbar-inverse .navbar-nav > .active > a {
+              background-image: -webkit-linear-gradient(top, #228B22 0%, #228B22 100%);
+              background-image:         linear-gradient(to bottom, #228B22 0%, #228B22 100%);
+              filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff282828', GradientType=0);
+              background-repeat: repeat-x;
+              -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+                      box-shadow: inset 0 3px 9px rgba(0, 0, 0, .25);
+            }
+
+            
+            .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+                border-color: transparent;
+            }*/
+
+            .snazzybar{
+                background-color: #43ac6a;
+                /*background-color: #183D16;*/
+            }
+            .navbar-inverse .navbar-nav > .active > a {
+                background-color: #167037;
+            }
+            .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+                background-color: #167037;
+            }
+            .navbar-inverse .navbar-toggle {
+                border-color: #167037;
+            }
+            ul.nav a:hover { background-color: #167037 !important; }
+        </style>
+		</head><body>{% block style %}
+		{% endblock %}
+
+		{% block script %}
+		{% endblock %}
+	
+	
+		<div class="navbar navbar-inverse snazzybar" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header pull-right">
+                    <ul class="nav navbar-nav pull-left" style="background-color: white; padding-right: 15px; padding-top: 8px; background-color: transparent;">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+                                {{user.usertype.name}} <b>{{user.firstname}} {{user.lastname}}</b> ({{ user.username }})
+                            <b class="caret"></b>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="/profilepage/"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                                {% if user.is_administrator() %}<li><a href="/admin/"><span class="glyphicon glyphicon-cog"></span> Admin Page</a></li>{% endif %}
+                                <li class="divider"></li>
+                                <li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                    <button type="button" class="navbar-toggle btn btn-success" data-toggle="collapse" data-target="#collapse-bar" style="height: 35px; margin-top: 14px; padding-top: 7px">Menu
+                    </button>
+                </div>
+                
+                <div id="collapse-bar" class="collapse navbar-collapse navbar-left" style="width: 50%;">
+                    <ul class="nav navbar-nav">
+                        <li>&nbsp;</li>
+                        <!--<li><a href="/dashboard/"><span class="icon-tasks"></span> Summary</a></li>-->
+                        {% if not user.is_microscopist() %}<li {% if menu_active == 'monitoring' %}class="active"{% endif %}><a href="/monitoring/"><span class="glyphicon glyphicon-eye-open"></span> Monitoring</a></li>{% endif %}
+                        <li {% if menu_active == 'records' %}class="active"{% endif %}><a href="/records/"><span class="glyphicon glyphicon-book"></span> Records</a></li>
+                        {% if not user.is_microscopist() %}<li {% if menu_active == 'map' %}class="active"{% endif %}><a href="/map/"><span class="glyphicon glyphicon-globe"></span> Map</a></li>{% endif %}
+                        {% if not user.is_microscopist() %}<li {% if menu_active == 'timeline' %}class="active"{% endif %}><a href="/timeline/"><span class="glyphicon glyphicon-time"></span> Timeline</a></li>{% endif %}
+                        <li><a href="#helpModal" id="help" data-toggle="modal"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
+                    </ul>
+                </div>
+			</div>
+		</div>
+		{% block content %}
+		{% endblock %}
+	
+</body></html>

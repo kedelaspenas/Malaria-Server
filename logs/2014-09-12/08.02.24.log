@@ -1,0 +1,1649 @@
+> Initialized logger
+> Exception on /profilepage/ [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/usr/local/lib/python2.7/dist-packages/flask_login.py", line 758, in decorated_view
+    return func(*args, **kwargs)
+  File "/home/ubuntu/serveus/views.py", line 99, in profilepage
+    return render_template("profilepage.html", user = current_user, changepass_form = changepass_form)
+  File "/usr/local/lib/python2.7/dist-packages/flask/templating.py", line 127, in render_template
+    return _render(ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/environment.py", line 830, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/environment.py", line 791, in get_template
+    return self._load_template(name, self.make_globals(globals))
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/environment.py", line 765, in _load_template
+    template = self.loader.load(self, name, globals)
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/loaders.py", line 113, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/usr/local/lib/python2.7/dist-packages/flask/templating.py", line 60, in get_source
+    return loader.get_source(environment, local_name)
+  File "/usr/local/lib/python2.7/dist-packages/jinja2/loaders.py", line 167, in get_source
+    contents = f.read().decode(self.encoding)
+  File "/usr/lib/python2.7/encodings/utf_8.py", line 16, in decode
+    return codecs.utf_8_decode(input, errors, True)
+UnicodeDecodeError: 'utf8' codec can't decode byte 0xd7 in position 1211: invalid continuation byte
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000001.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000002.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000003.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000004.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000005.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000006.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000007.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000008.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000009.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000010.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000011.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000012.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000013.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000014.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000015.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000016.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000017.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000018.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000019.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000020.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000021.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000022.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000023.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000024.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000025.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000026.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000027.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000028.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000029.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000030.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000031.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000032.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000033.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000034.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000035.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000036.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000037.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000038.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000039.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000040.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000041.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000042.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000043.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000044.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000045.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000046.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000047.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000048.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000049.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000050.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000051.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000052.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000053.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000054.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000055.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000056.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000057.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000058.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000059.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000060.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000061.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000062.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000063.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000064.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000065.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000066.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000067.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000068.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000069.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000070.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000071.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000072.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000073.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000074.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000075.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000076.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000077.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000078.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000079.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000080.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000081.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000082.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000083.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000084.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000085.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000086.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000087.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000088.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000089.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000090.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000091.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000092.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000093.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000094.part'
+> Exception on /api/chunk/ [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1817, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1477, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1381, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1475, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1461, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/ubuntu/serveus/views.py", line 927, in upload_chunk
+    f.save(os.path.join(folder, filename))
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/datastructures.py", line 2585, in save
+    dst = open(dst, 'wb')
+IOError: [Errno 2] No such file or directory: '/home/ubuntu/upload/20140912_155407_tope_3510580_32/20140912_155407_tope_3510580_32.zip.000095.part'

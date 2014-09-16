@@ -1,0 +1,73 @@
+  <!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" >
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malaria Crowdsourcing App</title>
+
+  <link rel="stylesheet" href="/crowd/static/css/normalize.css">
+  <link rel="stylesheet" href="/crowd/static/css/foundation.css">
+
+  <link rel="stylesheet" href="/crowd/static/css/app.css">
+
+  <script src="/crowd/static/js/vendor/custom.modernizr.js"></script>
+  
+  <script src="/static/js/sha1.js"></script>
+  <script>
+        function hash()
+        {
+            var text = $('#password').val();
+            var hash = CryptoJS.SHA1(text);
+            $('#password').val(hash);
+        }
+  </script>
+</head>
+<body>
+
+  <nav class="top-bar" data-topbar>
+    <ul class="title-area">
+      <li class="name">
+        <h1><a href="#">Malaria</a></h1>
+      
+    </ul>
+  
+    <section class="top-bar-section">
+      <!-- Right Nav Section -->
+      <ul class="right">
+      </ul>
+  
+      <!-- Left Nav Section -->
+      <ul class="left">
+        
+        
+      </ul>
+    </section>
+  </nav>
+
+  <form action="/crowd/login/" method="post" name="login"onsubmit="return hash();">
+    <div class="row" style="padding-top: 100px;">
+      <div class="small-centered large-6 columns text-center">
+        <div class="panel">
+            {{ login_form.hidden_tag() }}
+            <label class="text-left">Username</label>
+            {{ login_form.username(placeholder="Username") }}
+            <label class="text-left">Password</label>
+            {{ login_form.password(placeholder="Password") }}
+            <input class="button success radius" type="submit" value="Sign In" />
+            {% if error_message %}
+                <br>{{ error_message }}
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <script src="/crowd/static/js/vendor/jquery.js"></script>
+  <script src="/crowd/static/js/foundation.min.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>

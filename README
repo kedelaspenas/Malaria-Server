@@ -1,0 +1,16 @@
+The root folder contains all files relevant to the web server and crowdsourcing application.
+
+
+General Instructions
+
+
+First time setup:
+1. Navigate to root folder
+2. sudo pip install -r requirements.txt
+3. sudo python reset.py
+
+Note: no sudo for Windows
+
+
+To run:
+Type "sudo python run.py [port]" or "sudo sh twisted.sh [port]" (no quotes)
